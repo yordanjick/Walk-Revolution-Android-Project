@@ -26,24 +26,27 @@
                 android:layout_marginTop="20dp"
                 android:ems="10"
                 android:gravity="center_vertical"
-                android:hint="Name"
-                android:inputType="textPersonName" />
+                android:hint="@string/name_text"
+                android:inputType="textPersonName"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/start_field"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Start Point"
-                android:inputType="textPersonName" />
+                android:hint="@string/start_text"
+                android:inputType="textPersonName"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/step_field"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Steps"
-                android:inputType="textPersonName" />
+                android:hint="@string/step_text"
+                android:inputType="textPersonName"
+                android:autofillHints="" />
 
             <RadioGroup
                 android:id="@+id/run_type"
@@ -55,13 +58,13 @@
                     android:id="@+id/loop_button"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Loop" />
+                    android:text="@string/run_type1" />
 
                 <RadioButton
                     android:id="@+id/out_and_back_button"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Out-and-back" />
+                    android:text="@string/run_type2" />
 
             </RadioGroup>
 
@@ -76,13 +79,13 @@
                     android:id="@+id/flat_button"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Flat" />
+                    android:text="@string/flat_hilly1" />
 
                 <RadioButton
                     android:id="@+id/hilly_button"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Hilly" />
+                    android:text="@string/flat_hilly2" />
             </RadioGroup>
 
             <RadioGroup
@@ -95,13 +98,13 @@
                     android:id="@+id/streets_button"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Streets" />
+                    android:text="@string/route_type1" />
 
                 <RadioButton
                     android:id="@+id/trail_button"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Trail" />
+                    android:text="@string/route_type2" />
             </RadioGroup>
 
             <RadioGroup
@@ -114,13 +117,13 @@
                     android:id="@+id/even_button"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Even" />
+                    android:text="@string/surface_type1" />
 
                 <RadioButton
                     android:id="@+id/uneven_button"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Uneven" />
+                    android:text="@string/surface_type2" />
             </RadioGroup>
 
             <RadioGroup
@@ -134,19 +137,19 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Easy" />
+                    android:text="@string/difficulity1" />
 
                 <RadioButton
                     android:id="@+id/moderate_button"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Moderate" />
+                    android:text="@string/difficulity2" />
 
                 <RadioButton
                     android:id="@+id/hard_button"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Hard" />
+                    android:text="@string/difficulity3" />
             </RadioGroup>
 
             <MultiAutoCompleteTextView
@@ -154,8 +157,8 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="31dp"
-                android:gravity="top|left"
-                android:hint="Note"
+                android:gravity="top|start"
+                android:hint="@string/note_field"
                 android:lines="5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -167,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="60dp"
-                android:text="Save Route" />
+                android:text="@string/save_button" />
         </LinearLayout>
     </ScrollView>
 
