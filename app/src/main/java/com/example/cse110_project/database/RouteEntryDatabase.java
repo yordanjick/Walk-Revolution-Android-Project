@@ -1,12 +1,38 @@
 package com.example.cse110_project.database;
 
+import android.content.Context;
+
 import androidx.room.Database;
+import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 @Database(entities = {RouteEntry.class}, version = 1, exportSchema = false)
 public abstract class RouteEntryDatabase extends RoomDatabase {
     public static final String DB_NAME = "routes.db";
 
-    public static RouteEntryDatabase INSTANCE;
+    public static RouteEntryDatabase INSTANCE = null;
+    private static boolean DEBUG_DATABASE = false;
     public abstract RouteEntryDAO getRouteEntryDAO();
+
+    //Get permanent database.
+    public static RouteEntryDatabase getDatabase(Context context) {
+        if(INSTANCE == null || DEBUG_DATABASE) {
+            if(INSTANCE != null) INSTANCE.close();
+
+            INSTANCE = Room.databaseBuilder(context, RouteEntryDatabase.class,DB_NAME).allowMainThreadQueries().build();
+            DEBUG_DATABASE = false;
+        }
+        return INSTANCE;
+    }
+
+    // Get debug database
+    public static RouteEntryDatabase getDebugDatabse(Context context) {
+        if(INSTANCE == null || !DEBUG_DATABASE) {
+            if(INSTANCE != null) INSTANCE.close();
+
+            INSTANCE = Room.inMemoryDatabaseBuilder(context, RouteEntryDatabase.class).allowMainThreadQueries().build();
+            DEBUG_DATABASE = true;
+        }
+        return INSTANCE;
+    }
 }

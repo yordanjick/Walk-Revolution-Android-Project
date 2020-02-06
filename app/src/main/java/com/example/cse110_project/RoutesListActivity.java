@@ -1,5 +1,6 @@
 package com.example.cse110_project;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
 
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,8 +32,9 @@ public class RoutesListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RouteEntryDatabase database = Room.databaseBuilder(getApplicationContext(), RouteEntryDatabase.class, RouteEntryDatabase.DB_NAME).allowMainThreadQueries().build();
+        RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
         RouteEntryDAO dao = database.getRouteEntryDAO();
+        Log.d("stdout",Boolean.toString(RouteEntryDatabase.INSTANCE == null));
 
         LinearLayout listLayout = findViewById(R.id.routes_list_layout);
         String text;
@@ -42,11 +46,20 @@ public class RoutesListActivity extends AppCompatActivity {
             param.setMargins(PADDING, PADDING, PADDING, PADDING);
             routeButton.setLayoutParams(param);
             routeButton.setTypeface(Typeface.MONOSPACE);
+            final int routeId = entry.getId();
 
             text = String.format(Locale.US, ROUTE_FORMAT, entry.getRouteName(), entry.getSteps(), entry.getDistance(), entry.getTime());
             routeButton.setText(text);
             routeButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
             listLayout.addView(routeButton);
+
+            routeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RoutesListActivity.this, RouteInfoActivity.class);
+                    intent.putExtra("routeId", routeId);
+                }
+            });
         }
     }
 }

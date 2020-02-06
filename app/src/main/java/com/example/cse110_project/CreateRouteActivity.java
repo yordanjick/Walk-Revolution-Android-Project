@@ -25,7 +25,7 @@ public class CreateRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_route);
-        database= Room.databaseBuilder(getApplicationContext(),RouteEntryDatabase.class,RouteEntryDatabase.DB_NAME).allowMainThreadQueries().build();
+        database= RouteEntryDatabase.getDatabase(getApplicationContext());
         dao=database.getRouteEntryDAO();
 
         final EditText name=findViewById(R.id.name_field);
