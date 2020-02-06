@@ -6,170 +6,208 @@
     android:layout_height="match_parent"
     tools:context=".RouteInfoActivity">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="393dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="1dp">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/name_label"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Route Name:" />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/name_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/name_label" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/name_label"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Route Name:"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/name_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/name_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
 
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/start_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start Point:" />
-            <TextView
-                android:id="@+id/start_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/start_label" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/start_label"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Start Point:"
+                    android:textSize="20sp" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/start_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/start_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/step_label"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Step:" />
-            <TextView
-                android:id="@+id/step_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/step_label"
-                android:text="" />
-            <TextView
-                android:id="@+id/distance_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Distance:"
-                android:layout_toEndOf="@+id/step_text" />
-            <TextView
-                android:id="@+id/distance_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/distance_label" />
-        </RelativeLayout>
+                android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/step_label"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="Step:"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/run_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Run:" />
-            <TextView
-                android:id="@+id/run_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/run_label" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/step_text"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/step_label"
+                    android:text=""
+                    android:textSize="20sp" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/distance_label"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/step_text"
+                    android:text="Dist:"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/surface_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Surface:" />
-            <TextView
-                android:id="@+id/surface_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/surface_label" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/distance_text"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/distance_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/road_label"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Road:" />
-            <TextView
-                android:id="@+id/road_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/road_label" />
-        </RelativeLayout>
+                android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/run_label"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Run:"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/condition_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Condition:"/>
-            <TextView
-                android:id="@+id/condition_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/condition_label" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/run_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/run_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/difficulty_label"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Difficulty:"/>
-            <TextView
-                android:id="@+id/difficulty_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/difficulty_label" />
-        </RelativeLayout>
+                android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/surface_label"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Surface:"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/surface_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/surface_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/road_label"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Road:"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/road_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/road_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/condition_label"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Condition:"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/condition_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/condition_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/difficulty_label"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Difficulty:"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/difficulty_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/difficulty_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/note_label"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:text="Note:" />
-            <TextView
+                android:text="Note:"
+                android:textSize="20sp" />
+
+            <EditText
                 android:id="@+id/note_text"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/note_label" />
-        </RelativeLayout>
-    </LinearLayout>
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/start_route_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,7 @@ import java.util.Locale;
 public class RoutesListActivity extends AppCompatActivity {
     private static final String ROUTE_FORMAT = "%-10s %-6d %-5.1f %-5d";
     private static final int PADDING = 10, MARGIN = 20;
+    public static final String ROUTE_ID = "routeId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,6 @@ public class RoutesListActivity extends AppCompatActivity {
 
         RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
         RouteEntryDAO dao = database.getRouteEntryDAO();
-        Log.d("stdout",Boolean.toString(RouteEntryDatabase.INSTANCE == null));
 
         LinearLayout listLayout = findViewById(R.id.routes_list_layout);
         String text;
@@ -51,15 +51,17 @@ public class RoutesListActivity extends AppCompatActivity {
             text = String.format(Locale.US, ROUTE_FORMAT, entry.getRouteName(), entry.getSteps(), entry.getDistance(), entry.getTime());
             routeButton.setText(text);
             routeButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
-            listLayout.addView(routeButton);
 
             routeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(RoutesListActivity.this, RouteInfoActivity.class);
-                    intent.putExtra("routeId", routeId);
+                    intent.putExtra(ROUTE_ID, routeId);
+                    startActivity(intent);
+                    Log.d("stdout","Click button with id:" + routeId);
                 }
             });
+            listLayout.addView(routeButton);
         }
     }
 }
