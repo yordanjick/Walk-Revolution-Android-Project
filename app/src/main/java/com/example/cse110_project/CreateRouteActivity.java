@@ -53,7 +53,7 @@ public class CreateRouteActivity extends AppCompatActivity {
         RadioButton difficulity2=findViewById(R.id.moderate_button);
         RadioButton difficulity3=findViewById(R.id.hard_button);
 
-        MultiAutoCompleteTextView note=findViewById(R.id.note_field);
+        final MultiAutoCompleteTextView note=findViewById(R.id.note_field);
 
         Button save=findViewById(R.id.save_buttton);
         save.setOnClickListener(new View.OnClickListener() {
@@ -66,13 +66,13 @@ public class CreateRouteActivity extends AppCompatActivity {
                 }
                 else{
                     RouteEntry routeEntry=new RouteEntry(name.getText().toString(),start.getText().toString());
-                    
+
                     routeEntry.setRun(runtype.getCheckedRadioButtonId());
                     routeEntry.setTerrain(f_h.getCheckedRadioButtonId());
                     routeEntry.setRoadType(routetype.getCheckedRadioButtonId());
                     routeEntry.setRoadCondition(surfacetype.getCheckedRadioButtonId());
                     routeEntry.setLevel(difficulity.getCheckedRadioButtonId());
-
+                    routeEntry.setNote(note.getText().toString());
                     dao.insertRoute(routeEntry);
                 }
             }
