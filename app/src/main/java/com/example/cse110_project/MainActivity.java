@@ -3,6 +3,7 @@ package com.example.cse110_project;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.cse110_project.database.CreateRouteActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -36,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                // TODO add method call to launchActivity to launch routes page activity
+                Intent routeList = new Intent(MainActivity.this, RoutesListActivity.class);
+                startActivity(routeList);
             }
         });
 
@@ -44,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                // TODO add method call to launchActivity to launch add routes activity
+                Intent createRoute = new Intent(MainActivity.this, CreateRouteActivity.class);
+                startActivity(createRoute);
             }
         });
 
