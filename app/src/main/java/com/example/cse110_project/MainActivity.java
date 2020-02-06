@@ -1,8 +1,11 @@
 package com.example.cse110_project;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -15,17 +18,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+
+    private FitnessService fitnessService;
+
+    private TextView stepCounter;
+
     public int userHeight;
     public boolean heightSet;
+
+    private UpdateDataAsyncTask runner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        stepCounter = findViewById(R.id.steps_walked_text);
+
+        String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -83,12 +101,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void launchActivity(Class activity)
-    {
-        Intent intent = new Intent(this, activity);
-        startActivity(intent);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -109,5 +121,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setStepCount(long stepCount) {
+        stepCounter.setText(String.valueOf(stepCount));
+
+    }
+
+    private class UpdateDataAsyncTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            fitnessService.updateStepCount();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            runner = new UpdateDataAsyncTask();
+            runner.execute();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        runner.cancel(true);
     }
 }
