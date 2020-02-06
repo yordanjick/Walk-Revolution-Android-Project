@@ -17,4 +17,7 @@ public interface RouteEntryDAO {
 
     @Query("SELECT * FROM routes WHERE routeName=:routeName")
     public RouteEntry[] getRouteEntries(String routeName);
+
+    @Query("DELETE FROM routes")
+    public void clearRoutes();
 }
