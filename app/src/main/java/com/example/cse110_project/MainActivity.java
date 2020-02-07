@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -66,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(!heightSet)
-        {
+        if(!heightSet) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
             View heightView = getLayoutInflater().inflate(R.layout.dialog_height, null);
             final EditText heightInput = (EditText) heightView.findViewById(R.id.user_height);
@@ -76,28 +76,27 @@ public class MainActivity extends AppCompatActivity {
             mBuilder.setView(heightView);
             final AlertDialog dialog = mBuilder.create();
 
-            confirmHeight.setOnClickListener(new View.OnClickListener(){
+            confirmHeight.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
-                    if(!heightInput.getText().toString().isEmpty())
-                    {
+                public void onClick(View view) {
+                    if (!heightInput.getText().toString().isEmpty()) {
                         userHeight = Integer.parseInt(heightInput.getText().toString());
                         heightSet = true;
                         Toast.makeText(MainActivity.this,
                                 R.string.success_height_msg, Toast.LENGTH_SHORT).show();
                         dialog.cancel();
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(MainActivity.this,
                                 R.string.error_height_msg, Toast.LENGTH_SHORT).show();
                     }
+                    fitnessService.setup();
                 }
             });
-
             dialog.show();
 
+        }
+        else {
+            fitnessService.setup();
         }
     }
 

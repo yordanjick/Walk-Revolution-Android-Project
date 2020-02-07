@@ -2,10 +2,12 @@ package com.example.cse110_project.fitness;
 
 import android.util.Log;
 
+import com.example.cse110_project.MainActivity;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.ucsd.cse110.fitnessapp.StepCountActivity;
+import com.example.cse110_project.MainActivity;
 
 public class FitnessServiceFactory {
 
@@ -17,12 +19,12 @@ public class FitnessServiceFactory {
         blueprints.put(key, bluePrint);
     }
 
-    public static FitnessService create(String key, StepCountActivity stepCountActivity) {
+    public static FitnessService create(String key, MainActivity stepCountActivity) {
         Log.i(TAG, String.format("creating FitnessService with key %s", key));
         return blueprints.get(key).create(stepCountActivity);
     }
 
     public interface BluePrint {
-        FitnessService create(StepCountActivity stepCountActivity);
+        FitnessService create(MainActivity stepCountActivity);
     }
 }
