@@ -21,18 +21,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    public static final double AVERAGE_STRIDE_LENGTH = 0.413;
 
     private FitnessService fitnessService;
+    private Calendar calendar;
 
     private TextView stepCounter;
+    private long stepCount;
 
     public int userHeight;
     public boolean heightSet;
 
     private UpdateDataAsyncTask runner;
+    private long startCount;
+    private long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button routes_page = (Button)findViewById(R.id.routes_button);
-        Button add_routes = (Button) findViewById(R.id.add_routes_button);
+        final Button routes_page = (Button)findViewById(R.id.routes_button);
+        final Button add_routes = (Button) findViewById(R.id.add_routes_button);
+        final Button stop_button = (Button)findViewById(R.id.stop_button);
 
         routes_page.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +71,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                startCount = stepCount;
+                startTime = calendar.getTimeInMillis();
+                routes_page.setVisibility(View.INVISIBLE);
+                add_routes.setVisibility(View.INVISIBLE);
                 // TODO add method call to launchActivity to launch add routes activity
+            }
+        });
+
+        stop_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long sessionSteps = stepCount - startCount;
+                long sessionTime = calendar.getTimeInMillis() - startTime;
             }
         });
 
@@ -123,11 +143,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setStepCount(long stepCount) {
+        this.stepCount = stepCount;
         stepCounter.setText(String.valueOf(stepCount));
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        runner.cancel(true);
+    }
+
+    public double stepToMiles(int numSteps) {
+        if(this.heightSet) {
+            return numSteps * this.userHeight * AVERAGE_STRIDE_LENGTH;
+        } else {
+            return 0;
+        }
     }
 
     private class UpdateDataAsyncTask extends AsyncTask<String, String, String> {
+
         @Override
         protected String doInBackground(String... params) {
             fitnessService.updateStepCount();
@@ -144,11 +179,5 @@ public class MainActivity extends AppCompatActivity {
             runner = new UpdateDataAsyncTask();
             runner.execute();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        runner.cancel(true);
     }
 }
