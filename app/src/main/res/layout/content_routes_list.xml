@@ -12,8 +12,7 @@
         android:id="@+id/routes_list_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"/>
 
 
 </androidx.core.widget.NestedScrollView>

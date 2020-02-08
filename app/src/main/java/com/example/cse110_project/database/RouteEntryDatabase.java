@@ -11,28 +11,23 @@ public abstract class RouteEntryDatabase extends RoomDatabase {
     public static final String DB_NAME = "routes.db";
 
     public static RouteEntryDatabase INSTANCE = null;
-    private static boolean DEBUG_DATABASE = false;
+    public static boolean DEBUG_DATABASE = false;
     public abstract RouteEntryDAO getRouteEntryDAO();
 
     //Get permanent database.
     public static RouteEntryDatabase getDatabase(Context context) {
-        if(INSTANCE == null || DEBUG_DATABASE) {
-            if(INSTANCE != null) INSTANCE.close();
-
-            INSTANCE = Room.databaseBuilder(context, RouteEntryDatabase.class,DB_NAME).allowMainThreadQueries().build();
-            DEBUG_DATABASE = false;
+        if(INSTANCE == null) {
+            if(DEBUG_DATABASE) {
+                INSTANCE = Room.inMemoryDatabaseBuilder(context, RouteEntryDatabase.class).allowMainThreadQueries().build();
+            } else {
+                INSTANCE = Room.databaseBuilder(context, RouteEntryDatabase.class,DB_NAME).allowMainThreadQueries().build();
+            }
         }
         return INSTANCE;
     }
 
-    // Get debug database
-    public static RouteEntryDatabase getDebugDatabse(Context context) {
-        if(INSTANCE == null || !DEBUG_DATABASE) {
-            if(INSTANCE != null) INSTANCE.close();
-
-            INSTANCE = Room.inMemoryDatabaseBuilder(context, RouteEntryDatabase.class).allowMainThreadQueries().build();
-            DEBUG_DATABASE = true;
-        }
-        return INSTANCE;
+    public static void closeDateBase() {
+        INSTANCE.close();
+        INSTANCE = null;
     }
 }

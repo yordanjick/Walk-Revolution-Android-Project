@@ -18,11 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Locale;
 
 public class RoutesListActivity extends AppCompatActivity {
-    private static final String ROUTE_FORMAT = "%-10s %-6d %-5.1f %-5d";
+    private static final String ROUTE_FORMAT = "%10s";
     private static final int PADDING = 10, MARGIN = 20;
     public static final String ROUTE_ID = "routeId";
 
@@ -45,10 +47,9 @@ public class RoutesListActivity extends AppCompatActivity {
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             param.setMargins(PADDING, PADDING, PADDING, PADDING);
             routeButton.setLayoutParams(param);
-            routeButton.setTypeface(Typeface.MONOSPACE);
             final int routeId = entry.getId();
 
-            text = String.format(Locale.US, ROUTE_FORMAT, entry.getRouteName(), entry.getSteps(), entry.getDistance(), entry.getTime());
+            text = String.format(Locale.US, ROUTE_FORMAT, entry.getRouteName());
             routeButton.setText(text);
             routeButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
 

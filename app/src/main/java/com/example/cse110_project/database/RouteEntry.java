@@ -25,6 +25,7 @@ public class RouteEntry {
     // Basic route information
     private String routeName;
     private String startPoint;
+    private int date, month, year;
 
     // Auto generated from API
     private int steps;
@@ -92,6 +93,18 @@ public class RouteEntry {
         return time;
     }
 
+    public int getDate() {
+        return date;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     // This is for database use. It is automatically set. Don't set id directly.
     public void setId(int id) {
         this.id = id;
@@ -145,11 +158,24 @@ public class RouteEntry {
         this.time = time;
     }
 
+    public void setDate(int date) {
+        this.date = date;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     @Override
     @NonNull
     // For debug purpose
     public String toString() {
         return id + ": " + routeName + " " + startPoint + "(" + distance + ": " + steps + ": " + time + ")" + "\n"
+                + "Date: " + month + "/" + date + "/" + year + "\n"
                 + "Run: " + (run == -1? "N/A": RUN_VAL[run]) + " Terrain: " + (terrain == -1? "N/A": TERRAIN_VAL[terrain])
                 + " Road: " + (roadType == -1? "N/A": ROAD_TYPE_VAL[roadType]) + " Road Condition: " + (roadCondition == -1? "N/A": ROAD_CONDITION_VAL[roadCondition])
                 + " Level: " + (level == -1? "N/A": LEVEL_VAL[level]) + " Favorite: " + (favorite == -1? "N/A": FAVORITE_VAL[favorite]) + "\n"
@@ -160,6 +186,7 @@ public class RouteEntry {
     public boolean equals(RouteEntry r) {
         if(r == null) return false;
         return this.routeName.equals(r.routeName) && this.startPoint.equals(r.startPoint)
+                && this.month == r.month && this.date == r.date && this.year == r.year
                 && this.steps == r.steps && this.distance == r.distance && this.time == r.time
                 && this.run == r.run && this.terrain == r.terrain && this.roadType == r.roadType
                 && this.roadCondition == r.roadCondition && this.level == r.level

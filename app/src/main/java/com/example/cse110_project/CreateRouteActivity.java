@@ -74,6 +74,8 @@ public class CreateRouteActivity extends AppCompatActivity {
                     routeEntry.setLevel(difficulity.getCheckedRadioButtonId());
                     routeEntry.setNote(note.getText().toString());
                     dao.insertRoute(routeEntry);
+
+
                 }
             }
         });
