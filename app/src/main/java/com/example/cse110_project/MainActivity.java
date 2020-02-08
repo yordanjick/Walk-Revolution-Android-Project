@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+        this.calendar = Calendar.getInstance();
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -77,16 +78,20 @@ public class MainActivity extends AppCompatActivity {
                 startTime = calendar.getTimeInMillis();
                 routes_page.setVisibility(View.INVISIBLE);
                 add_routes.setVisibility(View.INVISIBLE);
+                stop_button.setVisibility(View.VISIBLE);
                 // TODO add method call to launchActivity to launch add routes activity
             }
         });
-
+        stop_button.setVisibility(View.INVISIBLE);
         stop_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long sessionSteps = stepCount - startCount;
                 long sessionTime = calendar.getTimeInMillis() - startTime;
                 long sessionMile = stepToMiles(sessionSteps);
+                routes_page.setVisibility(View.VISIBLE);
+                add_routes.setVisibility(View.VISIBLE);
+                stop_button.setVisibility(View.INVISIBLE);
             }
         });
 
