@@ -88,10 +88,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 long sessionSteps = stepCount - startCount;
                 long sessionTime = calendar.getTimeInMillis() - startTime;
-                long sessionMile = stepToMiles(sessionSteps);
+                long sessionMile = convertStepToMiles(sessionSteps);
                 routes_page.setVisibility(View.VISIBLE);
                 add_routes.setVisibility(View.VISIBLE);
                 stop_button.setVisibility(View.INVISIBLE);
+
+                // TODO: 
             }
         });
 
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         runner.cancel(true);
     }
 
-    public long stepToMiles(long numSteps) {
+    public long convertStepToMiles(long numSteps) {
         if(this.heightSet) {
             return (long) (numSteps * this.userHeight * AVERAGE_STRIDE_LENGTH / INCH_PER_FOOT / FEET_PER_MILE);
         } else {
