@@ -1,6 +1,7 @@
 package com.example.cse110_project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -65,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
                     if(!heightInput.getText().toString().isEmpty())
                     {
                         userHeight = Integer.parseInt(heightInput.getText().toString());
+
+                        SharedPreferences sharedHeight = getSharedPreferences("height", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedHeight.edit();
+                        editor.putInt("height", userHeight);
+                        editor.apply();
+
+
                         heightSet = true;
                         Toast.makeText(MainActivity.this,
                                 R.string.success_height_msg, Toast.LENGTH_SHORT).show();
