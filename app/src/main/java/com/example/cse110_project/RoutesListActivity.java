@@ -24,7 +24,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 public class RoutesListActivity extends AppCompatActivity {
-    private static final String ROUTE_FORMAT = "%10s";
+    private static final String ROUTE_FORMAT = "%10s %10s %5d %5.1f";
     private static final int PADDING = 10, MARGIN = 20;
     public static final String ROUTE_ID = "routeId";
 
@@ -49,7 +49,7 @@ public class RoutesListActivity extends AppCompatActivity {
             routeButton.setLayoutParams(param);
             final int routeId = entry.getId();
 
-            text = String.format(Locale.US, ROUTE_FORMAT, entry.getRouteName());
+            text = String.format(Locale.US, ROUTE_FORMAT, entry.getRouteName(), entry.getStartPoint(), entry.getSteps(), entry.getDistance());
             routeButton.setText(text);
             routeButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
 
