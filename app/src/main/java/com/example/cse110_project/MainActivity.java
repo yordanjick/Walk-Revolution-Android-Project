@@ -49,6 +49,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        SharedPreferences sharedPreferences = getSharedPreferences("homepage", MODE_PRIVATE);
+        int height = sharedPreferences.getInt("height", -1);
+
+        heightSet = height != -1;
+
         if(!heightSet)
         {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -67,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
                     {
                         userHeight = Integer.parseInt(heightInput.getText().toString());
 
-                        SharedPreferences sharedHeight = getSharedPreferences("height", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedHeight.edit();
+                        SharedPreferences sharedPreferences = getSharedPreferences("homepage", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putInt("height", userHeight);
                         editor.apply();
 
