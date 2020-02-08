@@ -47,4 +47,7 @@ jobs:
      before_install:
        - openssl aes-256-cbc -K $encrypted_c204a8432fde_key -iv $encrypted_c204a8432fde_iv -in gcloud-service-key.json.enc -out gcloud-service-key.json -d
        - chmod +x ./run_tests_on_firebase_test_lab.sh
+     before_script:
+       - chmod a+x gradlew
+       - chmod a+x gradle/wrapper/gradle-wrapper.jar
      script: ./run_tests_on_firebase_test_lab.sh
