@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final double AVERAGE_STRIDE_LENGTH = 0.413;
+    public static final int INCH_PER_FOOT = 12;
+    public static final int FEET_PER_MILE = 5280;
 
     private FitnessService fitnessService;
     private Calendar calendar;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 long sessionSteps = stepCount - startCount;
                 long sessionTime = calendar.getTimeInMillis() - startTime;
+                long sessionMile = stepToMiles(sessionSteps);
             }
         });
 
@@ -153,9 +156,9 @@ public class MainActivity extends AppCompatActivity {
         runner.cancel(true);
     }
 
-    public double stepToMiles(int numSteps) {
+    public long stepToMiles(long numSteps) {
         if(this.heightSet) {
-            return numSteps * this.userHeight * AVERAGE_STRIDE_LENGTH;
+            return (long) (numSteps * this.userHeight * AVERAGE_STRIDE_LENGTH / INCH_PER_FOOT / FEET_PER_MILE);
         } else {
             return 0;
         }
