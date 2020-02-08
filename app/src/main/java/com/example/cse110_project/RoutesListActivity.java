@@ -59,7 +59,6 @@ public class RoutesListActivity extends AppCompatActivity {
                     Intent intent = new Intent(RoutesListActivity.this, RouteInfoActivity.class);
                     intent.putExtra(ROUTE_ID, routeId);
                     startActivity(intent);
-                    Log.d("stdout","Click button with id:" + routeId);
                 }
             });
             listLayout.addView(routeButton);

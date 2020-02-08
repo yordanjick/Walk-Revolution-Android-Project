@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {RouteEntry.class}, version = 1, exportSchema = false)
+@Database(entities = {RouteEntry.class}, version = 2, exportSchema = false)
 public abstract class RouteEntryDatabase extends RoomDatabase {
     public static final String DB_NAME = "routes.db";
 
@@ -18,9 +18,11 @@ public abstract class RouteEntryDatabase extends RoomDatabase {
     public static RouteEntryDatabase getDatabase(Context context) {
         if(INSTANCE == null) {
             if(DEBUG_DATABASE) {
-                INSTANCE = Room.inMemoryDatabaseBuilder(context, RouteEntryDatabase.class).allowMainThreadQueries().build();
+                INSTANCE = Room.inMemoryDatabaseBuilder(context, RouteEntryDatabase.class)
+                        .allowMainThreadQueries().build();
             } else {
-                INSTANCE = Room.databaseBuilder(context, RouteEntryDatabase.class,DB_NAME).allowMainThreadQueries().build();
+                INSTANCE = Room.databaseBuilder(context, RouteEntryDatabase.class,DB_NAME)
+                        .fallbackToDestructiveMigration().allowMainThreadQueries().build();
             }
         }
         return INSTANCE;
@@ -30,4 +32,6 @@ public abstract class RouteEntryDatabase extends RoomDatabase {
         INSTANCE.close();
         INSTANCE = null;
     }
+
+
 }

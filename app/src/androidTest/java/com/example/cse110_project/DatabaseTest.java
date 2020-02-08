@@ -32,7 +32,7 @@ public class DatabaseTest {
     @Before
     public void connectDb() {
         // Set debug database flag
-        RouteEntryDatabase.DEBUG_DATABASE = true;
+        RouteEntryDatabase.DEBUG_DATABASE = false;
         Context context = ApplicationProvider.getApplicationContext();
         routeEntryDatabase = RouteEntryDatabase.getDatabase(context);
         routeEntryDAO = routeEntryDatabase.getRouteEntryDAO();
@@ -47,9 +47,6 @@ public class DatabaseTest {
     public void insertBasicRouteInfo() throws Exception {
         String routeName = "Run to LA";
         RouteEntry route = new RouteEntry(routeName, "San Diego");
-        route.setMonth(1);
-        route.setDate(12);
-        route.setYear(2020);
         route.setSteps(300000);
         route.setDistance(152);
         routeEntryDAO.insertRoute(route);
