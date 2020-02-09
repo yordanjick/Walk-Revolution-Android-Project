@@ -36,7 +36,6 @@ public class DatabaseTest {
         Context context = ApplicationProvider.getApplicationContext();
         routeEntryDatabase = RouteEntryDatabase.getDatabase(context);
         routeEntryDAO = routeEntryDatabase.getRouteEntryDAO();
-        routeEntryDAO.clearRoutes();
     }
 
     @After
