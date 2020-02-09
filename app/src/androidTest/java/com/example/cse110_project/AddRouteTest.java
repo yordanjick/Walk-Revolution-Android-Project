@@ -10,6 +10,9 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.example.cse110_project.database.RouteEntryDAO;
+import com.example.cse110_project.database.RouteEntryDatabase;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -18,6 +21,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -34,12 +38,18 @@ import static org.hamcrest.Matchers.is;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class AddRouteTest {
-
+    private RouteEntryDatabase database;
+    private RouteEntryDAO dao;
     @Rule
+
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void addRouteTest() {
+    public void addRouteTest1() {
+        RouteEntryDatabase.DEBUG_DATABASE = true;
+        database= RouteEntryDatabase.getDatabase(getApplicationContext());
+        dao=database.getRouteEntryDAO();
+        database.clearAllTables();
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.user_height),
                         childAtPosition(
@@ -48,7 +58,7 @@ public class AddRouteTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("55"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("10"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.confirm_height), withText("Confirm"),
@@ -77,7 +87,7 @@ public class AddRouteTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 0)));
-        appCompatEditText2.perform(scrollTo(), replaceText("Home_to_work"), closeSoftKeyboard());
+        appCompatEditText2.perform(scrollTo(), replaceText("Work_to_home"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.start_field),
@@ -86,7 +96,7 @@ public class AddRouteTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 1)));
-        appCompatEditText3.perform(scrollTo(), replaceText("Home"), closeSoftKeyboard());
+        appCompatEditText3.perform(scrollTo(), replaceText("work"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.step_field),
@@ -95,7 +105,7 @@ public class AddRouteTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 2)));
-        appCompatEditText4.perform(scrollTo(), replaceText("5980"), closeSoftKeyboard());
+        appCompatEditText4.perform(scrollTo(), replaceText("10000"), closeSoftKeyboard());
 
         ViewInteraction appCompatRadioButton = onView(
                 allOf(withId(R.id.loop_button), withText("Loop"),
@@ -157,7 +167,7 @@ public class AddRouteTest {
         appCompatButton3.perform(scrollTo(), click());
 
         ViewInteraction button = onView(
-                allOf(withText("Home_to_work"),
+                allOf(withText("Work_to_home       work     0   0.0"),
                         childAtPosition(
                                 allOf(withId(R.id.routes_list_layout),
                                         childAtPosition(
@@ -168,24 +178,24 @@ public class AddRouteTest {
         button.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.name_text), withText("Home_to_work"),
+                allOf(withId(R.id.name_text), withText("Work_to_home"),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
                                         0),
                                 1),
                         isDisplayed()));
-        textView.check(matches(withText("Home_to_work")));
+        textView.check(matches(withText("Work_to_home")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.start_text), withText("Home"),
+                allOf(withId(R.id.start_text), withText("work"),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
                                         1),
                                 1),
                         isDisplayed()));
-        textView2.check(matches(withText("Home")));
+        textView2.check(matches(withText("work")));
 
         ViewInteraction textView3 = onView(
                 allOf(withId(R.id.run_text), withText("loop"),
@@ -236,6 +246,16 @@ public class AddRouteTest {
                                 1),
                         isDisplayed()));
         textView7.check(matches(withText("easy")));
+
+        ViewInteraction textView8 = onView(
+                allOf(withId(R.id.difficulty_text), withText("easy"),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        7),
+                                1),
+                        isDisplayed()));
+        textView8.check(matches(withText("easy")));
     }
 
     private static Matcher<View> childAtPosition(
