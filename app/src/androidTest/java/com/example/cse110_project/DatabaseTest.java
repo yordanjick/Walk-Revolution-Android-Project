@@ -32,10 +32,11 @@ public class DatabaseTest {
     @Before
     public void connectDb() {
         // Set debug database flag
-        RouteEntryDatabase.DEBUG_DATABASE = false;
+        RouteEntryDatabase.DEBUG_DATABASE = true;
         Context context = ApplicationProvider.getApplicationContext();
         routeEntryDatabase = RouteEntryDatabase.getDatabase(context);
         routeEntryDAO = routeEntryDatabase.getRouteEntryDAO();
+        routeEntryDAO.clearRoutes();
     }
 
     @After
@@ -103,7 +104,6 @@ public class DatabaseTest {
             assertTrue(s.charAt(0) >= lastChar);
             if(s.charAt(0) > lastChar) lastChar = s.charAt(0);
         }
-        assertEquals(numRecord, names.length);
 
         RouteEntry[] entries = routeEntryDAO.getAllRoutes();
         lastChar = 'a';
