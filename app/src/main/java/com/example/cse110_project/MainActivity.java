@@ -34,12 +34,12 @@ public class MainActivity extends AppCompatActivity {
     private Calendar calendar;
 
     private TextView stepCounter;
+    private TextView walkDistance;
     private long stepCount;
 
     public int userHeight;
     public boolean heightSet;
 
-    private UpdateDataAsyncTask runner;
     private long startCount;
     private long startTime;
 
@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        stepCounter = findViewById(R.id.steps_walked_text);
+        stepCounter = findViewById(R.id.steps_walked);
+        walkDistance = findViewById(R.id.dist_walked);
 
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
         this.calendar = Calendar.getInstance();
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         final Button routes_page = (Button)findViewById(R.id.routes_button);
         final Button add_routes = (Button) findViewById(R.id.add_routes_button);
         final Button stop_button = (Button)findViewById(R.id.stop_button);
+        final Button updateButton = (Button)findViewById(R.id.update_button);
 
         routes_page.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 startTime = calendar.getTimeInMillis();
                 routes_page.setVisibility(View.INVISIBLE);
                 add_routes.setVisibility(View.INVISIBLE);
+                updateButton.setVisibility(View.INVISIBLE);
                 stop_button.setVisibility(View.VISIBLE);
                 // TODO add method call to launchActivity to launch add routes activity
             }
@@ -88,12 +90,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 long sessionSteps = stepCount - startCount;
                 long sessionTime = calendar.getTimeInMillis() - startTime;
-                long sessionMile = convertStepToMiles(sessionSteps);
+                double sessionMile = convertStepsToMiles(sessionSteps);
                 routes_page.setVisibility(View.VISIBLE);
                 add_routes.setVisibility(View.VISIBLE);
+                updateButton.setVisibility(View.VISIBLE);
                 stop_button.setVisibility(View.INVISIBLE);
 
-                // TODO: 
+                // TODO: set the above variables to SharedPreference
+            }
+        });
+
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fitnessService.updateStepCount();
             }
         });
 
@@ -152,42 +162,22 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setStepCount(long stepCount) {
-        this.stepCount = stepCount;
-        stepCounter.setText(String.valueOf(stepCount));
+    public void setStepCount(final long count) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                stepCount = count;
+                stepCounter.setText(String.valueOf(stepCount));
+                walkDistance.setText(String.valueOf(convertStepsToMiles(stepCount)));
+            }
+        });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        runner.cancel(true);
-    }
-
-    public long convertStepToMiles(long numSteps) {
+    public double convertStepsToMiles(long numSteps) {
         if(this.heightSet) {
-            return (long) (numSteps * this.userHeight * AVERAGE_STRIDE_LENGTH / INCH_PER_FOOT / FEET_PER_MILE);
+            return (double) (numSteps * this.userHeight * AVERAGE_STRIDE_LENGTH / INCH_PER_FOOT / FEET_PER_MILE);
         } else {
             return 0;
-        }
-    }
-
-    private class UpdateDataAsyncTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            fitnessService.updateStepCount();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            runner = new UpdateDataAsyncTask();
-            runner.execute();
         }
     }
 }

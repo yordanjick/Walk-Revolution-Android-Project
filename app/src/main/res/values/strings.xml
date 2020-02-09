@@ -16,4 +16,5 @@
     <string name="start_button">Start!</string>
     <string name="welcome_message">Welcome to Walk Walk Revolution!</string>
     <string name="stop_button">Stop Session</string>
+    <string name="update_button">Update Steps/Distance</string>
 </resources>
