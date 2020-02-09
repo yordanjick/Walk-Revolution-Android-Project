@@ -43,7 +43,7 @@ public class AddRouteTest {
     @Rule
 
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-
+//comment
     @Test
     public void addRouteTest1() {
         RouteEntryDatabase.DEBUG_DATABASE = true;
