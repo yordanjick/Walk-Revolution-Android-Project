@@ -44,6 +44,7 @@ public class DatabaseTest {
         RouteEntryDatabase.closeDateBase();
     }
 
+    // Test for database
     @Test
     public void insertBasicRouteInfo() throws Exception {
         String routeName = "Run to LA";
