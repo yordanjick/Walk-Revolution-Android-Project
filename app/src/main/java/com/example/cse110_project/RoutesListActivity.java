@@ -24,7 +24,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 public class RoutesListActivity extends AppCompatActivity {
-    private static final String ROUTE_FORMAT = "%10s %10s %5d %5.1f";
+    private static final String ROUTE_FORMAT = "%10s  %10s  %02d/%02d/%4d";
     private static final int PADDING = 10, MARGIN = 20;
     public static final String ROUTE_ID = "routeId";
 
@@ -44,19 +44,23 @@ public class RoutesListActivity extends AppCompatActivity {
         for(RouteEntry entry: entries) {
             Button routeButton = new Button(this);
             routeButton.setBackgroundColor(Color.LTGRAY);
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams param = new LinearLayout
+                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                    , ViewGroup.LayoutParams.WRAP_CONTENT);
             param.setMargins(PADDING, PADDING, PADDING, PADDING);
             routeButton.setLayoutParams(param);
             final int routeId = entry.getId();
 
-            text = String.format(Locale.US, ROUTE_FORMAT, entry.getRouteName(), entry.getStartPoint(), entry.getSteps(), entry.getDistance());
+            text = String.format(Locale.US, ROUTE_FORMAT, entry.getRouteName()
+                    , entry.getStartPoint(), entry.getMonth(), entry.getDate(), entry.getYear());
             routeButton.setText(text);
             routeButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
 
             routeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(RoutesListActivity.this, RouteInfoActivity.class);
+                    Intent intent = new Intent(RoutesListActivity.this
+                            , RouteInfoActivity.class);
                     intent.putExtra(ROUTE_ID, routeId);
                     startActivity(intent);
                 }
