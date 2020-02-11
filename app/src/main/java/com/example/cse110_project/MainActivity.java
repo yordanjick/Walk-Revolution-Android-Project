@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(createRoute);
             }
         });
-
+//for test
         if(!heightSet)
         {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
