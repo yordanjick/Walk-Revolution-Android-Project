@@ -90,13 +90,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 long sessionSteps = stepCount - startCount;
                 long sessionTime = calendar.getTimeInMillis() - startTime;
-                double sessionMile = convertStepsToMiles(sessionSteps);
+                double sessionMiles = convertStepsToMiles(sessionSteps);
                 routes_page.setVisibility(View.VISIBLE);
                 add_routes.setVisibility(View.VISIBLE);
                 updateButton.setVisibility(View.VISIBLE);
                 stop_button.setVisibility(View.INVISIBLE);
 
-                // TODO: set the above variables to SharedPreference
+                // TODO: set the above variables to Intent
+                /*
+                Intent intent = new Intent(AddRouteActivity.class);
+                intent.putExtra(Intent.RECORDED_STEPS, sessionSteps);
+                intent.putExtra(Intent.RECORDED_TIME, sessionTime);
+                intent.putExtra(Intent.RECORDED_MILES, sessionMiles);
+                startActivity(intent);
+                 */
             }
         });
 
