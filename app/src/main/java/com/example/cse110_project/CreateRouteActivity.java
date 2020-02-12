@@ -19,6 +19,10 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CreateRouteActivity extends AppCompatActivity {
     private RouteEntryDatabase database;
     private RouteEntryDAO dao;
@@ -31,7 +35,7 @@ public class CreateRouteActivity extends AppCompatActivity {
 
         final EditText name=findViewById(R.id.name_field);
         final EditText start=findViewById(R.id.start_field);
-        final EditText step=findViewById(R.id.step_field);
+
 
         final RadioGroup runtype=findViewById(R.id.run_type);
         final RadioButton runtype1=findViewById(R.id.loop_button);
@@ -54,13 +58,14 @@ public class CreateRouteActivity extends AppCompatActivity {
         final RadioButton difficulity2=findViewById(R.id.moderate_button);
         RadioButton difficulity3=findViewById(R.id.hard_button);
 
+        final RadioButton fav=findViewById(R.id.favorite_button);
         final MultiAutoCompleteTextView note=findViewById(R.id.note_field);
 
         Button save=findViewById(R.id.save_buttton);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(name.getText().toString().equals("")||start.getText().toString().equals("")||step.getText().toString().equals("")
+                if(name.getText().toString().equals("")||start.getText().toString().equals("")
                 ||runtype.getCheckedRadioButtonId()==-1||f_h.getCheckedRadioButtonId()==-1||routetype.getCheckedRadioButtonId()==-1||
                 surfacetype.getCheckedRadioButtonId()==-1||difficulity.getCheckedRadioButtonId()==-1){
                     Toast.makeText(CreateRouteActivity.this,"Invalid Input",Toast.LENGTH_LONG).show();
@@ -81,9 +86,14 @@ public class CreateRouteActivity extends AppCompatActivity {
                     else{
                         routeEntry.setLevel(2);
                     }
+                    routeEntry.setFavorite(fav.isChecked()?0:-1);
                     routeEntry.setNote(note.getText().toString());
-                    dao.insertRoute(routeEntry);
-
+                    String date=new SimpleDateFormat("dd").format(new Date());
+                    String month=new SimpleDateFormat("MM").format(new Date());
+                    String year=new SimpleDateFormat("yyyy").format(new Date());
+                    routeEntry.setDate(Integer.parseInt(date));
+                    routeEntry.setDate(Integer.parseInt(month));
+                    routeEntry.setDate(Integer.parseInt(year));
                     launchActivity();
                 }
             }
