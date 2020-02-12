@@ -4,19 +4,13 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.FitnessServiceFactory;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -31,28 +25,18 @@ import static org.hamcrest.Matchers.containsString;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityEspressoTest {
-    private static final String TEST_SERVICE = "TEST_SERVICE";
     private static final String TEST_HEIGHT = "60";
 
     @Rule
-    public ActivityTestRule<LoginActivity> lActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+    @Before
+    public void setup() {
+        mActivityTestRule.getActivity().setFitnessService(new TestFitnessService(this.mActivityTestRule.getActivity()));
+    }
 
     @Test
     public void mainActivityEspressoTest() {
-        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(MainActivity mainActivity) {
-                return new TestFitnessService(mainActivity);
-            }
-        });
-
-        lActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.start_button), withText("Start!"),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
         ViewInteraction prompt = onView(
                 allOf(withId(R.id.height_prompt),
                         isDisplayed()));
@@ -150,9 +134,9 @@ public class MainActivityEspressoTest {
         }
 
         @Override
-        public void updateStepCount() {
+        public long getStepCount() {
             System.out.println(TAG + "updateStepCount");
-            mainActivity.setStepCount(1337);
+            return 1337;
         }
     }
 }

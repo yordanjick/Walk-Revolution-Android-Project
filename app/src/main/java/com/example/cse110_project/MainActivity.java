@@ -1,13 +1,9 @@
 package com.example.cse110_project;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.FitnessServiceFactory;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.cse110_project.fitness.GoogleFitAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
         stepCounter = findViewById(R.id.steps_walked);
         walkDistance = findViewById(R.id.dist_walked);
 
-        String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
-        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+        if(fitnessService == null) {
+            fitnessService = new GoogleFitAdapter(this);
+        }
+
         this.calendar = Calendar.getInstance();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -110,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fitnessService.updateStepCount();
+                setStepCount(fitnessService.getStepCount());
             }
         });
 
@@ -186,5 +184,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return 0;
         }
+    }
+
+    public void setFitnessService(FitnessService fitnessService) {
+        this.fitnessService = fitnessService;
     }
 }

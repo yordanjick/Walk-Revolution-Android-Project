@@ -23,6 +23,8 @@ public class GoogleFitAdapter implements FitnessService {
 
     private MainActivity activity;
 
+    private long updatedStepCount;
+
     public GoogleFitAdapter(MainActivity activity) {
         this.activity = activity;
     }
@@ -43,7 +45,7 @@ public class GoogleFitAdapter implements FitnessService {
                     account,
                     fitnessOptions);
         } else {
-            updateStepCount();
+            getStepCount();
             startRecording();
         }
     }
@@ -74,9 +76,9 @@ public class GoogleFitAdapter implements FitnessService {
      * Reads the current daily step total, computed from midnight of the current day on the device's
      * current timezone.
      */
-    public void updateStepCount() {
+    public long getStepCount() {
         if (account == null) {
-            return;
+            return -1;
         }
 
         Fitness.getHistoryClient(activity, account)
@@ -91,7 +93,7 @@ public class GoogleFitAdapter implements FitnessService {
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
 
-                                activity.setStepCount(total);
+                                updatedStepCount = total;
                                 Log.d(TAG, "Total steps: " + total);
                             }
                         })
@@ -102,6 +104,8 @@ public class GoogleFitAdapter implements FitnessService {
                                 Log.d(TAG, "There was a problem getting the step count.", e);
                             }
                         });
+
+        return updatedStepCount;
     }
 
 
