@@ -107,13 +107,17 @@ public class RoutesListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Cancel retrieve routes
-                if(!retrieveRoutesTask.isCancelled())
+                if(retrieveRoutesTask.getStatus() == AsyncTask.Status.RUNNING)
                     retrieveRoutesTask.cancel(true);
                 Intent create = new Intent(RoutesListActivity.this, CreateRouteActivity.class);
-                startActivity(create);
+                startActivityForResult(create, (int)(Math.random()*1000));
             }
         });
 
+        updateRoutes();
+    }
+
+    private void updateRoutes() {
         retrieveRoutesTask = new RetrieveRoutesTask();
         retrieveRoutesTask.execute();
     }

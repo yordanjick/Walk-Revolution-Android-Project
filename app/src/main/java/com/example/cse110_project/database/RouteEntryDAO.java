@@ -21,6 +21,9 @@ public interface RouteEntryDAO {
     @Query("SELECT * FROM routes WHERE id=:routeId")
     public RouteEntry getRoute(int routeId);
 
+    @Query("SELECT * FROM routes WHERE time > 0 ORDER BY year DESC, month DESC, date DESC LIMIT 1")
+    public RouteEntry[] getMostRecentUpdatedRoute();
+
     @Query("DELETE FROM routes")
     public void clearRoutes();
 }

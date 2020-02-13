@@ -1,5 +1,8 @@
 package com.example.cse110_project;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 public class NumberFormatter {
@@ -9,7 +12,7 @@ public class NumberFormatter {
             str = "0.00m";
         } else if(length <= 1000) {
             str += "m";
-        } else if(length >= 10000){
+        } else {
             length = length/1000;
             str = String.format(Locale.US, "%.2f", length);
             str += "km";
@@ -29,5 +32,29 @@ public class NumberFormatter {
             str += "k";
         }
         return str + "s";
+    }
+
+    public static String formatTime(int timeInSecond) {
+        int hour, minute, second;
+        StringBuffer str = new StringBuffer();
+        if(timeInSecond < 0) str.append("00:00:00");
+        else {
+            hour = timeInSecond / 3600;
+            if(hour < 10) str.append('0');
+            str.append(hour);
+            str.append(':');
+
+            timeInSecond %= 3600;
+            minute = timeInSecond / 60;
+            if(minute < 10) str.append('0');
+            str.append(minute);
+            str.append(':');
+
+            second = timeInSecond % 60;
+            if(second < 10) str.append('0');
+            str.append(second);
+        }
+
+        return str.toString();
     }
 }

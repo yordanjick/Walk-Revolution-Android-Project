@@ -66,6 +66,11 @@ public class RouteInfoActivity extends AppCompatActivity {
             else
                 dateText.setText(String.format(Locale.US, DATE_FORMAT, route.getMonth()
                         , route.getDate(), route.getYear()));
+            TextView timeText = findViewById(R.id.time_text);
+            if (route.getTime() == -1)
+                timeText.setText(UNRECORDED_DATA);
+            else
+                timeText.setText(NumberFormatter.formatTime(route.getTime()));
 
             TextView runText = findViewById(R.id.run_text);
             runText.setText(route.getRun() == -1 ? "" : RouteEntry.RUN_VAL[route.getRun()]);
@@ -96,7 +101,7 @@ public class RouteInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Cancel job if it isn't cancelled
-                if(!retrieveRouteTask.isCancelled())
+                if(retrieveRouteTask.getStatus() == AsyncTask.Status.RUNNING)
                     retrieveRouteTask.cancel(true);
 
                 // Create new Intent

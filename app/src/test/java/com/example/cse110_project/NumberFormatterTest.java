@@ -15,6 +15,10 @@ public class NumberFormatterTest {
     }
     @Test
     public void normalTestLength3(){
+        assertEquals(NumberFormatter.formatDistance(1234),"1.23km");
+    }
+    @Test
+    public void normalTestLength4(){
         assertEquals(NumberFormatter.formatDistance(121),"121.00m");
     }
     @Test
@@ -45,5 +49,22 @@ public class NumberFormatterTest {
     @Test
     public void cornerTestStep2(){
         assertEquals(NumberFormatter.formatStep(-2),"0s");
+    }
+
+    @Test
+    public void normalTestTime(){
+        assertEquals(NumberFormatter.formatTime(100),"00:01:40");
+    }
+    @Test
+    public void normalTestTime2(){
+        assertEquals(NumberFormatter.formatTime(987654),"274:20:54");
+    }
+    @Test
+    public void cornerTestTime(){
+        assertEquals(NumberFormatter.formatTime(0),"00:00:00");
+    }
+    @Test
+    public void cornerTestTime2(){
+        assertEquals(NumberFormatter.formatTime(-2),"00:00:00");
     }
 }

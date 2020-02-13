@@ -30,7 +30,7 @@ public class RouteEntry {
     // Auto generated from API
     private int steps = -1;
     private double distance = -1;
-    private int time;
+    private int time = -1;
 
     // Feature data, can omit
     private int run = -1;
@@ -175,7 +175,7 @@ public class RouteEntry {
     // For debug purpose
     public String toString() {
         return id + ": " + routeName + " " + startPoint + "(" + distance + ": " + steps + ": " + time + ")" + "\n"
-                + "Date: " + month + "/" + date + "/" + year + "\n"
+                + "Date: " + month + "/" + date + "/" + year + " " + time + "\n"
                 + "Run: " + (run == -1? "N/A": RUN_VAL[run]) + " Terrain: " + (terrain == -1? "N/A": TERRAIN_VAL[terrain])
                 + " Road: " + (roadType == -1? "N/A": ROAD_TYPE_VAL[roadType]) + " Road Condition: " + (roadCondition == -1? "N/A": ROAD_CONDITION_VAL[roadCondition])
                 + " Level: " + (level == -1? "N/A": LEVEL_VAL[level]) + " Favorite: " + (favorite == -1? "N/A": FAVORITE_VAL[favorite]) + "\n"

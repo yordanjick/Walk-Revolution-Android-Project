@@ -112,4 +112,32 @@ public class DatabaseTest {
             if(r.getRouteName().charAt(0) > lastChar) lastChar = r.getRouteName().charAt(0);
         }
     }
+
+    @Test
+    public void getMostRecentRoute() {
+        RouteEntry[] entries = routeEntryDAO.getMostRecentUpdatedRoute();
+        assertEquals(0, entries.length);
+
+        String routeName = "RunTest";
+        RouteEntry route1 = new RouteEntry(routeName, "San Diego");
+        route1.setYear(2019);route1.setDate(2);route1.setDate(10);
+        route1.setTime(2000);
+        routeEntryDAO.insertRoute(route1);
+        RouteEntry route2 = new RouteEntry(routeName, "San Diego");
+        route2.setYear(2019);route2.setDate(2);route2.setDate(13);
+        routeEntryDAO.insertRoute(route2);
+
+        entries = routeEntryDAO.getMostRecentUpdatedRoute();
+        assertEquals(1, entries.length);
+        assertTrue(route1.equals(entries[0]));
+
+        RouteEntry route3 = new RouteEntry(routeName, "San Diego");
+        route3.setYear(2019);route3.setDate(2);route3.setDate(13);
+        route3.setTime(20000);
+        routeEntryDAO.insertRoute(route3);
+
+        entries = routeEntryDAO.getMostRecentUpdatedRoute();
+        assertEquals(1, entries.length);
+        assertTrue(route3.equals(entries[0]));
+    }
 }

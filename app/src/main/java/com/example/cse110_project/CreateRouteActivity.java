@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -27,13 +28,31 @@ import java.util.Date;
 public class CreateRouteActivity extends AppCompatActivity {
     private RouteEntryDatabase database;
     private RouteEntryDAO dao;
+    private InsertRouteTask insertRouteTask;
+
+    private class InsertRouteTask extends AsyncTask<RouteEntry, String, String> {
+
+        @Override
+        protected String doInBackground(RouteEntry... routeEntries) {
+            database = RouteEntryDatabase.getDatabase(getApplicationContext());
+            dao = database.getRouteEntryDAO();
+            dao.insertRoute(routeEntries[0]);
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            setResult(RESULT_OK);
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_route);
-        database = RouteEntryDatabase.getDatabase(getApplicationContext());
-        dao = database.getRouteEntryDAO();
+
 
         final EditText name = findViewById(R.id.name_field);
         final EditText start = findViewById(R.id.start_field);
@@ -95,8 +114,12 @@ public class CreateRouteActivity extends AppCompatActivity {
                     routeEntry.setDate(date);
                     routeEntry.setMonth(month);
                     routeEntry.setYear(year);
-                    dao.insertRoute(routeEntry);
-                    launchActivity();
+
+                    // No double click while insert is running
+                    if(insertRouteTask != null && insertRouteTask.getStatus()
+                            == AsyncTask.Status.RUNNING) return;
+                    insertRouteTask = new InsertRouteTask();
+                    insertRouteTask.execute(routeEntry);
                 }
             }
         });
@@ -104,9 +127,10 @@ public class CreateRouteActivity extends AppCompatActivity {
 
     }
 
-    //Switch to routes page
-    public void launchActivity() {
-        Intent intent = new Intent(this, RoutesListActivity.class);
-        startActivity(intent);
+    @Override
+    protected void onDestroy() {
+        if(insertRouteTask.getStatus() == AsyncTask.Status.RUNNING)
+            insertRouteTask.cancel(true);
+        super.onDestroy();
     }
 }
