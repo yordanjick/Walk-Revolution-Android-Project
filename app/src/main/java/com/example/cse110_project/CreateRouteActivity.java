@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
@@ -79,7 +80,7 @@ public class CreateRouteActivity extends AppCompatActivity {
         final RadioButton difficulity2 = findViewById(R.id.moderate_button);
         RadioButton difficulity3 = findViewById(R.id.hard_button);
 
-        final RadioButton fav = findViewById(R.id.favorite_button);
+        final CheckBox favorite=findViewById(R.id.favorite);
         final MultiAutoCompleteTextView note = findViewById(R.id.note_field);
 
         Button save = findViewById(R.id.save_buttton);
@@ -87,9 +88,7 @@ public class CreateRouteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (name.getText().toString().equals("") || start.getText().toString().equals("")
-                        || runtype.getCheckedRadioButtonId() == -1 || f_h.getCheckedRadioButtonId() == -1
-                        || routetype.getCheckedRadioButtonId() == -1 || surfacetype.getCheckedRadioButtonId() == -1
-                        || difficulity.getCheckedRadioButtonId() == -1) {
+                       ) {
                     Toast.makeText(CreateRouteActivity.this, "Invalid Input", Toast.LENGTH_LONG).show();
                 } else {
                     RouteEntry routeEntry = new RouteEntry(name.getText().toString(), start.getText().toString());
@@ -105,7 +104,7 @@ public class CreateRouteActivity extends AppCompatActivity {
                     } else {
                         routeEntry.setLevel(2);
                     }
-                    routeEntry.setFavorite(fav.isChecked() ? 0 : -1);
+                    routeEntry.setFavorite(favorite.isChecked()? 0:-1);
                     routeEntry.setNote(note.getText().toString());
                     LocalDateTime now = LocalDateTime.now();
                     int month = now.getMonthValue();
