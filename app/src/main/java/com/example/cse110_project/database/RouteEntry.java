@@ -28,8 +28,8 @@ public class RouteEntry {
     private int date, month, year;
 
     // Auto generated from API
-    private int steps;
-    private double distance;
+    private int steps = -1;
+    private double distance = -1;
     private int time;
 
     // Feature data, can omit

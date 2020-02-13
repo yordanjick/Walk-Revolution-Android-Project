@@ -14,7 +14,10 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 
+import java.util.Locale;
+
 public class RouteInfoActivity extends AppCompatActivity {
+    public static final String DATE_FORMAT = "%02d/%02d/%4d", UNRECORDED_DATA = "--";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +26,11 @@ public class RouteInfoActivity extends AppCompatActivity {
 
         RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
         RouteEntryDAO dao = database.getRouteEntryDAO();
-        Log.d("stdout","Start info activity");
 
         // Get intent route id
         int routeId = getIntent().getIntExtra(RoutesListActivity.ROUTE_ID, -1);
-        Log.d("stdout",Integer.toString(routeId));
+        Log.d(RouteInfoActivity.class.getSimpleName(),Integer.toString(routeId));
+
         if(routeId != -1) {
             RouteEntry route = dao.getRoute(routeId);
 
@@ -38,10 +41,19 @@ public class RouteInfoActivity extends AppCompatActivity {
             startText.setText(route.getStartPoint());
 
             TextView stepText = findViewById(R.id.step_text);
-            stepText.setText(String.valueOf(route.getSteps()));
+            if(route.getSteps() == -1) stepText.setText(UNRECORDED_DATA);
+            else stepText.setText(NumberFormatter.formatStep(route.getSteps()));
 
             TextView distanceText = findViewById(R.id.distance_text);
-            distanceText.setText(String.valueOf(route.getDistance()));
+            if(route.getDistance() < 0) distanceText.setText(UNRECORDED_DATA);
+            else distanceText.setText(NumberFormatter.formatDistance(route.getDistance()));
+
+            TextView dateText = findViewById(R.id.date_text);
+            if(route.getMonth() == -1 || route.getDate() == -1 || route.getYear() == -1)
+                dateText.setText(UNRECORDED_DATA);
+            else
+                dateText.setText(String.format(Locale.US, DATE_FORMAT, route.getMonth()
+                        , route.getDate(), route.getYear()));
 
             TextView runText = findViewById(R.id.run_text);
             runText.setText(route.getRun() == -1 ? "": RouteEntry.RUN_VAL[route.getRun()]);
@@ -63,6 +75,10 @@ public class RouteInfoActivity extends AppCompatActivity {
                     // TODO start to run a route
                 }
             });
+        } else {
+            // Error here!!!
+            Log.e(RouteInfoActivity.class.getSimpleName(), "Passed routeId is -1");
+            finish();
         }
     }
 }

@@ -35,13 +35,16 @@
 
     <include layout="@layout/content_routes_list" />
 
-    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        android:tint="@android:color/white"
+        app:backgroundTint="#03A9F4"
+        app:fabSize="normal"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_input_add" /> May be useful later TODO-->
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

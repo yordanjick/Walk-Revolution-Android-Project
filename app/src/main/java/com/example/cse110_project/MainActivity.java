@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Intent createRoute = new Intent(MainActivity.this, CreateRouteActivity.class);
-                startActivity(createRoute);
+                // TODO add method call to launchActivity to launch add routes activity
             }
         });
 //for test
