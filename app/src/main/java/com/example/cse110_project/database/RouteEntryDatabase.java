@@ -19,10 +19,10 @@ public abstract class RouteEntryDatabase extends RoomDatabase {
         if(INSTANCE == null) {
             if(DEBUG_DATABASE) {
                 INSTANCE = Room.inMemoryDatabaseBuilder(context, RouteEntryDatabase.class)
-                        .allowMainThreadQueries().build();
+                        .fallbackToDestructiveMigration().build();
             } else {
                 INSTANCE = Room.databaseBuilder(context, RouteEntryDatabase.class,DB_NAME)
-                        .fallbackToDestructiveMigration().allowMainThreadQueries().build();
+                        .fallbackToDestructiveMigration().build();
             }
         }
         return INSTANCE;

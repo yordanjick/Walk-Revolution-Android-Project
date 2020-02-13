@@ -3,6 +3,7 @@ package com.example.cse110_project;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.example.cse110_project.database.RouteEntry;
@@ -25,12 +26,74 @@ import android.widget.TextView;
 import java.util.Locale;
 
 public class RoutesListActivity extends AppCompatActivity {
-    private static final int MAX_TEXT_LEN = 20, TEXT_EMPTY = 5;
-    private static final String UNRECORDED_DATA = "--";
-    private static final String ROUTE_FORMAT = "%-" + MAX_TEXT_LEN + "s %-"
-                                                + MAX_TEXT_LEN + "s %8s %8s";
+    private static final int MAX_NAME_LEN = 15, MAX_START_LEN = 10, TEXT_EMPTY = 3;
+    private static final String UNRECORDED_DATA = "--", ELLIPSE = "...";
+    private static final String ROUTE_FORMAT = "%-" + MAX_NAME_LEN + "s %-"
+                                                + MAX_START_LEN + "s %5s %5s";
     private static final int PADDING = 10, MARGIN = 20;
     public static final String ROUTE_ID = "routeId";
+    private RetrieveRoutesTask retrieveRoutesTask;
+
+    private class RetrieveRoutesTask extends AsyncTask<String, String, String> {
+        private RouteEntry[] entries;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
+            RouteEntryDAO dao = database.getRouteEntryDAO();
+            entries = dao.getAllRoutes();
+            return "Read " + entries.length + " entries";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            LinearLayout listLayout = findViewById(R.id.routes_list_layout);
+            String text;
+            for(RouteEntry entry: entries) {
+                Button routeButton = new Button(RoutesListActivity.this);
+                routeButton.setBackgroundColor(Color.LTGRAY);
+                LinearLayout.LayoutParams param = new LinearLayout
+                        .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                        , ViewGroup.LayoutParams.WRAP_CONTENT);
+                param.setMargins(PADDING, PADDING, PADDING, PADDING);
+                routeButton.setLayoutParams(param);
+                routeButton.setAllCaps(false);
+                final int routeId = entry.getId();
+
+                String name = entry.getRouteName();
+                String start = entry.getStartPoint();
+                if(name.length() > MAX_NAME_LEN)
+                    name = name.substring(0, MAX_NAME_LEN-TEXT_EMPTY) + ELLIPSE;
+                if(start.length() > MAX_START_LEN)
+                    start = start.substring(0, MAX_START_LEN-TEXT_EMPTY) + ELLIPSE;
+                String steps = UNRECORDED_DATA;
+                String distance = UNRECORDED_DATA;
+                if(entry.getSteps() >= 0) {
+                    steps = NumberFormatter.formatStep(entry.getSteps());
+                }
+                if(entry.getDistance() >= 0) {
+                    distance = NumberFormatter.formatDistance(entry.getDistance());
+                }
+
+                text = String.format(Locale.US, ROUTE_FORMAT, name, start, steps, distance);
+                routeButton.setText(text);
+                routeButton.setTypeface(Typeface.MONOSPACE);
+                routeButton.setLetterSpacing(0);
+                routeButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
+
+                routeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(RoutesListActivity.this
+                                , RouteInfoActivity.class);
+                        intent.putExtra(ROUTE_ID, routeId);
+                        startActivity(intent);
+                    }
+                });
+                listLayout.addView(routeButton);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,57 +106,15 @@ public class RoutesListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Cancel retrieve routes
+                if(!retrieveRoutesTask.isCancelled())
+                    retrieveRoutesTask.cancel(true);
                 Intent create = new Intent(RoutesListActivity.this, CreateRouteActivity.class);
                 startActivity(create);
             }
         });
 
-        RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
-        RouteEntryDAO dao = database.getRouteEntryDAO();
-
-        LinearLayout listLayout = findViewById(R.id.routes_list_layout);
-        String text;
-        RouteEntry[] entries = dao.getAllRoutes();
-        for(RouteEntry entry: entries) {
-            Button routeButton = new Button(this);
-            routeButton.setBackgroundColor(Color.LTGRAY);
-            LinearLayout.LayoutParams param = new LinearLayout
-                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
-                    , ViewGroup.LayoutParams.WRAP_CONTENT);
-            param.setMargins(PADDING, PADDING, PADDING, PADDING);
-            routeButton.setLayoutParams(param);
-            routeButton.setAllCaps(false);
-            final int routeId = entry.getId();
-
-            String name = entry.getRouteName();
-            String start = entry.getStartPoint();
-            if(name.length() > MAX_TEXT_LEN)
-                name = name.substring(0, MAX_TEXT_LEN-TEXT_EMPTY) + "...";
-            if(start.length() > MAX_TEXT_LEN)
-                start = start.substring(0, MAX_TEXT_LEN-TEXT_EMPTY) + "...";
-            String steps = UNRECORDED_DATA;
-            String distance = UNRECORDED_DATA;
-            if(entry.getSteps() >= 0) {
-                steps = NumberFormatter.formatStep(entry.getSteps());
-            }
-            if(entry.getDistance() >= 0) {
-                distance = NumberFormatter.formatDistance(entry.getDistance());
-            }
-
-            text = String.format(Locale.US, ROUTE_FORMAT, name, start, steps, distance);
-            routeButton.setText(text);
-            routeButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
-
-            routeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RoutesListActivity.this
-                            , RouteInfoActivity.class);
-                    intent.putExtra(ROUTE_ID, routeId);
-                    startActivity(intent);
-                }
-            });
-            listLayout.addView(routeButton);
-        }
+        retrieveRoutesTask = new RetrieveRoutesTask();
+        retrieveRoutesTask.execute();
     }
 }

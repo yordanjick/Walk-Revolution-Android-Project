@@ -7,12 +7,12 @@ import androidx.room.PrimaryKey;
 
 @Entity(indices = {@Index("routeName")}, tableName = "routes")
 public class RouteEntry {
-    public static final String[] RUN_VAL = {"loop", "out-and-back"};
-    public static final String[] TERRAIN_VAL = {"flat", "hilly"};
-    public static final String[] ROAD_TYPE_VAL = {"streets", "trail"};
-    public static final String[] ROAD_CONDITION_VAL = {"even surface", "uneven surface"};
-    public static final String[] LEVEL_VAL = {"easy", "moderate", "difficult"};
-    public static final String[] FAVORITE_VAL = {"yes"};
+    public static final String[] RUN_VAL = {"Loop", "Out-and-Back"};
+    public static final String[] TERRAIN_VAL = {"Flat", "Hilly"};
+    public static final String[] ROAD_TYPE_VAL = {"Streets", "Trail"};
+    public static final String[] ROAD_CONDITION_VAL = {"Even Surface", "Uneven Surface"};
+    public static final String[] LEVEL_VAL = {"Easy", "Moderate", "Difficult"};
+    public static final String[] FAVORITE_VAL = {"Yes"};
 
     @PrimaryKey(autoGenerate = true)
     private int id;
