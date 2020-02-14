@@ -1,5 +1,6 @@
 package com.example.cse110_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.cse110_project.fitness.FitnessService;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int INCH_PER_FOOT = 12;
     public static final int FEET_PER_MILE = 5280;
 
-    private FitnessService fitnessService;
+    public FitnessService fitnessService;
     private Calendar calendar;
 
     private TextView stepCounter;
