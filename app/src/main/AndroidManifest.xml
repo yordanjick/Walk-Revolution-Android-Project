@@ -9,6 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RouteInfoActivity"></activity>
+        <activity android:name=".CreateRouteActivity" />
+        <activity
+            android:name=".RoutesListActivity"
+            android:label="@string/title_activity_routes_list"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".WalkActivity"></activity>
         <activity
             android:name=".MainActivity"
