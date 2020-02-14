@@ -21,6 +21,7 @@ import java.util.Locale;
 public class RouteInfoActivity extends AppCompatActivity {
     public static final String DATE_FORMAT = "%02d/%02d/%4d", UNRECORDED_DATA = "--";
     private RetrieveRouteTask retrieveRouteTask;
+    private RouteEntry route;
 
     private class RetrieveRouteTask extends AsyncTask<Integer, String, RouteEntry> {
 
@@ -29,7 +30,7 @@ public class RouteInfoActivity extends AppCompatActivity {
             RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
             RouteEntryDAO dao = database.getRouteEntryDAO();
 
-            RouteEntry route = null;
+            route = null;
             int routeId = routeIds[0];
             if(routeId != -1) {
                 route = dao.getRoute(routeId);
@@ -107,10 +108,10 @@ public class RouteInfoActivity extends AppCompatActivity {
                     retrieveRouteTask.cancel(true);
 
                 // Create new Intent
-                Intent intent = new Intent();
-                intent.putExtra("routeId", routeId);
+                Intent intent = new Intent(RouteInfoActivity.this, WalkActivity.class);
+                intent.putExtra("routeTitle", route.getRouteName());
 
-                // TODO start to run a route
+                startActivity(intent);
             }
         });
 
