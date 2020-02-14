@@ -32,7 +32,7 @@ public class WalkActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(getIntent().getExtras() != null)
         {
-            String routeTitleDB = intent.getStringExtra("ROUTE_TITLE");
+            String routeTitleDB = intent.getStringExtra("routeTitle");
             TextView routeTitle = (TextView) findViewById(R.id.routeTitle);
             routeTitle.setText(routeTitleDB);
         }
@@ -54,13 +54,12 @@ public class WalkActivity extends AppCompatActivity {
                 long sessionTime = calendar.getTimeInMillis() - startTime;
                 double sessionMiles = mainActivity.convertStepsToMiles(sessionSteps);
 
-                    /*
-                Intent intent = new Intent(AddRouteActivity.class);
-                intent.putExtra(Intent.RECORDED_STEPS, sessionSteps);
-                intent.putExtra(Intent.RECORDED_TIME, sessionTime);
-                intent.putExtra(Intent.RECORDED_MILES, sessionMiles);
+                Intent intent = new Intent(WalkActivity.this, RouteInfoActivity.class);
+                intent.putExtra("routeSteps", sessionSteps);
+                intent.putExtra("routeTime", sessionTime);
+                intent.putExtra("routeMiles", sessionMiles);
                 startActivity(intent);
-                 */
+
             }
         });
     }
