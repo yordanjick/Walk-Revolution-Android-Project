@@ -1,5 +1,7 @@
 package com.example.cse110_project;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.cse110_project.fitness.FitnessService;
@@ -20,7 +22,6 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final double AVERAGE_STRIDE_LENGTH = 0.413;
     public static final int INCH_PER_FOOT = 12;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private long startCount;
     private long startTime;
+  
+    private UserData userObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         final Button add_routes = (Button) findViewById(R.id.add_routes_button);
         final Button stop_button = (Button)findViewById(R.id.stop_button);
         final Button updateButton = (Button)findViewById(R.id.update_button);
+
+        userObserver = new UserData(this);
 
         routes_page.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +117,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        int height = userObserver.getUserHeight();
+
+        // height has not been set if userData is returning -1, default value
+        heightSet = height != -1;
+
+        // if height has not been set, show height input prompt
+
         if(!heightSet) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
             View heightView = getLayoutInflater().inflate(R.layout.dialog_height, null);
@@ -126,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if (!heightInput.getText().toString().isEmpty()) {
                         userHeight = Integer.parseInt(heightInput.getText().toString());
+                        userObserver.updateHeight(userHeight);
+                      
                         heightSet = true;
                         Toast.makeText(MainActivity.this,
                                 R.string.success_height_msg, Toast.LENGTH_SHORT).show();
