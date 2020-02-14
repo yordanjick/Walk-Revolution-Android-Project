@@ -1,5 +1,6 @@
 package com.example.cse110_project.fitness;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,11 +22,11 @@ public class GoogleFitAdapter implements FitnessService {
     private final String TAG = "GoogleFitAdapter";
     private GoogleSignInAccount account;
 
-    private MainActivity activity;
+    private Activity activity;
 
     private long updatedStepCount;
 
-    public GoogleFitAdapter(MainActivity activity) {
+    public GoogleFitAdapter(Activity activity) {
         this.activity = activity;
     }
 

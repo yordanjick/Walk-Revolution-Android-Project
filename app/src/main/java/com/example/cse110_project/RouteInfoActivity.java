@@ -1,8 +1,7 @@
 package com.example.cse110_project;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
+
 
 import android.content.Intent;
 import android.os.AsyncTask;
