@@ -1,5 +1,6 @@
 package com.example.cse110_project;
 
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -37,6 +38,7 @@ public class MainActivityEspressoTest {
 
     @Test
     public void mainActivityEspressoTest() {
+
         ViewInteraction prompt = onView(
                 allOf(withId(R.id.height_prompt),
                         isDisplayed()));
