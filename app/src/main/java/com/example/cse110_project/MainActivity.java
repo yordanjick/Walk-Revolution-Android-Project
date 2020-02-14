@@ -114,9 +114,6 @@ public class MainActivity extends AppCompatActivity {
         getMostRecentWalkTask = new GetMostRecentWalkTask();
         getMostRecentWalkTask.execute();
 
-        Button routes_page = (Button)findViewById(R.id.routes_button);
-        Button add_routes = (Button) findViewById(R.id.add_routes_button);
-
         final Button routes_page = (Button)findViewById(R.id.routes_button);
         final Button add_routes = (Button) findViewById(R.id.add_routes_button);
         final Button stop_button = (Button)findViewById(R.id.stop_button);
