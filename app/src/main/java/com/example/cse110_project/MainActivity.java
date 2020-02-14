@@ -20,8 +20,9 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    public int userHeight;
     public boolean heightSet;
+
+    private UserData userObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        userObserver = new UserData(this);
+
+
 
         Button routes_page = (Button)findViewById(R.id.routes_button);
         Button add_routes = (Button) findViewById(R.id.add_routes_button);
@@ -50,11 +55,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences("homepage", MODE_PRIVATE);
-        int height = sharedPreferences.getInt("height", -1);
+        int height = userObserver.getUserHeight();
 
+        // height has not been set if userData is returning -1, default value
         heightSet = height != -1;
 
+        // if height has not been set, show height input prompt
         if(!heightSet)
         {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -65,18 +71,16 @@ public class MainActivity extends AppCompatActivity {
             mBuilder.setView(heightView);
             final AlertDialog dialog = mBuilder.create();
 
+            // if height confirmed, store in height stored preferences
             confirmHeight.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view)
                 {
                     if(!heightInput.getText().toString().isEmpty())
                     {
-                        userHeight = Integer.parseInt(heightInput.getText().toString());
+                        int userHeight = Integer.parseInt(heightInput.getText().toString());
 
-                        SharedPreferences sharedPreferences = getSharedPreferences("homepage", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putInt("height", userHeight);
-                        editor.apply();
+                        userObserver.updateHeight(userHeight);
 
 
                         heightSet = true;
