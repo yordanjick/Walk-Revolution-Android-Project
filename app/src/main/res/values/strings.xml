@@ -27,8 +27,12 @@
     <string name="save_button">Save Route</string>
     <string name="favorite_button">Favorite</string>
 
-
     <string name="success_height_msg">Height Successfully Updated</string>
     <string name="error_height_msg">Please enter a valid Height</string>
     <string name="title_activity_routes_list">Routes</string>
+
+    <string name="start_button">Start!</string>
+    <string name="welcome_message">Welcome to Walk Walk Revolution!</string>
+    <string name="stop_button">Stop Session</string>
+    <string name="update_button">Update Steps/Distance</string>
 </resources>

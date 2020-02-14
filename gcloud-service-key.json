@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "project-cse110-team10",
+  "private_key_id": "cb6c1713d23cb40dea1e1c2c2675d51a9e7f407c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDFnDAhNBOIJkxZ\njiaoSGDnhbPwnWxFdD34UtE6Q2UOxQAeke4tCiUcIVxGfQOxekUPq5VYAhmslNyx\nYTGL1gQWYTgxToxabaxDwHfeX8CggmzEmaLIoYlpdsBNeySivldtngI//ni/bAv5\nCyyQleGL5qUELU96hkve4zkeRiKZONrnRTPHgsu3fgdCKQh+9RqUyC81Qd2Od8zl\neZ4alcy0rhJT7a+Tt5Cn1D9If8KLKihJL72L68ykDEBl/VEuPzbh3B7EXYMpmvay\nCQ58NbA71zw4plDnX0Pdv+5Cc37kJviTN6UYU9OB3QTStmVFwJl28a5ueVXtBA4m\nZjE4QuX/AgMBAAECggEANts53S3IskX3cfDtOFAHXp4WKph44vr27QWIgYUN+8Ci\nXNoj5SrozFtSc1rm+JC5tTTrm2fR2r/kV/VkPK5nqhLI958XhU7mwFQgsoGgRq6O\nJTGFJ+7352gI0Dl8HRV7zblMZJluyazj0fnRID4LQ7v+WR9+7cN0Mmafh5Dur9vE\nMAeK8bJK/baHXe57cxkZL6DEcAfXo7VvPv1AYvr9n+gzqRo36m6/qzeTqX7ezD53\ns9uTFR6Vrel0VJvRNbOLR3nLTPPpsnfaWcJSYWnERgkhVrj4F/1QN13hbWoKg01H\nsKjJDuA6IlXaOvMQbNipYCbRFs0qjN/zNaLBazGF2QKBgQD3WstlBnWLMiI5VVTk\n0VG4BIzIXY4tK06ypgsIG4Zd6JvkyGcsxQ9X2j+BJM2rn7JToiSHjCM8NEAm2ldc\nGLtxipt2n/9WzHEnQaqQJz1VRdv2RfE80+EpneP3Y0bnl3fM8SBNGnIiX5YOrE8f\na2rI6rCIjMPp9DY50A4ynGiJKwKBgQDMhE3c+hRgZHdwfCIlQpqWH+pLJyxFYY4t\nejNz7SRj/eZsD0qNfgh0U0iThCzmbacG1yZa+6MYVK4N1lY+6LqmPi0oNX1cPkwQ\nAPTxPgSIDFlrWg6aWHNVxpdMj+dY0WTftH1koe93twLyXhuT7AWMbl0+vK7xqcW1\nhuBUwRnEfQKBgG6Z8ohhsv1ilVr9hNArqFaX8jtFWeVoj+/hvt0JMbOb5tkNotSp\n6Ipn1C1yv2QWLC6pOZxCVR7+XhEBYD6V8Hp8d7c7I3k0QQREoHeElDAk5I3iCFQi\niXOKXfyoL3QujirdRowzXwVvqDE3asmpxj3Act8b0h4yTGzdUvveY/+xAoGBAMtL\nJH7pE4Ixu8xTiDmTeEiMVv/3Y3lgHM018Jlme8rtYrO9i3UUd+DxvG3ucBdpniMd\nkKHWCuwvmIhmq3qDKq3/ljGm4gLkZgVufgyjgiueYvBkJ6njDFqSOmk/jk7qbiQ0\nrIRwt7I/eC1lwHIMpgNO3V90fU35XW8xMCLvg+adAoGBAO7WxPVRnnwsm6nr6xEC\nEk3DsJV9uOB+48XedDY90q3eX5qkcgRbyPfSpIKgNL4R27xih7YAzGtZocG6fAt9\nng+atNB22UFhQfIvxkixjNCFXOv2/Yvhs3ESvYfjPSuyzsZf2to9+75Ic1KVLGe/\nB0UgF35KwRPPMYyR601j6B20\n-----END PRIVATE KEY-----\n",
+  "client_email": "travisci-service-account@project-cse110-team10.iam.gserviceaccount.com",
+  "client_id": "107973516261076158508",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/travisci-service-account%40project-cse110-team10.iam.gserviceaccount.com"
+}
