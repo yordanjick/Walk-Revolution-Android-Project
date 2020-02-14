@@ -82,6 +82,8 @@ public class RouteInfoActivity extends AppCompatActivity {
             conditionText.setText(route.getRoadCondition() == -1 ? "" : RouteEntry.ROAD_CONDITION_VAL[route.getRoadCondition()]);
             TextView difficultyText = findViewById(R.id.difficulty_text);
             difficultyText.setText(route.getLevel() == -1 ? "" : RouteEntry.LEVEL_VAL[route.getLevel()]);
+            TextView favoriteText = findViewById(R.id.favorite_text);
+            favoriteText.setText(route.getFavorite() == 0 ? "Yes": "No");
             TextView noteText = findViewById(R.id.note_text);
             noteText.setText(route.getNote());
         }

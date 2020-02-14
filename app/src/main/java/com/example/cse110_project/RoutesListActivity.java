@@ -47,7 +47,9 @@ public class RoutesListActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            LinearLayout listLayout = findViewById(R.id.routes_list_layout);
+            final LinearLayout listLayout = findViewById(R.id.routes_list_layout);
+            listLayout.removeAllViews();
+            listLayout.refreshDrawableState();
             String text;
             for(RouteEntry entry: entries) {
                 Button routeButton = new Button(RoutesListActivity.this);
@@ -115,6 +117,13 @@ public class RoutesListActivity extends AppCompatActivity {
         });
 
         updateRoutes();
+    }
+
+    @Override
+    protected void onPostResume() {
+        retrieveRoutesTask = new RetrieveRoutesTask();
+        retrieveRoutesTask.execute();
+        super.onPostResume();
     }
 
     private void updateRoutes() {

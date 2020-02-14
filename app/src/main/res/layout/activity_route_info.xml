@@ -228,6 +228,25 @@
                     android:textSize="20sp" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/favorite_label"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Favorite:"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/favorite_text"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/favorite_label"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/note_label"
                 android:layout_width="300dp"
