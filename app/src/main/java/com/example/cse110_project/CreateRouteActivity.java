@@ -16,15 +16,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.cse110_project.R;
 import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Calendar;
 
 public class CreateRouteActivity extends AppCompatActivity {
     private RouteEntryDatabase database;
@@ -106,10 +102,11 @@ public class CreateRouteActivity extends AppCompatActivity {
                     }
                     routeEntry.setFavorite(favorite.isChecked()? 0:-1);
                     routeEntry.setNote(note.getText().toString());
-                    LocalDateTime now = LocalDateTime.now();
-                    int month = now.getMonthValue();
-                    int date = now.getDayOfMonth();
-                    int year = now.getYear();
+
+                    Calendar now = Calendar.getInstance();
+                    int month = now.get(Calendar.MONTH);
+                    int date = now.get(Calendar.DAY_OF_MONTH);
+                    int year = now.get(Calendar.YEAR);
                     routeEntry.setDate(date);
                     routeEntry.setMonth(month);
                     routeEntry.setYear(year);

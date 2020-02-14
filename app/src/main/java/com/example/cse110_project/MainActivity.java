@@ -20,7 +20,7 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 
-import java.time.LocalDateTime;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private static String NO_LAST_WALK = "You haven't walked today!"
@@ -45,15 +45,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(RouteEntry routeEntry) {
             TextView text = findViewById(R.id.last_run_text);
-            LocalDateTime date = LocalDateTime.now();
+            Calendar date = Calendar.getInstance();
 
             // Show no last walk when:
             // 1. No last walk in database
             // 2. Last walk is not today
             // 3. No walk time, step or distance (just created but haven't walk)
-            if(routeEntry == null || date.getMonthValue() != routeEntry.getMonth()
-                    || date.getDayOfMonth() != routeEntry.getDate()
-                    || date.getYear() != routeEntry.getYear()
+            if(routeEntry == null || date.get(Calendar.MONTH) != routeEntry.getMonth()
+                    || date.get(Calendar.DAY_OF_MONTH) != routeEntry.getDate()
+                    || date.get(Calendar.YEAR) != routeEntry.getYear()
                     || routeEntry.getTime() < 0 || routeEntry.getSteps() < 0
                     || routeEntry.getDistance() < 0) {
                 text.setText(NO_LAST_WALK);
