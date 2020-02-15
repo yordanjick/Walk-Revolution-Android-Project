@@ -39,21 +39,25 @@ public class MainActivityEspressoTest {
     @Test
     public void mainActivityEspressoTest() {
 
+        // Test beginning prompt
         ViewInteraction prompt = onView(
                 allOf(withId(R.id.height_prompt),
                         isDisplayed()));
         prompt.check(matches(withText("Enter Height in Inches")));
 
+        // Makes sure height replaced
         ViewInteraction editText = onView(
                 allOf(withId(R.id.user_height),
                         isDisplayed()));
         editText.perform(replaceText(TEST_HEIGHT));
 
+        // Makes sure prompt button exist and works
         ViewInteraction confirmHeightButton = onView(
                 allOf(withId(R.id.confirm_height), withText("Confirm"),
                         isDisplayed()));
         confirmHeightButton.perform(click());
 
+        // Checks for steps walked text
         ViewInteraction textView = onView(
                 allOf(withId(R.id.steps_walked_text),
                         /*
@@ -66,30 +70,35 @@ public class MainActivityEspressoTest {
                         isDisplayed()));
         textView.check(matches(withText("Steps Walked Today:")));
 
+        // Makes sure distance walked is displayed
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.steps_distance_travelled),
                         isDisplayed()));
         textView2.check(matches(withText("Distance Walked Today:")));
 
+        // Makes sure routes button is displayed correctly
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.routes_button), withText("Routes"),
                         isDisplayed()));
 
+        // Makes sure add new route button displayed
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.add_routes_button), withText("Add New Route"),
                         isDisplayed()));
 
+        // Makes sure that update steps/distance properly clicks
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.update_button), withText("Update Steps/Distance"),
                         isDisplayed()));
         appCompatButton4.perform(click());
 
+        // After click makes sure steps is properly updated and displayed
         ViewInteraction textView3 = onView(
                 allOf(withId(R.id.steps_walked),
                         isDisplayed()));
         textView3.check(matches(withText("1337")));
 
-
+        // Makes sure distance is properly calculated and displayed
         ViewInteraction textView4 = onView(
                 allOf(withId(R.id.dist_walked),
                         isDisplayed()));
