@@ -120,11 +120,11 @@ public class DatabaseTest {
 
         String routeName = "RunTest";
         RouteEntry route1 = new RouteEntry(routeName, "San Diego");
-        route1.setYear(2019);route1.setDate(2);route1.setDate(10);
+        route1.setYear(2019);route1.setMonth(2);route1.setDate(10);
         route1.setTime(2000);
         routeEntryDAO.insertRoute(route1);
         RouteEntry route2 = new RouteEntry(routeName, "San Diego");
-        route2.setYear(2019);route2.setDate(2);route2.setDate(13);
+        route2.setYear(2019);route2.setMonth(2);route2.setDate(13);
         routeEntryDAO.insertRoute(route2);
 
         entries = routeEntryDAO.getMostRecentUpdatedRoute();
@@ -132,12 +132,42 @@ public class DatabaseTest {
         assertTrue(route1.equals(entries[0]));
 
         RouteEntry route3 = new RouteEntry(routeName, "San Diego");
-        route3.setYear(2019);route3.setDate(2);route3.setDate(13);
+        route3.setYear(2019);route3.setMonth(2);route3.setDate(13);
         route3.setTime(20000);
         routeEntryDAO.insertRoute(route3);
 
         entries = routeEntryDAO.getMostRecentUpdatedRoute();
         assertEquals(1, entries.length);
         assertTrue(route3.equals(entries[0]));
+    }
+
+    @Test
+    public void updateRoute() {
+        String routeName = "RunTest";
+        RouteEntry route1 = new RouteEntry(routeName, "San Diego");
+        route1.setYear(2019);route1.setMonth(2);route1.setDate(10);
+        routeEntryDAO.insertRoute(route1);
+
+        RouteEntry[] entries = routeEntryDAO.getAllRoutes();
+        assertEquals(1, entries.length);
+        route1 = entries[0];
+        assertTrue(route1.getYear() == 2019);
+        assertTrue(route1.getMonth() == 2);
+        assertTrue(route1.getDate() == 10);
+        assertTrue(route1.getTime() == -1);
+        assertTrue(route1.getSteps() == -1);
+        assertTrue(route1.getDistance() < 0);
+        int id = route1.getId();
+
+        // Update data
+        routeEntryDAO.updateRouteWithData(id, 15,2,2020,1000,200,1.2);
+
+        route1 = routeEntryDAO.getRoute(id);
+        assertTrue(route1.getYear() == 2020);
+        assertTrue(route1.getMonth() == 2);
+        assertTrue(route1.getDate() == 15);
+        assertTrue(route1.getTime() == 1000);
+        assertTrue(route1.getSteps() == 200);
+        assertTrue(route1.getDistance() == 1.2);
     }
 }
