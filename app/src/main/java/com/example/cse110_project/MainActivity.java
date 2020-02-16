@@ -162,14 +162,11 @@ public class MainActivity extends AppCompatActivity {
                 updateButton.setVisibility(View.VISIBLE);
                 stop_button.setVisibility(View.INVISIBLE);
 
-                // TODO: set the above variables to Intent
-                /*
-                Intent intent = new Intent(AddRouteActivity.class);
-                intent.putExtra(Intent.RECORDED_STEPS, sessionSteps);
-                intent.putExtra(Intent.RECORDED_TIME, sessionTime);
-                intent.putExtra(Intent.RECORDED_MILES, sessionMiles);
+                Intent intent = new Intent(MainActivity.this, CreateRouteActivity.class);
+                intent.putExtra("routeSteps", sessionSteps);
+                intent.putExtra("routeTime", sessionTime/1000);
+                intent.putExtra("routeMiles", sessionMiles);
                 startActivity(intent);
-                 */
             }
         });
 

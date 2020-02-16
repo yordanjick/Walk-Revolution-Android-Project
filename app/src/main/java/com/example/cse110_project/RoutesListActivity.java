@@ -31,7 +31,7 @@ public class RoutesListActivity extends AppCompatActivity {
                                                 + MAX_START_LEN + "s %5s %5s";
     private static final int PADDING = 10, MARGIN = 20;
     public static final String ROUTE_ID = "routeId";
-    private RetrieveRoutesTask retrieveRoutesTask;
+    private RetrieveRoutesTask retrieveRoutesTask = null;
 
     private class RetrieveRoutesTask extends AsyncTask<String, String, String> {
         private RouteEntry[] entries;
@@ -107,9 +107,6 @@ public class RoutesListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Cancel retrieve routes
-                if(retrieveRoutesTask.getStatus() == AsyncTask.Status.RUNNING)
-                    retrieveRoutesTask.cancel(true);
                 Intent create = new Intent(RoutesListActivity.this, CreateRouteActivity.class);
                 startActivityForResult(create, (int)(Math.random()*1000));
             }

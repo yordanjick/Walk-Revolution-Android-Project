@@ -3,27 +3,27 @@ package com.example.cse110_project;
 import java.util.Locale;
 
 public class NumberFormatter {
-    public static String formatDistance(double length){
-        String str = String.format(Locale.US, "%.2f", length);
-        if(length < 0) {
-            str = "0.00m";
-        } else if(length <= 1000) {
-            str += "m";
+    public static String formatDistance(double distanceInMiles){
+        String str = String.format(Locale.US, "%.2f", distanceInMiles);
+        if(distanceInMiles < 0) {
+            str = "0.00mi";
+        } else if(distanceInMiles <= 1000) {
+            str += "mi";
         } else {
-            length = length/1000;
-            str = String.format(Locale.US, "%.2f", length);
-            str += "km";
+            distanceInMiles = distanceInMiles/1000;
+            str = String.format(Locale.US, "%.2f", distanceInMiles);
+            str += "kmi";
         }
 
         return str;
     }
 
-    public static String formatStep(int steps) {
+    public static String formatStep(long steps) {
         String str;
         if(steps < 0) {
             str = "0";
         } else if(steps < 1000) {
-            str = Integer.toString(steps);
+            str = Long.toString(steps);
         } else {
             str = String.format(Locale.US, "%.1f", steps/1000.0);
             str += "k";
@@ -31,8 +31,8 @@ public class NumberFormatter {
         return str + "s";
     }
 
-    public static String formatTime(int timeInSecond) {
-        int hour, minute, second;
+    public static String formatTime(long timeInSecond) {
+        long hour, minute, second;
         StringBuffer str = new StringBuffer();
         if(timeInSecond < 0) str.append("00:00:00");
         else {

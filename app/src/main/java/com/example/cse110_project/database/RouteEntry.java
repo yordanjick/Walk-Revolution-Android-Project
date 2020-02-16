@@ -28,9 +28,9 @@ public class RouteEntry {
     private int date, month, year;
 
     // Auto generated from API
-    private int steps = -1;
+    private long steps = -1;
     private double distance = -1;
-    private int time = -1;
+    private long time = -1;
 
     // Feature data, can omit
     private int run = -1;
@@ -53,7 +53,7 @@ public class RouteEntry {
         return startPoint;
     }
 
-    public int getSteps() {
+    public long getSteps() {
         return steps;
     }
 
@@ -89,7 +89,7 @@ public class RouteEntry {
         return note;
     }
 
-    public int getTime() {
+    public long getTime() {
         return time;
     }
 
@@ -118,7 +118,7 @@ public class RouteEntry {
         this.startPoint = startPoint;
     }
 
-    public void setSteps(int steps) {
+    public void setSteps(long steps) {
         this.steps = steps;
     }
 
@@ -154,7 +154,7 @@ public class RouteEntry {
         this.note = note;
     }
 
-    public void setTime(int time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

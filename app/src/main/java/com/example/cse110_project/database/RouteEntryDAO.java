@@ -25,9 +25,9 @@ public interface RouteEntryDAO {
     public RouteEntry[] getMostRecentUpdatedRoute();
 
     @Query("UPDATE routes SET date = :date, month = :month, year = :year, time = :timeInSeconds" +
-            ", steps = :steps, distance = :distanceInMeters WHERE id = :id")
-    public void updateRouteWithData(int id, int date, int month, int year, int timeInSeconds
-            , int steps, double distanceInMeters);
+            ", steps = :steps, distance = :distanceInMiles WHERE id = :id")
+    public void updateRouteWithData(int id, int date, int month, int year, long timeInSeconds
+            , long steps, double distanceInMiles);
 
     @Query("DELETE FROM routes")
     public void clearRoutes();

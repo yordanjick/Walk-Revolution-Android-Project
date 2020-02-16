@@ -1,8 +1,10 @@
 package com.example.cse110_project;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,11 +17,15 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 public class RouteInfoActivity extends AppCompatActivity {
     public static final String DATE_FORMAT = "%02d/%02d/%4d", UNRECORDED_DATA = "--";
+    public static final int INTENT_ID = 10;
     private RetrieveRouteTask retrieveRouteTask;
+    private UpdateRouteTask updateRouteTask;
+    private int routeId;
     private RouteEntry route;
 
     private class RetrieveRouteTask extends AsyncTask<Integer, String, RouteEntry> {
@@ -57,7 +63,7 @@ public class RouteInfoActivity extends AppCompatActivity {
             else stepText.setText(NumberFormatter.formatStep(route.getSteps()));
 
             TextView distanceText = findViewById(R.id.distance_text);
-            if (route.getDistance() < 0) distanceText.setText(UNRECORDED_DATA);
+            if (route.getDistance() == -1.0) distanceText.setText(UNRECORDED_DATA);
             else distanceText.setText(NumberFormatter.formatDistance(route.getDistance()));
 
             TextView dateText = findViewById(R.id.date_text);
@@ -89,32 +95,68 @@ public class RouteInfoActivity extends AppCompatActivity {
         }
     }
 
+    private class UpdateRouteTask extends AsyncTask<Intent, String, String> {
+
+        @Override
+        protected String doInBackground(Intent... intents) {
+            RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
+            RouteEntryDAO dao = database.getRouteEntryDAO();
+
+            Intent intent = intents[0];
+            Calendar now = Calendar.getInstance();
+            int month = now.get(Calendar.MONTH)+1;
+            int date = now.get(Calendar.DAY_OF_MONTH);
+            int year = now.get(Calendar.YEAR);
+            dao.updateRouteWithData(routeId, date, month, year
+                    , intent.getLongExtra("routeTime", 0)
+                    , intent.getLongExtra("routeSteps", 0)
+                    , intent.getDoubleExtra("routeMiles", 0));
+            Log.d("Info", "Update route " + dao.getRoute(routeId));
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.d("Info", "Refresh page");
+            retrieveRouteTask = new RetrieveRouteTask();
+            retrieveRouteTask.execute(routeId);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_info);
 
         // Get intent route id
-        final int routeId = getIntent().getIntExtra(RoutesListActivity.ROUTE_ID, -1);
+        routeId = getIntent().getIntExtra(RoutesListActivity.ROUTE_ID, -1);
         Log.d(RouteInfoActivity.class.getSimpleName(),Integer.toString(routeId));
+
 
         Button startButton = findViewById(R.id.start_route_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Cancel job if it isn't cancelled
-                if(retrieveRouteTask.getStatus() == AsyncTask.Status.RUNNING)
-                    retrieveRouteTask.cancel(true);
-
                 // Create new Intent
                 Intent intent = new Intent(RouteInfoActivity.this, WalkActivity.class);
                 intent.putExtra("routeTitle", route.getRouteName());
+                intent.putExtra("routeId", routeId);
 
-                startActivity(intent);
+                startActivityForResult(intent, INTENT_ID);
             }
         });
 
         retrieveRouteTask = new RetrieveRouteTask();
         retrieveRouteTask.execute(routeId);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == INTENT_ID && resultCode == Activity.RESULT_OK && data != null) {
+            updateRouteTask = new UpdateRouteTask();
+            updateRouteTask.execute(data);
+        }
     }
 }

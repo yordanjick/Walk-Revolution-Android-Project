@@ -50,10 +50,14 @@ public class CreateRouteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_route);
 
+        // Get google fit data
+        Intent intent = getIntent();
+        final long steps = intent.getLongExtra("routeSteps", -1);
+        final long time = intent.getLongExtra("routeTime", -1);
+        final double distance = intent.getDoubleExtra("routeMiles", -1);
 
         final EditText name = findViewById(R.id.name_field);
         final EditText start = findViewById(R.id.start_field);
-
 
         final RadioGroup runtype = findViewById(R.id.run_type);
         final RadioButton runtype1 = findViewById(R.id.loop_button);
@@ -89,6 +93,9 @@ public class CreateRouteActivity extends AppCompatActivity {
                 } else {
                     RouteEntry routeEntry = new RouteEntry(name.getText().toString(), start.getText().toString());
 
+                    routeEntry.setSteps(steps);
+                    routeEntry.setDistance(distance);
+                    routeEntry.setTime(time);
                     routeEntry.setRun(runtype.getCheckedRadioButtonId() == runtype1.getId() ? 0 : 1);
                     routeEntry.setTerrain(f_h.getCheckedRadioButtonId() == f_h1.getId() ? 0 : 1);
                     routeEntry.setRoadType(routetype.getCheckedRadioButtonId() == routetype1.getId() ? 0 : 1);
@@ -104,7 +111,7 @@ public class CreateRouteActivity extends AppCompatActivity {
                     routeEntry.setNote(note.getText().toString());
 
                     Calendar now = Calendar.getInstance();
-                    int month = now.get(Calendar.MONTH);
+                    int month = now.get(Calendar.MONTH)+1;
                     int date = now.get(Calendar.DAY_OF_MONTH);
                     int year = now.get(Calendar.YEAR);
                     routeEntry.setDate(date);
@@ -121,12 +128,5 @@ public class CreateRouteActivity extends AppCompatActivity {
         });
 
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        if(insertRouteTask.getStatus() == AsyncTask.Status.RUNNING)
-            insertRouteTask.cancel(true);
-        super.onDestroy();
     }
 }

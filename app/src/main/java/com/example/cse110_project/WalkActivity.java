@@ -2,13 +2,18 @@ package com.example.cse110_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cse110_project.database.RouteEntry;
+import com.example.cse110_project.database.RouteEntryDAO;
+import com.example.cse110_project.database.RouteEntryDatabase;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -56,10 +61,10 @@ public class WalkActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(WalkActivity.this, RouteInfoActivity.class);
                 intent.putExtra("routeSteps", sessionSteps);
-                intent.putExtra("routeTime", sessionTime);
+                intent.putExtra("routeTime", sessionTime/1000);
                 intent.putExtra("routeMiles", sessionMiles);
-                startActivity(intent);
-
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             }
         });
     }
