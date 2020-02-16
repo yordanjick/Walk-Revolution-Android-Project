@@ -50,7 +50,7 @@ public class RoutesListActivity extends AppCompatActivity {
             listLayout.removeAllViews();
             listLayout.refreshDrawableState();
             String text;
-            for(RouteEntry entry: entries) {
+            for (RouteEntry entry : entries) {
                 Button routeButton = new Button(RoutesListActivity.this);
                 routeButton.setBackgroundColor(Color.LTGRAY);
                 LinearLayout.LayoutParams param = new LinearLayout
@@ -63,16 +63,16 @@ public class RoutesListActivity extends AppCompatActivity {
 
                 String name = entry.getRouteName();
                 String start = entry.getStartPoint();
-                if(name.length() > MAX_NAME_LEN)
-                    name = name.substring(0, MAX_NAME_LEN-TEXT_EMPTY) + ELLIPSE;
-                if(start.length() > MAX_START_LEN)
-                    start = start.substring(0, MAX_START_LEN-TEXT_EMPTY) + ELLIPSE;
+                if (name.length() > MAX_NAME_LEN)
+                    name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;
+                if (start.length() > MAX_START_LEN)
+                    start = start.substring(0, MAX_START_LEN - TEXT_EMPTY) + ELLIPSE;
                 String steps = UNRECORDED_DATA;
                 String distance = UNRECORDED_DATA;
-                if(entry.getSteps() >= 0) {
+                if (entry.getSteps() >= 0) {
                     steps = NumberFormatter.formatStep(entry.getSteps());
                 }
-                if(entry.getDistance() >= 0) {
+                if (entry.getDistance() >= 0) {
                     distance = NumberFormatter.formatDistance(entry.getDistance());
                 }
 
@@ -98,6 +98,7 @@ public class RoutesListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(MainActivity.TAG,"Create Route List");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
