@@ -5,7 +5,7 @@
     <string name="distance_walked">Distance Walked Today:</string>
     <string name="routes_button">Routes</string>
     <string name="add_routes_button">Add New Route</string>
-    <string name="test_num">000000</string>
+    <string name="test_num">0</string>
     <string name="height_prompt">Enter Height in Inches</string>
     <string name="confirm_prompt">Confirm</string>
 

@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         final Button updateButton = (Button)findViewById(R.id.update_button);
 
         userObserver = new UserData(this);
+        userObserver.clearUserData();
 
         routes_page.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                // TODO add method call to launchActivity to launch add routes activity
+
 
                 startCount = stepCount;
                 startTime = calendar.getTimeInMillis();
@@ -147,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                 add_routes.setVisibility(View.INVISIBLE);
                 updateButton.setVisibility(View.INVISIBLE);
                 stop_button.setVisibility(View.VISIBLE);
-                // TODO add method call to launchActivity to launch add routes activity
             }
         });
         stop_button.setVisibility(View.INVISIBLE);
