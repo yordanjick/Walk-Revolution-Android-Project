@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class DatabaseTest {
+public class  DatabaseTest {
     private String debugTag = "stdout";
     private RouteEntryDAO routeEntryDAO;
     private RouteEntryDatabase routeEntryDatabase;

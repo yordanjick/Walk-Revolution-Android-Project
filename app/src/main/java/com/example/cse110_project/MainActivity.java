@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public int userHeight;
     public boolean heightSet;
     private GetMostRecentWalkTask getMostRecentWalkTask;
+    public static final String TAG="DEBUG";
 
     private class GetMostRecentWalkTask extends AsyncTask<String, String, RouteEntry> {
 
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         final Button mockStepTimeButton = (Button)findViewById(R.id.go_to_mock_button);
 
         userObserver = new UserData(this);
+        userObserver.clearUserData();
 
         mockStepSharedPref = getBaseContext().getSharedPreferences(getString(
                 R.string.mock_shared_pref_key), Context.MODE_PRIVATE);
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                // TODO add method call to launchActivity to launch add routes activity
+
 
                 startCount = stepCount;
                 startTime = calendar.getTimeInMillis();
@@ -153,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
                 add_routes.setVisibility(View.INVISIBLE);
                 updateButton.setVisibility(View.INVISIBLE);
                 stop_button.setVisibility(View.VISIBLE);
-                // TODO add method call to launchActivity to launch add routes activity
             }
         });
         stop_button.setVisibility(View.INVISIBLE);
