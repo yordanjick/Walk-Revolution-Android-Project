@@ -57,12 +57,17 @@ public class MainActivity extends AppCompatActivity {
 
     private class GetMostRecentWalkTask extends AsyncTask<String, String, RouteEntry> {
 
+        public GetMostRecentWalkTask() {
+            Log.d("Info", "Constructor");
+        }
+
         @Override
         protected RouteEntry doInBackground(String... strings) {
             RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
             RouteEntryDAO dao = database.getRouteEntryDAO();
 
             RouteEntry[] routes = dao.getMostRecentUpdatedRoute();
+            Log.d("Info", ""+routes.length);
             if(routes.length == 0) return null;
             else return routes[0];
         }
@@ -76,13 +81,11 @@ public class MainActivity extends AppCompatActivity {
             // 1. No last walk in database
             // 2. Last walk is not today
             // 3. No walk time, step or distance (just created but haven't walk)
-            if(routeEntry == null || date.get(Calendar.MONTH) != routeEntry.getMonth()
-                    || date.get(Calendar.DAY_OF_MONTH)+1 != routeEntry.getDate()
+            if(routeEntry == null || date.get(Calendar.MONTH)+1 != routeEntry.getMonth()
+                    || date.get(Calendar.DAY_OF_MONTH) != routeEntry.getDate()
                     || date.get(Calendar.YEAR) != routeEntry.getYear()
                     || routeEntry.getTime() < 0 || routeEntry.getSteps() < 0
                     || routeEntry.getDistance() < 0) {
-                Log.d("Info", routeEntry.getTime() + " " + routeEntry.getSteps() + " " + routeEntry.getDistance());
-                Log.d("Info", routeEntry.getTime() + " " + routeEntry.getSteps() + " " + routeEntry.getDistance());
                 text.setText(NO_LAST_WALK);
             } else {
                 text.setText(String.format(LAST_WALK_FORMAT
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Show last intentional walk
+        Log.d("Info", "Run new Task");
         getMostRecentWalkTask = new GetMostRecentWalkTask();
         getMostRecentWalkTask.execute();
 
@@ -184,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setStepCount(fitnessService.getStepCount() +
                         mockStepSharedPref.getLong(getString(R.string.mock_step_key), 0));
+                getMostRecentWalkTask = new GetMostRecentWalkTask();
+                getMostRecentWalkTask.execute();
             }
         });
 
@@ -235,14 +241,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             fitnessService.setup();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getMostRecentWalkTask = new GetMostRecentWalkTask();
-        getMostRecentWalkTask.execute();
-
     }
 
     @Override

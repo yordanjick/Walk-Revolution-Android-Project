@@ -111,13 +111,11 @@ public class RouteInfoActivity extends AppCompatActivity {
                     , intent.getLongExtra("routeTime", 0)
                     , intent.getLongExtra("routeSteps", 0)
                     , intent.getDoubleExtra("routeMiles", 0));
-            Log.d("Info", "Update route " + dao.getRoute(routeId));
             return "";
         }
 
         @Override
         protected void onPostExecute(String s) {
-            Log.d("Info", "Refresh page");
             retrieveRouteTask = new RetrieveRouteTask();
             retrieveRouteTask.execute(routeId);
         }
