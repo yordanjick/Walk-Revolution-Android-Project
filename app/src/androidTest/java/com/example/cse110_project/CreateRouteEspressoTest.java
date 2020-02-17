@@ -10,6 +10,8 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.example.cse110_project.database.RouteEntryDAO;
+import com.example.cse110_project.database.RouteEntryDatabase;
 import com.example.cse110_project.fitness.FitnessService;
 
 import org.hamcrest.Description;
@@ -21,6 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -49,7 +52,11 @@ public class CreateRouteEspressoTest {
 
     @Before
     public void setup() {
-        mActivityTestRule.getActivity().setFitnessService(new CreateRouteEspressoTest.TestFitnessService(this.mActivityTestRule.getActivity()));
+        RouteEntryDatabase.DEBUG_DATABASE = true;
+        RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
+        RouteEntryDAO dao = database.getRouteEntryDAO();
+        dao.clearRoutes();
+        mActivityTestRule.getActivity().setFitnessService(new TestFitnessService(this.mActivityTestRule.getActivity()));
     }
 
 
