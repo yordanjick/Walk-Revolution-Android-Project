@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,10 +80,12 @@ public class MainActivity extends AppCompatActivity {
             // 2. Last walk is not today
             // 3. No walk time, step or distance (just created but haven't walk)
             if(routeEntry == null || date.get(Calendar.MONTH) != routeEntry.getMonth()
-                    || date.get(Calendar.DAY_OF_MONTH) != routeEntry.getDate()
+                    || date.get(Calendar.DAY_OF_MONTH)+1 != routeEntry.getDate()
                     || date.get(Calendar.YEAR) != routeEntry.getYear()
                     || routeEntry.getTime() < 0 || routeEntry.getSteps() < 0
                     || routeEntry.getDistance() < 0) {
+                Log.d("Info", routeEntry.getTime() + " " + routeEntry.getSteps() + " " + routeEntry.getDistance());
+                Log.d("Info", routeEntry.getTime() + " " + routeEntry.getSteps() + " " + routeEntry.getDistance());
                 text.setText(NO_LAST_WALK);
             } else {
                 text.setText(String.format(LAST_WALK_FORMAT
@@ -235,6 +238,14 @@ public class MainActivity extends AppCompatActivity {
         else {
             fitnessService.setup();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getMostRecentWalkTask = new GetMostRecentWalkTask();
+        getMostRecentWalkTask.execute();
+
     }
 
     @Override
