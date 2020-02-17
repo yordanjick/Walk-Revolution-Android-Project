@@ -54,4 +54,12 @@ public class NumberFormatter {
 
         return str.toString();
     }
+
+    public static double convertStepsToMiles(long numSteps, long height) {
+        if(height != -1) {
+            return (double) (numSteps * height * UserData.AVERAGE_STRIDE_LENGTH / UserData.INCH_PER_FOOT / UserData.FEET_PER_MILE);
+        } else {
+            return 0;
+        }
+    }
 }

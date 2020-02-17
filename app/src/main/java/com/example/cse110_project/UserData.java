@@ -45,12 +45,7 @@ public class UserData{
         editor.clear();
         editor.apply();
     }
-
     public double convertStepsToMiles(long numSteps) {
-        if(this.getUserHeight() != -1) {
-            return (double) (numSteps * this.getUserHeight() * AVERAGE_STRIDE_LENGTH / INCH_PER_FOOT / FEET_PER_MILE);
-        } else {
-            return 0;
-        }
+        return NumberFormatter.convertStepsToMiles(numSteps, this.getUserHeight());
     }
 }
