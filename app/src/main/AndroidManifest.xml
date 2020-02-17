@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GoogleFitActivity"></activity>
+        <activity android:name=".MockStepTimeActivity"></activity>
+        <activity android:name=".GoogleFitActivity" />
         <activity android:name=".WalkActivity" />
-        <activity android:name=".RouteInfoActivity"></activity>
+        <activity android:name=".RouteInfoActivity" />
         <activity android:name=".CreateRouteActivity" />
         <activity
             android:name=".RoutesListActivity"

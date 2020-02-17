@@ -1,5 +1,6 @@
 package com.example.cse110_project;
 
+import android.content.Context;
 import android.content.Intent;
 
 
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView walkDistance;
     private long stepCount;
 
+    private SharedPreferences mockStepSharedPref;
 
     public int userHeight;
     public boolean heightSet;
@@ -120,8 +122,12 @@ public class MainActivity extends AppCompatActivity {
         final Button add_routes = (Button) findViewById(R.id.add_routes_button);
         final Button stop_button = (Button)findViewById(R.id.stop_button);
         final Button updateButton = (Button)findViewById(R.id.update_button);
+        final Button mockStepTimeButton = (Button)findViewById(R.id.go_to_mock_button);
 
         userObserver = new UserData(this);
+
+        mockStepSharedPref = getBaseContext().getSharedPreferences(getString(
+                R.string.mock_shared_pref_key), Context.MODE_PRIVATE);
 
         routes_page.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
         stop_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setStepCount(fitnessService.getStepCount() +
+                        mockStepSharedPref.getLong(getString(R.string.mock_step_key), 0));
                 long sessionSteps = stepCount - startCount;
                 long sessionTime = calendar.getTimeInMillis() - startTime;
                 double sessionMiles = convertStepsToMiles(sessionSteps);
@@ -173,7 +181,16 @@ public class MainActivity extends AppCompatActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setStepCount(fitnessService.getStepCount());
+                setStepCount(fitnessService.getStepCount() +
+                        mockStepSharedPref.getLong(getString(R.string.mock_step_key), 0));
+            }
+        });
+
+        mockStepTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MockStepTimeActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -217,6 +234,13 @@ public class MainActivity extends AppCompatActivity {
         else {
             fitnessService.setup();
         }
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        setStepCount(fitnessService.getStepCount() +
+                mockStepSharedPref.getLong(getString(R.string.mock_step_key), 0));
     }
 
     @Override

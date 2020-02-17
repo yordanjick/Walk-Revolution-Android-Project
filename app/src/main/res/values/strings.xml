@@ -38,4 +38,7 @@
     <string name="welcome_message">Welcome to Walk Walk Revolution!</string>
     <string name="stop_button">Stop Session</string>
     <string name="update_button">Update Steps/Distance</string>
+    <string name="mock_step_key">MOCK_STEPS</string>
+    <string name="mock_time_key">MOCK_TIMES</string>
+    <string name="mock_shared_pref_key">MOCK_SHARED_PREF</string>
 </resources>

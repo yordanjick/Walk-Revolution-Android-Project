@@ -121,4 +121,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dist_walked" />
 
+    <Button
+        android:id="@+id/go_to_mock_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mock Step/Time"
+        app:layout_constraintTop_toBottomOf="@id/stop_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

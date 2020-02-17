@@ -3,7 +3,9 @@ package com.example.cse110_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +31,7 @@ public class WalkActivity extends AppCompatActivity {
     private long startCount;
     private long startTime;
     public FitnessService fitnessService;
+    private SharedPreferences mockStepTimeSharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +50,27 @@ public class WalkActivity extends AppCompatActivity {
         this.calendar = Calendar.getInstance();
 
         final Button walkStopButton = (Button)findViewById(R.id.walkStopButton);
+        final Button mockStepTimeButton = (Button)findViewById(R.id.go_to_mock_button);
+
         startCount = fitnessService.getStepCount();
         startTime = calendar.getTimeInMillis();
+
+        mockStepTimeSharedPref = getBaseContext().getSharedPreferences(
+                getString(R.string.mock_shared_pref_key), Context.MODE_PRIVATE);
 
         walkStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = new MainActivity();
                 long stopCount = fitnessService.getStepCount();
-                long sessionSteps = stopCount - startCount;
-                long sessionTime = calendar.getTimeInMillis() - startTime;
+                long mockAddSteps = mockStepTimeSharedPref.getLong(getString(R.string.mock_step_key), 0);
+                long sessionSteps = stopCount - startCount + mockAddSteps;
+
+                long currentTime = calendar.getTimeInMillis();
+                long mockTime = mockStepTimeSharedPref.getLong(getString(R.string.mock_time_key), 0);
+                long sessionTime = mockTime == 0 ?
+                        currentTime - startTime : mockTime - startTime;
+
                 double sessionMiles = mainActivity.convertStepsToMiles(sessionSteps);
 
                 Intent intent = new Intent(WalkActivity.this, RouteInfoActivity.class);
@@ -65,6 +79,14 @@ public class WalkActivity extends AppCompatActivity {
                 intent.putExtra("routeMiles", sessionMiles);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+            }
+        });
+
+        mockStepTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WalkActivity.this, MockStepTimeActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
     }
