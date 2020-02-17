@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public int userHeight;
     public boolean heightSet;
     private GetMostRecentWalkTask getMostRecentWalkTask;
+    public static final String TAG="DEBUG";
 
     private class GetMostRecentWalkTask extends AsyncTask<String, String, RouteEntry> {
 
