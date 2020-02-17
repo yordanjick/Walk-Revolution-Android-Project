@@ -126,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
         final Button mockStepTimeButton = (Button)findViewById(R.id.go_to_mock_button);
 
         userObserver = new UserData(this);
+
+        // TODO This line is for testing and clears user height each time upon app restart, can be deleted whenever.
         userObserver.clearUserData();
 
         mockStepSharedPref = getBaseContext().getSharedPreferences(getString(
