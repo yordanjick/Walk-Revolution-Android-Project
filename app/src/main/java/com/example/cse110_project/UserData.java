@@ -9,6 +9,10 @@ import android.content.Context;
 
 public class UserData{
 
+    public static final double AVERAGE_STRIDE_LENGTH = 0.413;
+    public static final int INCH_PER_FOOT = 12;
+    public static final int FEET_PER_MILE = 5280;
+
     private int userHeight;
 
     Activity homepage;
@@ -49,5 +53,13 @@ public class UserData{
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public double convertStepsToMiles(long numSteps) {
+        if(this.getUserHeight() != -1) {
+            return (double) (numSteps * this.getUserHeight() * AVERAGE_STRIDE_LENGTH / INCH_PER_FOOT / FEET_PER_MILE);
+        } else {
+            return 0;
+        }
     }
 }
