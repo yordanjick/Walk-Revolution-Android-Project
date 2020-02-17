@@ -10,6 +10,11 @@ import android.content.Context;
 // class that stores the height (potentially other) user data
 public class UserData{
 
+
+    public static final double AVERAGE_STRIDE_LENGTH = 0.413;
+    public static final int INCH_PER_FOOT = 12;
+    public static final int FEET_PER_MILE = 5280;
+
     public Activity activity;
 
     // creates a user data object that stores user data (height for now, can be changed)
@@ -39,5 +44,13 @@ public class UserData{
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public double convertStepsToMiles(long numSteps) {
+        if(this.getUserHeight() != -1) {
+            return (double) (numSteps * this.getUserHeight() * AVERAGE_STRIDE_LENGTH / INCH_PER_FOOT / FEET_PER_MILE);
+        } else {
+            return 0;
+        }
     }
 }

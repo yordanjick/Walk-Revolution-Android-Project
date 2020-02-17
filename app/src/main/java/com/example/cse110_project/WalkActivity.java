@@ -61,7 +61,7 @@ public class WalkActivity extends AppCompatActivity {
         walkStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity mainActivity = new MainActivity();
+                UserData userObserver = new UserData(WalkActivity.this);
                 long stopCount = fitnessService.getStepCount();
                 long mockAddSteps = mockStepTimeSharedPref.getLong(getString(R.string.mock_step_key), 0);
                 long sessionSteps = stopCount - startCount + mockAddSteps;
@@ -71,12 +71,15 @@ public class WalkActivity extends AppCompatActivity {
                 long sessionTime = mockTime == 0 ?
                         currentTime - startTime : mockTime - startTime;
 
-                double sessionMiles = mainActivity.convertStepsToMiles(sessionSteps);
+                double sessionMiles = userObserver.convertStepsToMiles(sessionSteps);
 
                 Intent intent = new Intent(WalkActivity.this, RouteInfoActivity.class);
                 intent.putExtra("routeSteps", sessionSteps);
                 intent.putExtra("routeTime", sessionTime/1000);
                 intent.putExtra("routeMiles", sessionMiles);
+                Log.d("Intent", "valS = " + sessionSteps);
+                Log.d("Intent", "valT = " + sessionTime/1000);
+                Log.d("Intent", "valD = " + sessionMiles);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }

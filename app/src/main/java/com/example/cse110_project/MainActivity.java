@@ -39,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private static String NO_LAST_WALK = "You haven't walked today!"
             , LAST_WALK_FORMAT = "Last Walk: %s %s %s";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
-    public static final double AVERAGE_STRIDE_LENGTH = 0.413;
-    public static final int INCH_PER_FOOT = 12;
-    public static final int FEET_PER_MILE = 5280;
 
     public FitnessService fitnessService;
     private Calendar calendar;
@@ -167,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                         mockStepSharedPref.getLong(getString(R.string.mock_step_key), 0));
                 long sessionSteps = stepCount - startCount;
                 long sessionTime = calendar.getTimeInMillis() - startTime;
-                double sessionMiles = convertStepsToMiles(sessionSteps);
+                double sessionMiles = userObserver.convertStepsToMiles(sessionSteps);
                 routes_page.setVisibility(View.VISIBLE);
                 add_routes.setVisibility(View.VISIBLE);
                 updateButton.setVisibility(View.VISIBLE);
@@ -274,17 +271,9 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 stepCount = count;
                 stepCounter.setText(String.valueOf(stepCount));
-                walkDistance.setText(String.valueOf(convertStepsToMiles(stepCount)));
+                walkDistance.setText(String.valueOf(userObserver.convertStepsToMiles(stepCount)));
             }
         });
-    }
-
-    public double convertStepsToMiles(long numSteps) {
-        if(this.heightSet) {
-            return (double) (numSteps * this.userHeight * AVERAGE_STRIDE_LENGTH / INCH_PER_FOOT / FEET_PER_MILE);
-        } else {
-            return 0;
-        }
     }
 
     public void setFitnessService(FitnessService fitnessService) {
