@@ -57,7 +57,7 @@
         android:id="@+id/routes_button"
         android:layout_width="138dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/routes_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -102,10 +102,8 @@
         android:id="@+id/stop_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="164dp"
         android:gravity="center"
         android:text="@string/stop_button"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/update_button" />
@@ -125,11 +123,28 @@
         android:id="@+id/go_to_mock_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Mock Step/Time"
-        app:layout_constraintTop_toBottomOf="@id/stop_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp"
-        android:gravity="center"/>
+        app:layout_constraintTop_toBottomOf="@id/stop_button" />
+
+    <Button
+        android:id="@+id/team_member_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Team"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_mock_button" />
+
+    <Button
+        android:id="@+id/team_routes_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team Routes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/team_member_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

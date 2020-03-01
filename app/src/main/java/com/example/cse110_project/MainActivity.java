@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 
 import android.os.Bundle;
 
+import com.example.cse110_project.firestore.FirestoreUtil;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
 
@@ -128,11 +129,13 @@ public class MainActivity extends AppCompatActivity {
         final Button stop_button = (Button)findViewById(R.id.stop_button);
         final Button updateButton = (Button)findViewById(R.id.update_button);
         final Button mockStepTimeButton = (Button)findViewById(R.id.go_to_mock_button);
+        final Button teamMemberButton = (Button)findViewById(R.id.team_member_button);
+        final Button teamRoutesButton = (Button)findViewById(R.id.team_routes_button);
 
         userObserver = new UserData(this);
 
         // TODO This line is for testing and clears user height each time upon app restart, can be deleted whenever.
-        userObserver.clearUserData();
+        // userObserver.clearUserData();
 
         mockStepSharedPref = getBaseContext().getSharedPreferences(getString(
                 R.string.mock_shared_pref_key), Context.MODE_PRIVATE);
@@ -199,6 +202,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MockStepTimeActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        // Initialize Database
+        FirestoreUtil.initDataBase();
+
+        teamMemberButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Team Member Button
+            }
+        });
+
+        teamRoutesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TeamRoutesActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
