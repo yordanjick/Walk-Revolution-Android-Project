@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataSet;
@@ -21,24 +22,20 @@ public class GoogleFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private final String TAG = "GoogleFitAdapter";
     private GoogleSignInAccount account;
+    private GoogleSignInOptionsExtension fitnessOptions;
 
     private Activity activity;
 
     private long updatedStepCount;
 
-    public GoogleFitAdapter(Activity activity) {
+    public GoogleFitAdapter(Activity activity, GoogleSignInAccount account, FitnessOptions options) {
         this.activity = activity;
+        this.account = account;
+        this.fitnessOptions = options;
     }
 
-
     public void setup() {
-        FitnessOptions fitnessOptions = FitnessOptions.builder()
-                .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
-                .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
-                .build();
-
-
-        account = GoogleSignIn.getAccountForExtension(activity, fitnessOptions);
+        //account = GoogleSignIn.getAccountForExtension(activity, fitnessOptions);
         if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
             GoogleSignIn.requestPermissions(
                     activity, // your activity

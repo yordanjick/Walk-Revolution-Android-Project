@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.GoogleFitAccountHandler;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
 
 import androidx.appcompat.app.AlertDialog;
@@ -33,6 +34,13 @@ import android.widget.Toast;
 import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
+import com.google.android.gms.fitness.FitnessOptions;
+import com.google.android.gms.fitness.data.DataType;
 
 import java.util.Calendar;
 
@@ -101,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
   
     private UserData userObserver;
 
+    private GoogleFitAccountHandler accountHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +119,10 @@ public class MainActivity extends AppCompatActivity {
         stepCounter = findViewById(R.id.steps_walked);
         walkDistance = findViewById(R.id.dist_walked);
 
+        accountHandler = new GoogleFitAccountHandler(this);
+
         if(fitnessService == null) {
-            fitnessService = new GoogleFitAdapter(this);
+            fitnessService = new GoogleFitAdapter(this, accountHandler.getAccount(), accountHandler.getOptions());
         }
 
         this.calendar = Calendar.getInstance();

@@ -16,7 +16,7 @@
         android:layout_marginTop="200dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="Name" />
 
     <EditText
         android:id="@+id/inviteaddress"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Email Address" />
+        android:hint="Email Address" />
 
     <Button
         android:id="@+id/invite_button"
