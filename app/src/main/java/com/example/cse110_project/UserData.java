@@ -1,14 +1,20 @@
 package com.example.cse110_project;
 
 import android.app.Activity;
+import android.app.AppComponentFactory;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 
+
+
+
+
 // class that stores the height (potentially other) user data
-public class UserData{
+public class UserData  {
 
 
     public static final double AVERAGE_STRIDE_LENGTH = 0.413;
@@ -16,6 +22,8 @@ public class UserData{
     public static final int FEET_PER_MILE = 5280;
 
     public Activity activity;
+
+
 
     // creates a user data object that stores user data (height for now, can be changed)
     public UserData(Activity activity)

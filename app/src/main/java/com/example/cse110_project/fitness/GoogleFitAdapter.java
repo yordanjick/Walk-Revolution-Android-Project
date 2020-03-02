@@ -1,3 +1,4 @@
+
 package com.example.cse110_project.fitness;
 
 import android.app.Activity;
@@ -76,6 +77,7 @@ public class GoogleFitAdapter implements FitnessService {
     /**
      * Reads the current daily step total, computed from midnight of the current day on the device's
      * current timezone.
+     *
      */
     public long getStepCount() {
         if (account == null) {

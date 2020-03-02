@@ -34,7 +34,14 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Calendar;
+import java.util.Map;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private static String NO_LAST_WALK = "You haven't walked today!"
@@ -54,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean heightSet;
     private GetMostRecentWalkTask getMostRecentWalkTask;
     public static final String TAG="DEBUG";
+
+    FirebaseFirestore fStore;
+    FirebaseAuth fAuth;
+
 
     private class GetMostRecentWalkTask extends AsyncTask<String, String, RouteEntry> {
 
@@ -100,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
     private long startTime;
   
     private UserData userObserver;
+
+    //TODO get actual data from google or sign in screen
+    String userID = null;
+    String userEmail = "example@gmail.com";
+    String userPassword = "12345";
+    String teamID = "-1";
+    String firstName = "Justin";
+    String lastName = "Sherfey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +222,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        // TODO get actual data inputted to be stored
+        // stores user data into firestore
+        if (true) {
+            fAuth.createUserWithEmailAndPassword(userEmail,userPassword).addOnCompleteListener((task) -> {
+                if(task.isSuccessful()) {
+                    userID = fAuth.getCurrentUser().getUid();
+                    DocumentReference documentReference = fStore.collection("users").document(userEmail);
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("firstName", firstName);
+                    user.put("email",userEmail);
+                    user.put("teamID",teamID);
+                    user.put("lastName",lastName);
+                    documentReference.set(user);
+                } else {
+                    System.out.print("didnt enter");
+                }
+            });
+        }
         int height = userObserver.getUserHeight();
 
         // height has not been set if userData is returning -1, default value
@@ -243,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             fitnessService.setup();
         }
+
     }
 
     @Override
