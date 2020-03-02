@@ -17,7 +17,7 @@ public class AcceptActivity extends AppCompatActivity {
     }
     @Override
     protected void onDestroy() {
-
+//test
         super.onDestroy();
     }
 }
