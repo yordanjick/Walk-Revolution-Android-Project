@@ -34,7 +34,7 @@ public class TeamRoutesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_routes);
+        setContentView(R.layout.activity_team_members);
 
         final TextView memberList = findViewById(R.id.member_list);
         final CollectionReference routesRef = FirestoreUtil.ROUTES_REF;

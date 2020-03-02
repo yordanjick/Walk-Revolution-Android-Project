@@ -2,6 +2,7 @@ package com.example.cse110_project.database;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -17,6 +18,7 @@ public class RouteEntry {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @Ignore
     // For Firestore use
     public RouteEntry(){}
 
