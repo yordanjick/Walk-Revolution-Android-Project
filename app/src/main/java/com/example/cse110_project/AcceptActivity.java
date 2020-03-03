@@ -29,6 +29,13 @@ public class AcceptActivity extends AppCompatActivity {
             }
         });
 
+        Button decline=findViewById(R.id.decline_button);
+        decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
     @Override

@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         userObserver = new UserData(this);
 
         // TODO This line is for testing and clears user height each time upon app restart, can be deleted whenever.
-        userObserver.clearUserData();
+       // userObserver.clearUserData();
 
         mockStepSharedPref = getBaseContext().getSharedPreferences(getString(
                 R.string.mock_shared_pref_key), Context.MODE_PRIVATE);
@@ -302,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // Log and toast
                         String msg = token;
+                        System.out.println(msg);
                         //     Log.d(TAG, msg);
                         //     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
 
