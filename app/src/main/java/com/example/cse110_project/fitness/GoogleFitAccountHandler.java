@@ -8,10 +8,10 @@ import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataType;
 
 public class GoogleFitAccountHandler {
-    private GoogleSignInAccount account;
-    private FitnessOptions fitnessOptions;
+    private static GoogleSignInAccount account;
+    private static FitnessOptions fitnessOptions;
 
-    public GoogleFitAccountHandler(Context context) {
+    public static void login(Context context) {
         GoogleSignIn.getLastSignedInAccount(context);
         fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
@@ -23,11 +23,11 @@ public class GoogleFitAccountHandler {
         }
     }
 
-    public GoogleSignInAccount getAccount() {
+    public static GoogleSignInAccount getAccount() {
         return account;
     }
 
-    public FitnessOptions getOptions() {
+    public static FitnessOptions getOptions() {
         return fitnessOptions;
     }
 }

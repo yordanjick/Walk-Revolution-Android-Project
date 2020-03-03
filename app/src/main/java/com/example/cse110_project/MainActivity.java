@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
   
     private UserData userObserver;
 
-    private GoogleFitAccountHandler accountHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,10 +123,10 @@ public class MainActivity extends AppCompatActivity {
         stepCounter = findViewById(R.id.steps_walked);
         walkDistance = findViewById(R.id.dist_walked);
 
-        accountHandler = new GoogleFitAccountHandler(this);
+        GoogleFitAccountHandler.login(this);
 
         if(fitnessService == null) {
-            fitnessService = new GoogleFitAdapter(this, accountHandler.getAccount(), accountHandler.getOptions());
+            fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
         }
 
         this.calendar = Calendar.getInstance();
