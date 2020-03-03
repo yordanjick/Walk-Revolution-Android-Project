@@ -31,13 +31,10 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Calendar;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
 public class MainActivity extends AppCompatActivity {
     private static String NO_LAST_WALK = "You haven't walked today!"
             , LAST_WALK_FORMAT = "Last Walk: %s %s %s";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
-
     public FitnessService fitnessService;
     private Calendar calendar;
 
@@ -318,7 +315,8 @@ public class MainActivity extends AppCompatActivity {
                 Object value = getIntent().getExtras().get(key);
                 if(key.equals("send_request")){
                     Intent intent = new Intent(this,AcceptActivity.class);
-                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                   // intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("name",value.toString());
                     startActivity(intent);
                 }
                 Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
