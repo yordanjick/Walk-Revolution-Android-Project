@@ -2,17 +2,11 @@ package com.example.cse110_project;
 
 import android.content.Context;
 import android.content.Intent;
-
-
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-
-
-import android.content.SharedPreferences;
-
-import android.os.Bundle;
-
+import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.GoogleFitAccountHandler;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
@@ -20,20 +14,24 @@ import com.example.cse110_project.fitness.GoogleFitAdapter;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -42,13 +40,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataType;
 
+import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.GoogleFitAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private static String NO_LAST_WALK = "You haven't walked today!"
             , LAST_WALK_FORMAT = "Last Walk: %s %s %s";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
-
     public FitnessService fitnessService;
     private Calendar calendar;
 
@@ -144,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         userObserver = new UserData(this);
 
         // TODO This line is for testing and clears user height each time upon app restart, can be deleted whenever.
-        userObserver.clearUserData();
+       // userObserver.clearUserData();
 
         mockStepSharedPref = getBaseContext().getSharedPreferences(getString(
                 R.string.mock_shared_pref_key), Context.MODE_PRIVATE);
@@ -255,6 +260,9 @@ public class MainActivity extends AppCompatActivity {
         else {
             fitnessService.setup();
         }
+
+        //set up for message listener
+        setNotificationListener();
     }
 
     @Override
@@ -299,5 +307,47 @@ public class MainActivity extends AppCompatActivity {
 
     public void setFitnessService(FitnessService fitnessService) {
         this.fitnessService = fitnessService;
+    }
+
+
+    public void setNotificationListener(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = token;
+                        System.out.println(msg);
+                        //     Log.d(TAG, msg);
+                        //     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
+
+
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                if(key.equals("send_request")){
+                    Intent intent = new Intent(this,AcceptActivity.class);
+                   // intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("name",value.toString());
+                    startActivity(intent);
+                }
+                Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
+            }
+
+
+
+        }
     }
 }
