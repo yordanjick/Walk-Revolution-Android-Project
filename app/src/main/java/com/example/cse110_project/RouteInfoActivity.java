@@ -52,46 +52,7 @@ public class RouteInfoActivity extends AppCompatActivity {
                 finish();
             }
 
-            TextView nameText = findViewById(R.id.name_text);
-            nameText.setText(route.getRouteName());
-
-            TextView startText = findViewById(R.id.start_text);
-            startText.setText(route.getStartPoint());
-
-            TextView stepText = findViewById(R.id.step_text);
-            if (route.getSteps() == -1) stepText.setText(UNRECORDED_DATA);
-            else stepText.setText(NumberFormatter.formatStep(route.getSteps()));
-
-            TextView distanceText = findViewById(R.id.distance_text);
-            if (route.getDistance() == -1.0) distanceText.setText(UNRECORDED_DATA);
-            else distanceText.setText(NumberFormatter.formatDistance(route.getDistance()));
-
-            TextView dateText = findViewById(R.id.date_text);
-            if (route.getMonth() == -1 || route.getDate() == -1 || route.getYear() == -1)
-                dateText.setText(UNRECORDED_DATA);
-            else
-                dateText.setText(String.format(Locale.US, DATE_FORMAT, route.getMonth()
-                        , route.getDate(), route.getYear()));
-            TextView timeText = findViewById(R.id.time_text);
-            if (route.getTime() == -1)
-                timeText.setText(UNRECORDED_DATA);
-            else
-                timeText.setText(NumberFormatter.formatTime(route.getTime()));
-
-            TextView runText = findViewById(R.id.run_text);
-            runText.setText(route.getRun() == -1 ? "" : RouteEntry.RUN_VAL[route.getRun()]);
-            TextView surfaceText = findViewById(R.id.surface_text);
-            surfaceText.setText(route.getTerrain() == -1 ? "" : RouteEntry.TERRAIN_VAL[route.getTerrain()]);
-            TextView roadText = findViewById(R.id.road_text);
-            roadText.setText(route.getRoadType() == -1 ? "" : RouteEntry.ROAD_TYPE_VAL[route.getRoadType()]);
-            TextView conditionText = findViewById(R.id.condition_text);
-            conditionText.setText(route.getRoadCondition() == -1 ? "" : RouteEntry.ROAD_CONDITION_VAL[route.getRoadCondition()]);
-            TextView difficultyText = findViewById(R.id.difficulty_text);
-            difficultyText.setText(route.getLevel() == -1 ? "" : RouteEntry.LEVEL_VAL[route.getLevel()]);
-            TextView favoriteText = findViewById(R.id.favorite_text);
-            favoriteText.setText(route.getFavorite() == 0 ? "Yes": "No");
-            TextView noteText = findViewById(R.id.note_text);
-            noteText.setText(route.getNote());
+            showRouteInfo(route);
         }
     }
 
@@ -126,26 +87,75 @@ public class RouteInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_info);
 
-        // Get intent route id
-        routeId = getIntent().getIntExtra(RoutesListActivity.ROUTE_ID, -1);
-        Log.d(RouteInfoActivity.class.getSimpleName(),Integer.toString(routeId));
+        // Test whether from local database or from object
+        RouteEntry routeEntry = (RouteEntry) getIntent().getSerializableExtra(TeamRoutesActivity.ROUTE_EXTRA_NAME);
+        if (routeEntry != null) {
+            showRouteInfo(routeEntry);
+        } else {
+            // Get intent route id
+            routeId = getIntent().getIntExtra(RoutesListActivity.ROUTE_ID, -1);
+            Log.d(RouteInfoActivity.class.getSimpleName(), Integer.toString(routeId));
 
 
-        Button startButton = findViewById(R.id.start_route_button);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create new Intent
-                Intent intent = new Intent(RouteInfoActivity.this, WalkActivity.class);
-                intent.putExtra("routeTitle", route.getRouteName());
-                intent.putExtra("routeId", routeId);
+            Button startButton = findViewById(R.id.start_route_button);
+            startButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Create new Intent
+                    Intent intent = new Intent(RouteInfoActivity.this, WalkActivity.class);
+                    intent.putExtra("routeTitle", route.getRouteName());
+                    intent.putExtra("routeId", routeId);
 
-                startActivityForResult(intent, INTENT_ID);
-            }
-        });
+                    startActivityForResult(intent, INTENT_ID);
+                }
+            });
 
-        retrieveRouteTask = new RetrieveRouteTask();
-        retrieveRouteTask.execute(routeId);
+            retrieveRouteTask = new RetrieveRouteTask();
+            retrieveRouteTask.execute(routeId);
+        }
+    }
+
+    private void showRouteInfo(RouteEntry route) {
+        TextView nameText = findViewById(R.id.name_text);
+        nameText.setText(route.getRouteName());
+
+        TextView startText = findViewById(R.id.start_text);
+        startText.setText(route.getStartPoint());
+
+        TextView stepText = findViewById(R.id.step_text);
+        if (route.getSteps() == -1) stepText.setText(UNRECORDED_DATA);
+        else stepText.setText(NumberFormatter.formatStep(route.getSteps()));
+
+        TextView distanceText = findViewById(R.id.distance_text);
+        if (route.getDistance() == -1.0) distanceText.setText(UNRECORDED_DATA);
+        else distanceText.setText(NumberFormatter.formatDistance(route.getDistance()));
+
+        TextView dateText = findViewById(R.id.date_text);
+        if (route.getMonth() == -1 || route.getDate() == -1 || route.getYear() == -1)
+            dateText.setText(UNRECORDED_DATA);
+        else
+            dateText.setText(String.format(Locale.US, DATE_FORMAT, route.getMonth()
+                    , route.getDate(), route.getYear()));
+        TextView timeText = findViewById(R.id.time_text);
+        if (route.getTime() == -1)
+            timeText.setText(UNRECORDED_DATA);
+        else
+            timeText.setText(NumberFormatter.formatTime(route.getTime()));
+
+        TextView runText = findViewById(R.id.run_text);
+        runText.setText(route.getRun() == -1 ? "" : RouteEntry.RUN_VAL[route.getRun()]);
+        TextView surfaceText = findViewById(R.id.surface_text);
+        surfaceText.setText(route.getTerrain() == -1 ? "" : RouteEntry.TERRAIN_VAL[route.getTerrain()]);
+        TextView roadText = findViewById(R.id.road_text);
+        roadText.setText(route.getRoadType() == -1 ? "" : RouteEntry.ROAD_TYPE_VAL[route.getRoadType()]);
+        TextView conditionText = findViewById(R.id.condition_text);
+        conditionText.setText(route.getRoadCondition() == -1 ? "" : RouteEntry.ROAD_CONDITION_VAL[route.getRoadCondition()]);
+        TextView difficultyText = findViewById(R.id.difficulty_text);
+        difficultyText.setText(route.getLevel() == -1 ? "" : RouteEntry.LEVEL_VAL[route.getLevel()]);
+        TextView favoriteText = findViewById(R.id.favorite_text);
+        favoriteText.setText(route.getFavorite() == 0 ? "Yes": "No");
+        TextView noteText = findViewById(R.id.note_text);
+        noteText.setText(route.getNote());
     }
 
     @Override

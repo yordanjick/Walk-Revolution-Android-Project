@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {RouteEntry.class}, version = 3, exportSchema = false)
+@Database(entities = {RouteEntry.class}, version = 4, exportSchema = false)
 public abstract class RouteEntryDatabase extends RoomDatabase {
     public static final String DB_NAME = "routes.db";
 
