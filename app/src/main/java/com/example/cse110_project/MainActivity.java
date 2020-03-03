@@ -242,35 +242,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //set up for message listener
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        String msg = token;
-                        Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-
-                       /* Intent intent = new Intent(MainActivity.this, AcceptActivity.class);
-                        startActivity(intent);*/
-
-                    }
-                });
-
-
-        if (getIntent().getExtras() != null) {
-            Intent intent = new Intent(this, AcceptActivity.class);
-            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
+        setNotificationListener();
     }
 
     @Override
@@ -315,5 +287,45 @@ public class MainActivity extends AppCompatActivity {
 
     public void setFitnessService(FitnessService fitnessService) {
         this.fitnessService = fitnessService;
+    }
+
+
+    public void setNotificationListener(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = token;
+                        //     Log.d(TAG, msg);
+                        //     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
+
+
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                if(key.equals("send_request")){
+                    Intent intent = new Intent(this,AcceptActivity.class);
+                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
+            }
+
+
+
+        }
     }
 }
