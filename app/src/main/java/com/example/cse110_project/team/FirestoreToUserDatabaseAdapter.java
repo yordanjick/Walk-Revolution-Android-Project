@@ -48,7 +48,7 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
                     }
                 }
             }
-        })
+        });
 
         Map<String, Map<String, Map<String, String>>> newUser = new HashMap<>();
         Map<String, Map<String, String>> newUserDataPath= new HashMap<>();
