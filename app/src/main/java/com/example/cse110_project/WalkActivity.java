@@ -17,6 +17,7 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.GoogleFitAccountHandler;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -45,7 +46,7 @@ public class WalkActivity extends AppCompatActivity {
             routeTitle.setText(routeTitleDB);
         }
 
-        fitnessService = new GoogleFitAdapter(this);
+        fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
 
         this.calendar = Calendar.getInstance();
 
