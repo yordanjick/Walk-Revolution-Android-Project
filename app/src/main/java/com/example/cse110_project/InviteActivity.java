@@ -6,8 +6,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.CollectionReference;
 public class InviteActivity extends AppCompatActivity {
-
+    CollectionReference chat;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -20,6 +21,7 @@ public class InviteActivity extends AppCompatActivity {
                 
             }
         });
+
 
     }
 }
