@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TeamRoutesActivity"></activity>
+        <activity android:name=".TeamMemberActivity"></activity>
+        <activity android:name=".TeamRoutesActivity" />
         <activity android:name=".MockStepTimeActivity" />
         <activity android:name=".GoogleFitActivity" />
         <activity android:name=".WalkActivity" />

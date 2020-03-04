@@ -212,7 +212,8 @@ public class MainActivity extends AppCompatActivity {
         teamMemberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Team Member Button
+                Intent intent = new Intent(MainActivity.this, TeamMemberActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
