@@ -251,6 +251,27 @@ public class MainActivity extends AppCompatActivity {
             });
             dialog.show();
 
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                return;
+                            }
+
+                            // Get new Instance ID token
+                            String token = task.getResult().getToken();
+
+                            // Log and toast
+                            String msg = token;
+                            System.out.println(msg);
+                            //     Log.d(TAG, msg);
+                            //     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    });
         }
         else {
             fitnessService.setup();
@@ -306,29 +327,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setNotificationListener(){
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        String msg = token;
-                        System.out.println(msg);
-                        //     Log.d(TAG, msg);
-                        //     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-
-
-                    }
-                });
-
-
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
