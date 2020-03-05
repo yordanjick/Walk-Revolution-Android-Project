@@ -13,6 +13,7 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,8 +32,16 @@ public class HeightPromptExistTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+    @Before
+    public void setup(){
+        UserData userObserver = new UserData(mActivityTestRule.getActivity());
+        userObserver.clearUserData();
+    }
+
     @Test
     public void heightPromptExistTest() {
+        UserData userObserver = new UserData(mActivityTestRule.getActivity());
+        userObserver.clearUserData();
         ViewInteraction textView = onView(
                 allOf(withId(R.id.height_prompt), withText("Enter Height in Inches"),
                         childAtPosition(

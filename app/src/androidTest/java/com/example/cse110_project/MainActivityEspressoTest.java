@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import com.example.cse110_project.fitness.FitnessService;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
@@ -33,6 +34,8 @@ public class MainActivityEspressoTest {
 
     @Before
     public void setup() {
+        UserData userObserver = new UserData(getApplicationContext());
+        userObserver.clearUserData();
         mActivityTestRule.getActivity().setFitnessService(new TestFitnessService(this.mActivityTestRule.getActivity()));
     }
 

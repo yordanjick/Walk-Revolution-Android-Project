@@ -1,6 +1,7 @@
 package com.example.cse110_project;
 
 
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -52,11 +53,16 @@ public class CreateRouteEspressoTest {
 
     @Before
     public void setup() {
+
+        UserData userObserver = new UserData(getApplicationContext());
+        userObserver.clearUserData();
+        
         RouteEntryDatabase.DEBUG_DATABASE = true;
         RouteEntryDatabase database = RouteEntryDatabase.getDatabase(getApplicationContext());
         RouteEntryDAO dao = database.getRouteEntryDAO();
         dao.clearRoutes();
         mActivityTestRule.getActivity().setFitnessService(new TestFitnessService(this.mActivityTestRule.getActivity()));
+
     }
 
 
