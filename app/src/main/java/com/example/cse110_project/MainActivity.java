@@ -38,6 +38,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataType;
 
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private static String NO_LAST_WALK = "You haven't walked today!"
             , LAST_WALK_FORMAT = "Last Walk: %s %s %s";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    private static final int RC_SIGN_IN = 9001;
+
     public FitnessService fitnessService;
     private Calendar calendar;
 
@@ -125,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         this.calendar = Calendar.getInstance();
 
         WWRApplication.setUserDatabase();
+        signIn();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -219,11 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
         // if height has not been set, show height input prompt
 
-        GoogleFitAccountHandler.login(this);
-
-        if(fitnessService == null) {
-            fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
-        }
+        GoogleFitAccountHandler.buildOptions();
 
         if(!heightSet) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -249,41 +249,77 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,
                                 R.string.error_height_msg, Toast.LENGTH_SHORT).show();
                     }
-                    fitnessService.setup();
+                    signIn();
                 }
             });
             dialog.show();
-
-            FirebaseInstanceId.getInstance().getInstanceId()
-                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                            if (!task.isSuccessful()) {
-                                Log.w(TAG, "getInstanceId failed", task.getException());
-                                return;
-                            }
-
-                            // Get new Instance ID token
-                            String token = task.getResult().getToken();
-
-                            WWRApplication.getUserDatabase().addUser(GoogleFitAccountHandler.getAccount(), token);
-
-                            // Log and toast
-                            String msg = token;
-                            System.out.println(msg);
-                            //     Log.d(TAG, msg);
-                            //     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-
-
-                        }
-                    });
         }
         else {
-            fitnessService.setup();
+            signIn();
         }
 
         //set up for message listener
         setNotificationListener();
+    }
+
+    private void signIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            GoogleFitAccountHandler.setAccount(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
+        fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
+        fitnessService.setup();
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        WWRApplication.getUserDatabase().addUser(GoogleFitAccountHandler.getAccount(), token);
+
+                        // Log and toast
+                        String msg = token;
+                        System.out.println(msg);
+                        //     Log.d(TAG, msg);
+                        //     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
     }
 
     @Override
