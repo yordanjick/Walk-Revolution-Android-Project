@@ -1,5 +1,7 @@
 package com.example.cse110_project.team;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,22 +19,22 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
     private static final String TAG = FirestoreToUserDatabaseAdapter.class.getSimpleName();
 
     private CollectionReference users;
-    private String dataKey;
     private String firstNameKey;
     private String lastNameKey;
     private String teamIdKey;
+    private String tokenKey;
 
     public FirestoreToUserDatabaseAdapter(FirebaseFirestore firestore, String collectionKey,
-                                          String dataKey, String firstNameKey, String lastNameKey, String teamIdKey) {
-        this.dataKey = dataKey;
+                                          String firstNameKey, String lastNameKey, String teamIdKey, String tokenKey) {
         this.firstNameKey = firstNameKey;
         this.lastNameKey = lastNameKey;
         this.teamIdKey = teamIdKey;
+        this.tokenKey = tokenKey;
 
         this.users = firestore.collection(collectionKey);
     }
 
-    public void addUser(final GoogleSignInAccount account) {
+    public void addUser(final GoogleSignInAccount account, final String token) {
 
         users.document(account.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -46,8 +48,8 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
 
                         newUserData.put(firstNameKey, account.getGivenName());
                         newUserData.put(lastNameKey, account.getFamilyName());
-                        newUserData.put(teamIdKey, "");
-
+                        newUserData.put(teamIdKey, account.getEmail());
+                        newUserData.put(tokenKey, token);
 
                         users.document(account.getEmail()).set(newUserData);
                     }
@@ -56,19 +58,9 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
         });
     }
 
-    public void makeNewTeam(String userEmail) {
-        DocumentReference user = users.document(userEmail);
-        Map<String, String> teamIdForUser = new HashMap<>();
-        teamIdForUser.put(teamIdKey, userEmail);
-
-        user.set(teamIdForUser);
-    }
-
     public void addToTeam(String receiverEmail, String teamHostEmail) {
         users
                 .document(receiverEmail)
-                .collection(this.dataKey)
-                .document(this.teamIdKey)
-                .set(teamHostEmail);
+                .update(this.teamIdKey, teamHostEmail);
     }
 }

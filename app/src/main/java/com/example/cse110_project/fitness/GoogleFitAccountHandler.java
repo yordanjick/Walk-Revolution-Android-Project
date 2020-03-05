@@ -1,6 +1,7 @@
 package com.example.cse110_project.fitness;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -12,15 +13,17 @@ public class GoogleFitAccountHandler {
     private static FitnessOptions fitnessOptions;
 
     public static void login(Context context) {
-        GoogleSignIn.getLastSignedInAccount(context);
+        //account = GoogleSignIn.getLastSignedInAccount(context);
         fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .build();
 
-        if (account == null ) {
-            account = GoogleSignIn.getAccountForExtension(context, fitnessOptions);
-        }
+        account = GoogleSignIn.getAccountForExtension(context, fitnessOptions);
+
+        System.out.println("Email:" + account.getEmail());
+        System.out.println("Name: " + account.getDisplayName());
+        System.out.println("ID: " + account.getId());
     }
 
     public static GoogleSignInAccount getAccount() {

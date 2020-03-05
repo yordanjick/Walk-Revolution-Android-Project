@@ -32,6 +32,7 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 
+import com.example.cse110_project.team.FirestoreToUserDatabaseAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -121,13 +122,9 @@ public class MainActivity extends AppCompatActivity {
         stepCounter = findViewById(R.id.steps_walked);
         walkDistance = findViewById(R.id.dist_walked);
 
-        GoogleFitAccountHandler.login(this);
-
-        if(fitnessService == null) {
-            fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
-        }
-
         this.calendar = Calendar.getInstance();
+
+        WWRApplication.setUserDatabase();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -222,6 +219,12 @@ public class MainActivity extends AppCompatActivity {
 
         // if height has not been set, show height input prompt
 
+        GoogleFitAccountHandler.login(this);
+
+        if(fitnessService == null) {
+            fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
+        }
+
         if(!heightSet) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
             View heightView = getLayoutInflater().inflate(R.layout.dialog_height, null);
@@ -262,6 +265,8 @@ public class MainActivity extends AppCompatActivity {
 
                             // Get new Instance ID token
                             String token = task.getResult().getToken();
+
+                            WWRApplication.getUserDatabase().addUser(GoogleFitAccountHandler.getAccount(), token);
 
                             // Log and toast
                             String msg = token;
