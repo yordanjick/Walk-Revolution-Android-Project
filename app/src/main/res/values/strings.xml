@@ -8,6 +8,9 @@
     <string name="test_num">0</string>
     <string name="height_prompt">Enter Height in Inches</string>
     <string name="confirm_prompt">Confirm</string>
+    <string name="mock_step_button">Mock Step/Time</string>
+    <string name="team_button">My Team</string>
+    <string name="team_routes_button">Team Routes</string>
 
     <string name="name_text">Name</string>
     <string name="start_text">Start</string>

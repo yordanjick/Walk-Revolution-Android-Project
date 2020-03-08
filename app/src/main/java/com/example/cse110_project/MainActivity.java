@@ -5,6 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import com.example.cse110_project.firestore.FirestoreUtil;
+import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.GoogleFitAdapter;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -128,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         final Button stop_button = (Button)findViewById(R.id.stop_button);
         final Button updateButton = (Button)findViewById(R.id.update_button);
         final Button mockStepTimeButton = (Button)findViewById(R.id.go_to_mock_button);
+        final Button teamMemberButton = (Button)findViewById(R.id.team_member_button);
+        final Button teamRoutesButton = (Button)findViewById(R.id.team_routes_button);
 
         userObserver = new UserData(this);
 
@@ -201,6 +212,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Initialize Database
+        FirestoreUtil.initDataBase();
+
+        teamMemberButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TeamMemberActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        teamRoutesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TeamRoutesActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
         int height = userObserver.getUserHeight();
 
         // height has not been set if userData is returning -1, default value
@@ -223,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!heightInput.getText().toString().isEmpty()) {
                         userHeight = Integer.parseInt(heightInput.getText().toString());
                         userObserver.updateHeight(userHeight);
-                      
+
                         heightSet = true;
                         Toast.makeText(MainActivity.this,
                                 R.string.success_height_msg, Toast.LENGTH_SHORT).show();

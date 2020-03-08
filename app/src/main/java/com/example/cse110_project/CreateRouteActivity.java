@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
+import com.example.cse110_project.firestore.FirestoreUtil;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.util.Calendar;
 
@@ -120,11 +123,28 @@ public class CreateRouteActivity extends AppCompatActivity {
                     routeEntry.setMonth(month);
                     routeEntry.setYear(year);
 
+                    // Set username and email field
+                    GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+                    if (acct != null) {
+                        // TODO get email account from user, now is null
+                        String personId = acct.getId();
+                        String personGivenName = acct.getGivenName();
+                        String personEmail = acct.getEmail();
+                        Log.d("retrieve", personGivenName + personEmail + personId);
+                        routeEntry.setUserEmail(personEmail);
+                        routeEntry.setUserName(personGivenName);
+                    } else {
+                        routeEntry.setUserEmail("test1@ucsd.edu");
+                        routeEntry.setUserName("John");
+                    }
+
                     // No double click while insert is running
                     if(insertRouteTask != null && insertRouteTask.getStatus()
                             == AsyncTask.Status.RUNNING) return;
                     insertRouteTask = new InsertRouteTask();
                     insertRouteTask.execute(routeEntry);
+
+                    FirestoreUtil.addUserRoute(routeEntry);
                 }
             }
         });
