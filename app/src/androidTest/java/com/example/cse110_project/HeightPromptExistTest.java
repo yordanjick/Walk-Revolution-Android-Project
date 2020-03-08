@@ -10,6 +10,8 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.example.cse110_project.fitness.FitnessService;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -35,6 +37,13 @@ public class HeightPromptExistTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+    @Before
+    public void setUp() {
+        UserData userObserver = new UserData(getApplicationContext());
+        userObserver.clearUserData();
+        mActivityTestRule.getActivity().setFitnessService(new HeightPromptExistTest.TestFitnessService(this.mActivityTestRule.getActivity()));
+    }
 
     @Test
     public void heightPromptExistTest() {
@@ -91,5 +100,30 @@ public class HeightPromptExistTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+    private class TestFitnessService implements FitnessService {
+        private static final String TAG = "[TestFitnessService]: ";
+        private MainActivity mainActivity;
+
+        public TestFitnessService(MainActivity mainActivity) {
+            this.mainActivity = mainActivity;
+        }
+
+        @Override
+        public int getRequestCode() {
+            return 0;
+        }
+
+        @Override
+        public void setup() {
+            System.out.println(TAG + "setup");
+        }
+
+        @Override
+        public long getStepCount() {
+            System.out.println(TAG + "updateStepCount");
+            return 1337;
+        }
     }
 }
