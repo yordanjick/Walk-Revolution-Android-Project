@@ -11,8 +11,6 @@
         <activity android:name=".MockStepTimeActivity"></activity>
         <activity android:name=".TeamMemberActivity"></activity>
         <activity android:name=".TeamRoutesActivity" />
-        <activity android:name=".MockStepTimeActivity" />
-        <activity android:name=".GoogleFitActivity" />
         <activity android:name=".WalkActivity" />
         <activity android:name=".RouteInfoActivity" />
         <activity android:name=".CreateRouteActivity" />

@@ -28,7 +28,7 @@ public class AcceptActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             UserDatabase userDatabase= WWRApplication.getUserDatabase();
-            userDatabase.addToTeam(GoogleFitAccountHandler.getAccount().getEmail(),emailAddress);
+            userDatabase.addToTeam(WWRApplication.getUserAccount().getEmail(),emailAddress);
 
 
                 finish();

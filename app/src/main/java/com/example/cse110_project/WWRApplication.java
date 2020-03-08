@@ -16,6 +16,7 @@ public class WWRApplication extends Application {
     static String FIRST_NAME_KEY = "first_name";
     static String LAST_NAME_KEY = "last_name";
     static String TEAM_ID_KEY = "team_id";
+    static String EMAIL_KEY = "email";
     static String TOKEN_KEY = "token";
 
     @Override
@@ -28,7 +29,7 @@ public class WWRApplication extends Application {
     }
 
     public static UserDatabase setUserDatabase() {
-        return userDatabase = new FirestoreToUserDatabaseAdapter(FirebaseFirestore.getInstance(), COLLECTION_KEY, FIRST_NAME_KEY, LAST_NAME_KEY, TEAM_ID_KEY, TOKEN_KEY);
+        return userDatabase = new FirestoreToUserDatabaseAdapter(FirebaseFirestore.getInstance(), COLLECTION_KEY, EMAIL_KEY, FIRST_NAME_KEY, LAST_NAME_KEY, TEAM_ID_KEY, TOKEN_KEY);
     }
 
     public static boolean isLoggedIn() { return loggedIn; }

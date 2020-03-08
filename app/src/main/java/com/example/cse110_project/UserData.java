@@ -17,6 +17,8 @@ public class UserData {
     public static final int INCH_PER_FOOT = 12;
     public static final int FEET_PER_MILE = 5280;
 
+    public static final String HEIGHT_KEY = "height";
+
     public Context activity;
 
     // creates a user data object that stores user data (height for now, can be changed)

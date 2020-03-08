@@ -38,7 +38,7 @@ public class WalkActivity extends AppCompatActivity {
             routeTitle.setText(routeTitleDB);
         }
 
-        fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
+        fitnessService = new GoogleFitAdapter(this, WWRApplication.getUserAccount());
 
         this.calendar = Calendar.getInstance();
 
