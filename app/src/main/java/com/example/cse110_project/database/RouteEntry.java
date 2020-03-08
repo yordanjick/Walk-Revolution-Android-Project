@@ -5,8 +5,10 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(indices = {@Index("routeName")}, tableName = "routes")
-public class RouteEntry {
+public class RouteEntry implements Serializable {
     public static final String[] RUN_VAL = {"Loop", "Out-and-Back"};
     public static final String[] TERRAIN_VAL = {"Flat", "Hilly"};
     public static final String[] ROAD_TYPE_VAL = {"Streets", "Trail"};
@@ -17,6 +19,9 @@ public class RouteEntry {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    // For Firestore use
+    public RouteEntry(){}
+
     public RouteEntry(String routeName, String startPoint) {
         this.routeName = routeName;
         this.startPoint = startPoint;
@@ -25,6 +30,8 @@ public class RouteEntry {
     // Basic route information
     private String routeName;
     private String startPoint;
+    private String userEmail;
+    private String userName;
     private int date, month, year;
 
     // Auto generated from API
@@ -105,6 +112,12 @@ public class RouteEntry {
         return year;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public String getUserName() {return userName;}
+
     // This is for database use. It is automatically set. Don't set id directly.
     public void setId(int id) {
         this.id = id;
@@ -169,6 +182,12 @@ public class RouteEntry {
     public void setYear(int year) {
         this.year = year;
     }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setUserName(String userName) {this.userName = userName;}
 
     @Override
     @NonNull
