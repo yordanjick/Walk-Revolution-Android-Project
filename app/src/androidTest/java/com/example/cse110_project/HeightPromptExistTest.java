@@ -13,11 +13,16 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -36,12 +41,37 @@ public class HeightPromptExistTest {
         ViewInteraction textView = onView(
                 allOf(withId(R.id.height_prompt), withText("Enter Height in Inches"),
                         childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.custom),
-                                        0),
+                                allOf(withId(R.id.height_layout),
+                                        childAtPosition(
+                                                withId(R.id.custom),
+                                                0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(isDisplayed()));
+        textView.check(matches(withText("Enter Height in Inches")));
+
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.user_height),
+                        childAtPosition(
+                                allOf(withId(R.id.height_layout),
+                                        childAtPosition(
+                                                withId(R.id.custom),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText.perform(replaceText("60"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.confirm_height), withText("Confirm"),
+                        childAtPosition(
+                                allOf(withId(R.id.height_layout),
+                                        childAtPosition(
+                                                withId(R.id.custom),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        new UserData(getApplicationContext()).clearUserData();
     }
 
     private static Matcher<View> childAtPosition(

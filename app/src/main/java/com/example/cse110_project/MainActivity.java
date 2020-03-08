@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!heightInput.getText().toString().isEmpty()) {
                         userHeight = Integer.parseInt(heightInput.getText().toString());
                         userObserver.updateHeight(userHeight);
-                      
+
                         heightSet = true;
                         Toast.makeText(MainActivity.this,
                                 R.string.success_height_msg, Toast.LENGTH_SHORT).show();
