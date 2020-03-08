@@ -6,25 +6,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.cse110_project.database.RouteEntry;
-import com.example.cse110_project.database.RouteEntryDAO;
-import com.example.cse110_project.database.RouteEntryDatabase;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
 import static android.app.PendingIntent.getActivity;
-import static com.example.cse110_project.MainActivity.FITNESS_SERVICE_KEY;
 
 public class WalkActivity extends AppCompatActivity {
     private Calendar calendar;
@@ -45,7 +38,7 @@ public class WalkActivity extends AppCompatActivity {
             routeTitle.setText(routeTitleDB);
         }
 
-        fitnessService = new GoogleFitAdapter(this);
+        fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
 
         this.calendar = Calendar.getInstance();
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cse110_project">
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +8,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".MockStepTimeActivity"></activity>
         <activity android:name=".TeamMemberActivity"></activity>
         <activity android:name=".TeamRoutesActivity" />
         <activity android:name=".MockStepTimeActivity" />
@@ -16,6 +16,7 @@
         <activity android:name=".WalkActivity" />
         <activity android:name=".RouteInfoActivity" />
         <activity android:name=".CreateRouteActivity" />
+        <activity android:name=".AcceptActivity" />
         <activity
             android:name=".RoutesListActivity"
             android:label="@string/title_activity_routes_list"
@@ -30,6 +31,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

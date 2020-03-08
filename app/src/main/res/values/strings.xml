@@ -44,4 +44,6 @@
     <string name="mock_step_key">MOCK_STEPS</string>
     <string name="mock_time_key">MOCK_TIMES</string>
     <string name="mock_shared_pref_key">MOCK_SHARED_PREF</string>
+    <string name="token_shared_pref_key">TOKEN_SHARED_PREF</string>
+    <string name="token_key">TOKEN</string>
 </resources>

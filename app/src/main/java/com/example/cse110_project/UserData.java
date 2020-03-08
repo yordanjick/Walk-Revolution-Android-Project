@@ -7,8 +7,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 // class that stores the height (potentially other) user data
-public class UserData{
+public class UserData {
 
 
     public static final double AVERAGE_STRIDE_LENGTH = 0.413;
@@ -28,16 +30,16 @@ public class UserData{
     {
         SharedPreferences sharedPreferences = activity.getSharedPreferences("homepage", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("height", height);
+        editor.putInt(HEIGHT_KEY, height);
         editor.apply();
     }
 
     public int getUserHeight()
     {
         SharedPreferences sharedPreferences = activity.getSharedPreferences("homepage", MODE_PRIVATE);
-        int height = sharedPreferences.getInt("height", -1);
-        return height;
+        return sharedPreferences.getInt(HEIGHT_KEY, -1);
     }
+
     public void clearUserData()
     {
         SharedPreferences sharedPreferences = activity.getSharedPreferences("homepage", MODE_PRIVATE);
