@@ -28,10 +28,13 @@ public class GoogleFitAdapter implements FitnessService {
 
     private long updatedStepCount;
 
-    public GoogleFitAdapter(Activity activity, GoogleSignInAccount account, FitnessOptions options) {
+    public GoogleFitAdapter(Activity activity, GoogleSignInAccount account) {
         this.activity = activity;
         this.account = account;
-        this.fitnessOptions = options;
+        this.fitnessOptions = fitnessOptions = FitnessOptions.builder()
+                .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+                .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+                .build();;
     }
 
     public void setup() {

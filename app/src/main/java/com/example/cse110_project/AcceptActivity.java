@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cse110_project.fitness.GoogleFitAccountHandler;
 import com.example.cse110_project.team.UserDatabase;
 
 public class AcceptActivity extends AppCompatActivity {

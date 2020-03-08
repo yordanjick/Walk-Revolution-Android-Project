@@ -4,5 +4,5 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public interface UserDatabase {
     void addUser(GoogleSignInAccount account, String token);
-    void addToTeam(String userId, String teamEmail);
+    void addToTeam(String receiverEmail, String teamHostEmail);
 }

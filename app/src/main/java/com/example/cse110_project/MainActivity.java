@@ -23,7 +23,6 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.GoogleFitAccountHandler;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -209,8 +208,6 @@ public class MainActivity extends AppCompatActivity {
 
         // if height has not been set, show height input prompt
 
-        GoogleFitAccountHandler.buildOptions();
-
         if(!heightSet) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
             View heightView = getLayoutInflater().inflate(R.layout.dialog_height, null);
@@ -274,13 +271,13 @@ public class MainActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            GoogleFitAccountHandler.setAccount(account);
+            WWRApplication.setUserAccount(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
-        fitnessService = new GoogleFitAdapter(this, GoogleFitAccountHandler.getAccount(), GoogleFitAccountHandler.getOptions());
+        fitnessService = new GoogleFitAdapter(this, WWRApplication.getUserAccount());
         fitnessService.setup();
 
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -295,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
 
-                        WWRApplication.getUserDatabase().addUser(GoogleFitAccountHandler.getAccount(), token);
+                        WWRApplication.getUserDatabase().addUser(WWRApplication.getUserAccount(), token);
 
                         // Log and toast
                         String msg = token;

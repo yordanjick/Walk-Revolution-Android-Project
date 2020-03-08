@@ -1,14 +1,11 @@
 package com.example.cse110_project.team;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -16,16 +13,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirestoreToUserDatabaseAdapter implements UserDatabase {
-    private static final String TAG = FirestoreToUserDatabaseAdapter.class.getSimpleName();
-
     private CollectionReference users;
+    private String emailKey;
     private String firstNameKey;
     private String lastNameKey;
     private String teamIdKey;
     private String tokenKey;
 
-    public FirestoreToUserDatabaseAdapter(FirebaseFirestore firestore, String collectionKey,
+    public FirestoreToUserDatabaseAdapter(FirebaseFirestore firestore, String collectionKey, String emailKey,
                                           String firstNameKey, String lastNameKey, String teamIdKey, String tokenKey) {
+        this.emailKey = emailKey;
         this.firstNameKey = firstNameKey;
         this.lastNameKey = lastNameKey;
         this.teamIdKey = teamIdKey;
@@ -34,8 +31,19 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
         this.users = firestore.collection(collectionKey);
     }
 
-    public void addUser(final GoogleSignInAccount account, final String token) {
+    public HashMap<String, String> newUser(final GoogleSignInAccount account, final String token) {
+        HashMap<String, String> newUserData = new HashMap<>();
 
+        newUserData.put(firstNameKey, account.getGivenName());
+        newUserData.put(lastNameKey, account.getFamilyName());
+        newUserData.put(emailKey, account.getEmail());
+        newUserData.put(teamIdKey, account.getEmail());
+        newUserData.put(tokenKey, token);
+
+        return newUserData;
+    }
+
+    public void addUser(final GoogleSignInAccount account, final String token) {
         users.document(account.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -44,13 +52,7 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
                     if(document.exists()) {
                         return;
                     } else {
-                        Map<String, String> newUserData = new HashMap<>();
-
-                        newUserData.put(firstNameKey, account.getGivenName());
-                        newUserData.put(lastNameKey, account.getFamilyName());
-                        newUserData.put(teamIdKey, account.getEmail());
-                        newUserData.put(tokenKey, token);
-
+                        Map<String, String> newUserData = newUser(account, token);
                         users.document(account.getEmail()).set(newUserData);
                     }
                 }
