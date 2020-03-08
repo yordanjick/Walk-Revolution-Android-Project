@@ -5,15 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.GoogleFitAccountHandler;
-import com.example.cse110_project.fitness.GoogleFitAdapter;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,19 +22,14 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
-
-import com.example.cse110_project.team.FirestoreToUserDatabaseAdapter;
+import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.GoogleFitAccountHandler;
+import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.fitness.FitnessOptions;
-import com.google.android.gms.fitness.data.DataType;
-
-import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -374,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
                 if(key.equals("send_request")){
                     Intent intent = new Intent(this,AcceptActivity.class);
                    // intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("name",value.toString());
+                    intent.putExtra("email_address",value.toString());
                     startActivity(intent);
                 }
                 Log.d("MainActivity: ", "Key: " + key + " Value: " + value);

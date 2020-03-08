@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cse110_project.fitness.GoogleFitAccountHandler;
+import com.example.cse110_project.team.UserDatabase;
+
 public class AcceptActivity extends AppCompatActivity {
 
 @Override
@@ -17,14 +20,18 @@ public class AcceptActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_accept);
         Intent intent=getIntent();
-        String name=intent.getStringExtra("name");
+        final String emailAddress=intent.getStringExtra("email_address");
         TextView textView=findViewById(R.id.request_from);
-        textView.setText(name);
+        textView.setText(emailAddress);
 
         Button accept=findViewById(R.id.accept_button);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            UserDatabase userDatabase= WWRApplication.getUserDatabase();
+            userDatabase.addToTeam(GoogleFitAccountHandler.getAccount().getEmail(),emailAddress);
+
+
                 finish();
             }
         });
