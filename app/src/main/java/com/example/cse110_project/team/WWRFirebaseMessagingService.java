@@ -43,11 +43,11 @@ public class WWRFirebaseMessagingService extends FirebaseMessagingService {
             String message = remoteMessage.getData().get(getString(R.string.data_message));
             String messageId = remoteMessage.getData().get(getString(R.string.data_message_id));
             notifyMessage(title, message, messageId);
-            //TODO
+            //TODO in case invitation is for team
 
         } else if(dataType.equals(getString(R.string.team_walk_invitation))) {
             Log.d(TAG, "onMessageReceived: new team walk invitation");
-            //TODO
+            //TODO in case invitation is for team walk
         }
     }
 
