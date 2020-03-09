@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.cse110_project.firestore.FirestoreUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,6 +53,7 @@ public class TeamMemberActivity extends AppCompatActivity {
         usersRef.document("User2").set(data2);
 
         final LinearLayout teamMemberList = findViewById(R.id.team_member_list_layout);
+        final FloatingActionButton inviteButton = (FloatingActionButton) findViewById(R.id.invite_button);
 
         usersRef
                 .whereEqualTo("teamID", userTeamId)
@@ -105,6 +107,14 @@ public class TeamMemberActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        inviteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TeamMemberActivity.this, InviteActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
 
 
 

@@ -65,4 +65,21 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
                 .document(receiverEmail)
                 .update(this.teamIdKey, teamHostEmail);
     }
+
+    @Override
+    public void pushInvite(final String receiveUserEmail, final String receiveUserName
+            , final String sendUserEmail) {
+        users.document(sendUserEmail).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()) {
+                        String userToken = (String)task.getResult().get(tokenKey);
+                        android.util.Log.d("myomy", userToken + " sends invitation to " + receiveUserName + ": " + receiveUserEmail);
+                    }
+                }
+            }
+        });
+    }
 }

@@ -14,6 +14,7 @@
         <activity android:name=".WalkActivity" />
         <activity android:name=".RouteInfoActivity" />
         <activity android:name=".CreateRouteActivity" />
+        <activity android:name=".InviteActivity" />
         <activity android:name=".AcceptActivity" />
         <activity
             android:name=".RoutesListActivity"
