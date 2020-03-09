@@ -43,7 +43,7 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
         return newUserData;
     }
 
-    public void addUser(final GoogleSignInAccount account, final String token) {
+    public void updateUser(final GoogleSignInAccount account, final String token) {
         users.document(account.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

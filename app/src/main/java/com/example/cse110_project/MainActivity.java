@@ -33,6 +33,7 @@ import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
+import com.example.cse110_project.team.WWRFirebaseMessagingService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -42,6 +43,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.Calendar;
 
@@ -262,20 +264,16 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,
                                 R.string.error_height_msg, Toast.LENGTH_SHORT).show();
                     }
-                    signIn();
                 }
             });
             dialog.show();
-        }
-        else {
-            signIn();
         }
 
         //set up for message listener
         setNotificationListener();
     }
 
-    private void signIn() {
+    public void signIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -322,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
 
-                        WWRApplication.getUserDatabase().addUser(WWRApplication.getUserAccount(), token);
+                        WWRApplication.getUserDatabase().updateUser(WWRApplication.getUserAccount(), token);
 
                         // Log and toast
                         String msg = token;
