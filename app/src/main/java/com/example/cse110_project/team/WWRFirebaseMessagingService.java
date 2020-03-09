@@ -37,12 +37,14 @@ public class WWRFirebaseMessagingService extends FirebaseMessagingService {
 
 
         String dataType = remoteMessage.getData().get(getString(R.string.invitation_type));
+
+        String title = remoteMessage.getData().get(getString(R.string.data_title));
+        String message = remoteMessage.getData().get(getString(R.string.data_message));
+        String messageId = remoteMessage.getData().get(getString(R.string.data_message_id));
+        notifyMessage(title, message, messageId, remoteMessage.getData().get(getString(R.string.team_walk_invitation)));
+
         if(dataType.equals(getString(R.string.team_invitation))){
             Log.d(TAG, "onMessageReceived: new team invitation");
-            String title = remoteMessage.getData().get(getString(R.string.data_title));
-            String message = remoteMessage.getData().get(getString(R.string.data_message));
-            String messageId = remoteMessage.getData().get(getString(R.string.data_message_id));
-            notifyMessage(title, message, messageId);
             //TODO in case invitation is for team
 
         } else if(dataType.equals(getString(R.string.team_walk_invitation))) {
@@ -51,7 +53,7 @@ public class WWRFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void notifyMessage(String title, String message, String messageId){
+    private void notifyMessage(String title, String message, String messageId, String invitationType){
         Log.d(TAG, "sendChatmessageNotification: building a chatmessage notification");
 
         //get the notification id
@@ -62,9 +64,9 @@ public class WWRFirebaseMessagingService extends FirebaseMessagingService {
                 getString(R.string.notification_channel_id));
         // Creates an Intent for the Activity
         Intent pendingIntent = new Intent(this, AcceptActivity.class);
-        if(title == getString(R.string.team_invitation)) {
+        if(invitationType == getString(R.string.team_invitation)) {
             pendingIntent.putExtra("team_id", message);
-        } else if(title == getString(R.string.team_walk_invitation)) {
+        } else if(invitationType == getString(R.string.team_walk_invitation)) {
             //TODO: suggestion, put route id of proposed team walk?
             pendingIntent.putExtra("route_id", message);
         }
