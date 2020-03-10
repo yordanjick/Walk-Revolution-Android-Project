@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.firestore.FirestoreUtil;
-import com.example.cse110_project.team.UserDatabase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,25 +22,22 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class TeamMemberActivity extends AppCompatActivity {
     private static final int MAX_NAME_LEN = 15, MAX_START_LEN = 10, TEXT_EMPTY = 3;
     private static final String ELLIPSE = "...";
     private static final int PADDING = 10, MARGIN = 20;
-    private static int userTeamId = 1;
+    private static String userEmail=WWRApplication.getUserAccount().getEmail();
+    private static String teamId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_member);
-        UserDatabase userDatabase = WWRApplication.getUserDatabase();
 
 
         final CollectionReference usersRef = FirestoreUtil.USERS_REF;
        // usersRef.document(email).collection(FirestoreUtil.ROUTES_KEY);
-        Map<String, Object> data1 = new HashMap<>();
+        /*Map<String, Object> data1 = new HashMap<>();
         data1.put("firstName", "Test");
         data1.put("lastName", "Tester");
         data1.put("teamID", 1);
@@ -52,12 +48,24 @@ public class TeamMemberActivity extends AppCompatActivity {
         data2.put("lastName", "Testin");
         data2.put("teamID", 1);
         usersRef.document("User2").set(data2);
-
+        */
+        usersRef
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                for(QueryDocumentSnapshot document : task.getResult()){
+                                    teamId=document.getString("team_id");
+                                }
+                            }
+                                           }
+                                       });
         final LinearLayout teamMemberList = findViewById(R.id.team_member_list_layout);
         final FloatingActionButton inviteButton = (FloatingActionButton) findViewById(R.id.invite_button);
-
         usersRef
-                .whereEqualTo("teamID", userTeamId)
+                .whereEqualTo("team_id", teamId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -84,8 +92,8 @@ public class TeamMemberActivity extends AppCompatActivity {
                                 teamMember.setBackgroundColor(Color.LTGRAY);
                                 teamMember.setAllCaps(false);
 
-                                String firstName = document.getString("firstName");
-                                String lastName = document.getString("lastName");
+                                String firstName = document.getString("first_name");
+                                String lastName = document.getString("last_name");
                                 String name = firstName + " " + lastName;
                                 if (name.length() > MAX_NAME_LEN)
                                     name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;

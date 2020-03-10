@@ -313,8 +313,8 @@ public class MainActivity extends AppCompatActivity {
                         WWRApplication.getUserDatabase().updateUser(WWRApplication.getUserAccount(), token);
 
                         // Log and toast
-                        String msg = token;
-                        System.out.println(msg);
+                        //String msg = token;
+                       // System.out.println(msg);
                         //     Log.d(TAG, msg);
                         //     Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
 
