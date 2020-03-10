@@ -44,7 +44,7 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
     }
 
     public void updateUser(final GoogleSignInAccount account, final String token) {
-        users.document(account.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        users.document(account.getEmail().replace('.',',')).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
@@ -53,7 +53,7 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
                         return;
                     } else {
                         Map<String, String> newUserData = newUser(account, token);
-                        users.document(account.getEmail()).set(newUserData);
+                        users.document(account.getEmail().replace('.', ',')).set(newUserData);
                     }
                 }
             }
@@ -62,24 +62,7 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
 
     public void addToTeam(String receiverEmail, String teamHostEmail) {
         users
-                .document(receiverEmail)
+                .document(receiverEmail.replace('.', ','))
                 .update(this.teamIdKey, teamHostEmail);
-    }
-
-    @Override
-    public void pushInvite(final String receiveUserEmail, final String receiveUserName
-            , final String sendUserEmail) {
-        users.document(sendUserEmail).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if(document.exists()) {
-                        String userToken = (String)task.getResult().get(tokenKey);
-                        android.util.Log.d("myomy", userToken + " sends invitation to " + receiveUserName + ": " + receiveUserEmail);
-                    }
-                }
-            }
-        });
     }
 }

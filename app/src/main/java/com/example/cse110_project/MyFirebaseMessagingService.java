@@ -20,7 +20,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
+        /*super.onMessageReceived(remoteMessage);
 
         Intent intent = new Intent(this, AcceptActivity.class);
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
@@ -33,7 +33,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
+            if (// Check if data needs to be processed by long running job true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
                // scheduleJob();
             } else {
@@ -48,7 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-
+        */
     }
 
     @Override

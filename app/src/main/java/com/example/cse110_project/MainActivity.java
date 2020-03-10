@@ -390,9 +390,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
             }
-
-
-
         }
     }
 }

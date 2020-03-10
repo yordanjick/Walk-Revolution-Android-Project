@@ -10,8 +10,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+
 public class InviteActivity extends AppCompatActivity {
-    CollectionReference chat;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -35,7 +38,15 @@ public class InviteActivity extends AppCompatActivity {
                     }
 
                     // Push user receiver and sender info to database for processing
-                    WWRApplication.getUserDatabase().pushInvite(email, name, WWRApplication.getUserAccount().getEmail());
+                    FirebaseFirestore database = FirebaseFirestore.getInstance();
+                    HashMap<String, String> data = new HashMap<>();
+                    data.put(getString(R.string.message_type), getString(R.string.team_invitation));
+                    data.put("receiverName", name);
+                    data.put("receiverEmail", email);
+                    data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
+                    database.collection("messages")
+                            .add(data);
+                    Log.d("myomy", WWRApplication.getUserAccount().getEmail());
 
                     // Notify user
                     Toast.makeText(getApplicationContext(), "Invitation Sent", Toast.LENGTH_LONG).show();

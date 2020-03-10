@@ -46,11 +46,11 @@
     <string name="mock_shared_pref_key">MOCK_SHARED_PREF</string>
     <string name="token_shared_pref_key">TOKEN_SHARED_PREF</string>
     <string name="token_key">TOKEN</string>
-    <string name="invitation_type">invitation_type</string>
+    <string name="message_type">messageType</string>
     <string name="team_invitation">Team Invitation</string>
     <string name="team_walk_invitation">Team Walk Invitation</string>
     <string name="notification_channel_id">walk_walk_revolution</string>
-    <string name="data_title">title</string>
-    <string name="data_message">message</string>
+    <string name="sender_name">senderEmail</string>
+    <string name="sender_email">senderName</string>
     <string name="data_message_id">message_id</string>
 </resources>
