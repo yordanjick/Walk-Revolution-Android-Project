@@ -20,29 +20,49 @@ public class AcceptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accept);
         Intent intent=getIntent();
         final String emailAddress=intent.getStringExtra("email_address");
-        TextView textView=findViewById(R.id.request_from);
-        textView.setText(emailAddress);
+        if(emailAddress!=null) {
+            TextView textView = findViewById(R.id.request_from);
+            textView.setText(emailAddress);
 
-        Button accept=findViewById(R.id.accept_button);
-        accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            UserDatabase userDatabase= WWRApplication.getUserDatabase();
-            userDatabase.addToTeam(WWRApplication.getUserAccount().getEmail(),emailAddress);
+            Button accept = findViewById(R.id.accept_button);
+            accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UserDatabase userDatabase = WWRApplication.getUserDatabase();
+                    userDatabase.addToTeam(WWRApplication.getUserAccount().getEmail(), emailAddress);
+                    finish();
+                }
+            });
 
+            Button decline = findViewById(R.id.decline_button);
+            decline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+        else{
+            TextView textView = findViewById(R.id.request_from);
+            textView.setText("Proposed Routes");
 
-                finish();
-            }
-        });
+            Button accept = findViewById(R.id.accept_button);
+            accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        Button decline=findViewById(R.id.decline_button);
-        decline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+                    finish();
+                }
+            });
 
+            Button decline = findViewById(R.id.decline_button);
+            decline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
     @Override
     protected void onDestroy() {

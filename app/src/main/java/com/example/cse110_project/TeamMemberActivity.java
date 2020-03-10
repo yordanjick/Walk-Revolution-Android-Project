@@ -1,8 +1,5 @@
 package com.example.cse110_project;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,12 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.cse110_project.firestore.FirestoreUtil;
+import com.example.cse110_project.team.UserDatabase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,7 +24,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class TeamMemberActivity extends AppCompatActivity {
@@ -37,6 +36,8 @@ public class TeamMemberActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_member);
+        UserDatabase userDatabase = WWRApplication.getUserDatabase();
+
 
         final CollectionReference usersRef = FirestoreUtil.USERS_REF;
        // usersRef.document(email).collection(FirestoreUtil.ROUTES_KEY);

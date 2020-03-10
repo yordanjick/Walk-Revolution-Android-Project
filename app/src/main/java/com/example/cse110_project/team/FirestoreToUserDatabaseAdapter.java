@@ -59,7 +59,6 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
             }
         });
     }
-
     public void addToTeam(String receiverEmail, String teamHostEmail) {
         users
                 .document(receiverEmail.replace('.', ','))

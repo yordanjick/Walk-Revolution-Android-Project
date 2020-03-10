@@ -5,15 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import com.example.cse110_project.firestore.FirestoreUtil;
-import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.GoogleFitAdapter;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,9 +22,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
+import com.example.cse110_project.firestore.FirestoreUtil;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
-import com.example.cse110_project.team.WWRFirebaseMessagingService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,7 +34,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.Calendar;
 
@@ -390,7 +380,9 @@ public class MainActivity extends AppCompatActivity {
                 newIntent.putExtra("sender_name", intent.getStringExtra("senderName"));
                 startActivityForResult(newIntent, 0);
             } else if(intent.getStringExtra(getString(R.string.message_type)).equals(getString(R.string.team_walk_invitation))) {
-
+                Intent newIntent =new Intent(this,AcceptActivity.class);
+               // newIntent.putExtra("Route")
+                startActivityForResult(newIntent, 0);
             }
         }
     }
