@@ -379,16 +379,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setNotificationListener(){
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
-                if(key.equals("send_request")){
-                    Intent intent = new Intent(this,AcceptActivity.class);
-                   // intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("email_address",value.toString());
-                    startActivity(intent);
-                }
-                Log.d("MainActivity: ", "Key: " + key + " Value: " + value);
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            for(String value: intent.getExtras().keySet())
+                Log.d("myomy", value);
+            // Team invitation
+            if(intent.getStringExtra(getString(R.string.message_type)).equals(getString(R.string.team_invitation))) {
+                Intent newIntent = new Intent(this, AcceptActivity.class);
+                newIntent.putExtra("email_address", intent.getStringExtra("senderEmail"));
+                newIntent.putExtra("sender_name", intent.getStringExtra("senderName"));
+                startActivityForResult(newIntent, 0);
+            } else if(intent.getStringExtra(getString(R.string.message_type)).equals(getString(R.string.team_walk_invitation))) {
+
             }
         }
     }

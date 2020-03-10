@@ -67,6 +67,10 @@ exports.sendNotification = functions.firestore
                     // Build and send message
                     const message = {
                         notification: {
+                            title: "A friend has sent you an invitation!",
+                            body: "Your friend " + senderName + " has sent you an invitation! Click to accept."
+                        },
+                        data: {
                             messageType: messageType,
                             senderName: senderName,
                             senderEmail: senderEmail
