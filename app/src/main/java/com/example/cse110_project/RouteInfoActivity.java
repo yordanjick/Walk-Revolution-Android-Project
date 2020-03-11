@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
+import com.example.cse110_project.firestore.FirestoreUtil;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -88,7 +89,7 @@ public class RouteInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route_info);
 
         // Test whether from local database or from object
-        RouteEntry routeEntry = (RouteEntry) getIntent().getSerializableExtra(TeamRoutesActivity.ROUTE_EXTRA_NAME);
+        final RouteEntry routeEntry = (RouteEntry) getIntent().getSerializableExtra(TeamRoutesActivity.ROUTE_EXTRA_NAME);
         if (routeEntry != null) {
             showRouteInfo(routeEntry);
         } else {
@@ -115,7 +116,7 @@ public class RouteInfoActivity extends AppCompatActivity {
         }
     }
 
-    private void showRouteInfo(RouteEntry route) {
+    private void showRouteInfo(final RouteEntry route) {
         TextView nameText = findViewById(R.id.name_text);
         nameText.setText(route.getRouteName());
 
@@ -156,6 +157,18 @@ public class RouteInfoActivity extends AppCompatActivity {
         favoriteText.setText(route.getFavorite() == 0 ? "Yes": "No");
         TextView noteText = findViewById(R.id.note_text);
         noteText.setText(route.getNote());
+        Button proposeRouteButton = findViewById(R.id.propose_route_button);
+        proposeRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create new Intent
+                FirestoreUtil.addProposedRoute(route);
+                Intent intent = new Intent(RouteInfoActivity.this, ProposedRouteActivity.class);
+                startActivityForResult(intent, INTENT_ID);
+            }
+        });
+
+
     }
 
     @Override

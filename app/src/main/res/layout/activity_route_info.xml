@@ -267,6 +267,12 @@
                 android:layout_height="wrap_content"
                 android:text="Start" />
 
+            <Button
+                android:id="@+id/propose_route_button"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="Propose Walk" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
