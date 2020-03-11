@@ -5,13 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
@@ -28,6 +32,8 @@ public class RouteInfoActivity extends AppCompatActivity {
     private UpdateRouteTask updateRouteTask;
     private int routeId;
     private RouteEntry route;
+    private int mYear, mMonth, mDay, mHour, mMinute;
+    private String proposedDate, proposedTime;
 
     private class RetrieveRouteTask extends AsyncTask<Integer, String, RouteEntry> {
 
@@ -161,14 +167,41 @@ public class RouteInfoActivity extends AppCompatActivity {
         proposeRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create new Intent
-                FirestoreUtil.addProposedRoute(route);
-                Intent intent = new Intent(RouteInfoActivity.this, ProposedRouteActivity.class);
-                startActivityForResult(intent, INTENT_ID);
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(RouteInfoActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                proposedDate = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
+                                final Calendar c = Calendar.getInstance();
+                                mHour = c.get(Calendar.HOUR_OF_DAY);
+                                mMinute = c.get(Calendar.MINUTE);
+
+                                // Launch Time Picker Dialog
+                                TimePickerDialog timePickerDialog = new TimePickerDialog(RouteInfoActivity.this,
+                                        new TimePickerDialog.OnTimeSetListener() {
+                                            @Override
+                                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                                proposedTime = hourOfDay + ":" + minute;
+                                                // When Date and Time is set, store to DB then go to proposed Route screen
+                                                FirestoreUtil.addProposedRoute(route, proposedDate, proposedTime);
+                                                Intent intent = new Intent(RouteInfoActivity.this, ProposedRouteActivity.class);
+                                                startActivityForResult(intent, INTENT_ID);
+                                            }
+                                        } , mHour, mMinute, false);
+                                timePickerDialog.show();
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
             }
         });
-
-
     }
 
     @Override

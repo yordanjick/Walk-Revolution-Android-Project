@@ -53,4 +53,10 @@
     <string name="sender_name">senderEmail</string>
     <string name="sender_email">senderName</string>
     <string name="data_message_id">message_id</string>
+
+    <string name="proposed_route_date">Proposed Route Date:</string>
+    <string name="proposed_route_time">Proposed Route Time:</string>
+    <string name="accept_button">Accept</string>
+    <string name="decline_button">Decline</string>
+
 </resources>

@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProposedRouteActivity"></activity>
+        <activity android:name=".ProposedRouteInfoActivity"></activity>
+        <activity android:name=".ProposedRouteActivity" />
         <activity android:name=".MockStepTimeActivity" />
         <activity android:name=".TeamMemberActivity" />
         <activity android:name=".TeamRoutesActivity" />

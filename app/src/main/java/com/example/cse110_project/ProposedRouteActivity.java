@@ -87,6 +87,8 @@ public class ProposedRouteActivity extends AppCompatActivity {
                                 proposedRouteButton.setBackgroundColor(Color.LTGRAY);
                                 proposedRouteButton.setAllCaps(false);
 
+                                final String proposedDate = document.getString("routeDate");
+                                final String proposedTime = document.getString("routeTime");
                                 String name = entry.getRouteName();
                                 String start = entry.getStartPoint();
                                 if (name.length() > MAX_NAME_LEN)
@@ -111,6 +113,12 @@ public class ProposedRouteActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
                                        // TODO: Intent to accept/decline? With team status
+                                        Intent intent = new Intent(ProposedRouteActivity.this
+                                                , ProposedRouteInfoActivity.class);
+                                        intent.putExtra("proposedRoute", entry.getRouteName());
+                                        intent.putExtra("proposedDate", proposedDate);
+                                        intent.putExtra("proposedTime", proposedTime);
+                                        startActivity(intent);
                                     }
                                 });
                                 relativeLayout.addView(proposedRouteButton);

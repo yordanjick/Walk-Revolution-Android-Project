@@ -23,7 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class TeamMemberActivity extends AppCompatActivity {
-    private static final int MAX_NAME_LEN = 15, MAX_START_LEN = 10, TEXT_EMPTY = 3;
+    private static final int MAX_NAME_LEN = 25, MAX_START_LEN = 10, TEXT_EMPTY = 3;
     private static final String ELLIPSE = "...";
     private static final int PADDING = 10, MARGIN = 20;
     private static String userEmail=WWRApplication.getUserAccount().getEmail();
@@ -78,7 +78,14 @@ public class TeamMemberActivity extends AppCompatActivity {
 
                                 // Initial text view
                                 TextView initialView = new TextView(TeamMemberActivity.this);
-                                initialView.setText("TT");
+
+                                String firstName = document.getString("first_name");
+                                String lastName = document.getString("last_name");
+                                StringBuilder sb = new StringBuilder();
+                                sb.append(firstName.charAt(0)).append(lastName.charAt(0));
+                                String initials = sb.toString();
+                                initials.toUpperCase();
+                                initialView.setText(initials);
                                 initialView.setBackgroundColor(Color.RED);
                                 initialView.setTextSize(20);
                                 initialView.setWidth(100);
@@ -92,8 +99,6 @@ public class TeamMemberActivity extends AppCompatActivity {
                                 teamMember.setBackgroundColor(Color.LTGRAY);
                                 teamMember.setAllCaps(false);
 
-                                String firstName = document.getString("first_name");
-                                String lastName = document.getString("last_name");
                                 String name = firstName + " " + lastName;
                                 if (name.length() > MAX_NAME_LEN)
                                     name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;
