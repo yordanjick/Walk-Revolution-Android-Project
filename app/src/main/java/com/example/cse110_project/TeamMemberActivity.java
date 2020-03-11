@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -64,6 +65,7 @@ public class TeamMemberActivity extends AppCompatActivity {
                                        });
         final LinearLayout teamMemberList = findViewById(R.id.team_member_list_layout);
         final FloatingActionButton inviteButton = (FloatingActionButton) findViewById(R.id.invite_button);
+        final Button proposedRoutesButton = (Button) findViewById(R.id.proposed_routes_button);
         usersRef
                 .whereEqualTo("team_id", teamId)
                 .get()
@@ -130,10 +132,12 @@ public class TeamMemberActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
+        proposedRoutesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TeamMemberActivity.this, ProposedRouteActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
     }
 }

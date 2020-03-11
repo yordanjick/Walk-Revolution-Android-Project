@@ -58,5 +58,6 @@
     <string name="proposed_route_time">Proposed Route Time:</string>
     <string name="accept_button">Accept</string>
     <string name="decline_button">Decline</string>
+    <string name="proposed_routes">Proposed Routes</string>
 
 </resources>
