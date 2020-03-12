@@ -20,9 +20,11 @@ import com.example.cse110_project.firestore.FirestoreUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 public class ProposedRouteActivity extends AppCompatActivity {
@@ -113,6 +115,7 @@ public class ProposedRouteActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
                                        // TODO: Intent to accept/decline? With team status
+
                                         Intent intent = new Intent(ProposedRouteActivity.this
                                                 , ProposedRouteInfoActivity.class);
                                         intent.putExtra("proposedRoute", entry.getRouteName());
@@ -135,5 +138,7 @@ public class ProposedRouteActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+
     }
 }

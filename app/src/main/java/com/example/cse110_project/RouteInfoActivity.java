@@ -1,5 +1,6 @@
 package com.example.cse110_project;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,8 +22,15 @@ import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.database.RouteEntryDAO;
 import com.example.cse110_project.database.RouteEntryDatabase;
 import com.example.cse110_project.firestore.FirestoreUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class RouteInfoActivity extends AppCompatActivity {
@@ -34,6 +42,7 @@ public class RouteInfoActivity extends AppCompatActivity {
     private RouteEntry route;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String proposedDate, proposedTime;
+    public static String teamId;
 
     private class RetrieveRouteTask extends AsyncTask<Integer, String, RouteEntry> {
 
@@ -199,6 +208,51 @@ public class RouteInfoActivity extends AppCompatActivity {
                                 timePickerDialog.show();
                             }
                         }, mYear, mMonth, mDay);
+
+
+
+                final CollectionReference usersRef = FirestoreUtil.USERS_REF;
+
+                usersRef
+                        .whereEqualTo("email", WWRApplication.getUserAccount().getEmail())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    for(QueryDocumentSnapshot document : task.getResult()){
+                                        teamId=document.getString("team_id");
+                                    }
+                                }
+                            }
+                        });
+                usersRef
+                        .whereEqualTo("team_id", teamId)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d("docResultsforPropose", document.getId() + " => " + document.getData());
+
+
+                                        String firstName = document.getString("first_name");
+                                        String lastName = document.getString("last_name");
+                                        String email = document.getString("email");
+                                        FirebaseFirestore database = FirebaseFirestore.getInstance();
+                                        HashMap<String, String> data = new HashMap<>();
+                                        data.put(getString(R.string.message_type), getString(R.string.team_walk_invitation));
+                                        data.put("receiverName", firstName+" "+lastName);
+                                        data.put("receiverEmail", email);
+                                        data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
+                                        database.collection("messages")
+                                                .add(data);
+
+                                    }
+                                }
+                            }
+                        });
                 datePickerDialog.show();
             }
         });
