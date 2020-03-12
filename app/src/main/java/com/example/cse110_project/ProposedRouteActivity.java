@@ -44,7 +44,8 @@ public class ProposedRouteActivity extends AppCompatActivity {
 
         final CollectionReference usersRef = FirestoreUtil.USERS_REF;
         final CollectionReference proposedRouteRef = FirestoreUtil.PROPOSED_ROUTES_REF;
-
+        Intent intent=getIntent();
+        final String emailAddress=intent.getStringExtra("email_address");
         usersRef
                 .whereEqualTo("email", userEmail)
                 .get()
@@ -91,6 +92,10 @@ public class ProposedRouteActivity extends AppCompatActivity {
 
                                 final String proposedDate = document.getString("routeDate");
                                 final String proposedTime = document.getString("routeTime");
+                                final String acccept_name=document.getString("accept_name");
+                                
+                                TextView accept=findViewById(R.id.proposed_accept);
+                                accept.setText(acccept_name+ " accept the proposed walk");
                                 String name = entry.getRouteName();
                                 String start = entry.getStartPoint();
                                 if (name.length() > MAX_NAME_LEN)
@@ -116,12 +121,13 @@ public class ProposedRouteActivity extends AppCompatActivity {
                                     public void onClick(View v) {
                                        // TODO: Intent to accept/decline? With team status
 
-                                        Intent intent = new Intent(ProposedRouteActivity.this
+                                        Intent nintent = new Intent(ProposedRouteActivity.this
                                                 , ProposedRouteInfoActivity.class);
-                                        intent.putExtra("proposedRoute", entry.getRouteName());
-                                        intent.putExtra("proposedDate", proposedDate);
-                                        intent.putExtra("proposedTime", proposedTime);
-                                        startActivity(intent);
+                                        nintent.putExtra("proposedRoute", entry.getRouteName());
+                                        nintent.putExtra("proposedDate", proposedDate);
+                                        nintent.putExtra("proposedTime", proposedTime);
+                                        nintent.putExtra("emailAddress",emailAddress);
+                                        startActivity(nintent);
                                     }
                                 });
                                 relativeLayout.addView(proposedRouteButton);
@@ -141,4 +147,6 @@ public class ProposedRouteActivity extends AppCompatActivity {
 
 
     }
+
+
 }
