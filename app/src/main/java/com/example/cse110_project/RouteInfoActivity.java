@@ -210,7 +210,6 @@ public class RouteInfoActivity extends AppCompatActivity {
                         }, mYear, mMonth, mDay);
 
 
-
                 final CollectionReference usersRef = FirestoreUtil.USERS_REF;
 
                 usersRef
@@ -257,9 +256,12 @@ public class RouteInfoActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
                 datePickerDialog.show();
+
             }
         });
+
     }
 
     @Override

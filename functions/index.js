@@ -72,13 +72,19 @@ exports.sendNotification = functions.firestore
                     console.log("token: ", token);
 
                     // Build and send message
-                    let sentence="has sent you an invitation! Click to accept.";
+                    let sentence=" has sent you an invitation! Click to accept.";
                     if(messageType==="Team Walk Invitation"){
                     sentence=" proposed "+ routeName+" on "+month+" "+day+" at "+hour;
                     }
+                    else if(messageType==="Accept Proposal"){
+                    sentence=" accepts the proposal"
+                    }
+                    else if(messageType==="Decline Proposal"){
+                    sentence=" declines the proposal"
+                    }
                     const message = {
                         notification: {
-                            title: "A friend has sent you an invitation!",
+                            title: "New Event!",
                             body: "Your friend " + senderName + sentence
                         },
                         data: {

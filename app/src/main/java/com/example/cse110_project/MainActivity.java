@@ -381,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(newIntent, 0);
             } else if(intent.getStringExtra(getString(R.string.message_type)).equals(getString(R.string.team_walk_invitation))) {
                 Intent newIntent =new Intent(this,AcceptActivity.class);
+                newIntent.putExtra("email_address", intent.getStringExtra("senderEmail"));
                // newIntent.putExtra("Route")
                 startActivityForResult(newIntent, 0);
             }

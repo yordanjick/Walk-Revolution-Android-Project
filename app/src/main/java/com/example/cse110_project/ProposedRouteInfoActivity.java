@@ -30,7 +30,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         TextView proposedRouteTime = (TextView) findViewById(R.id.proposed_time);
         proposedRouteTime.setText(proposedTime);
 
-
+        
         // TODO: LIST OF TEAM MEMBERS WITH THEIR STATUS FOR PROPOSED WALK
         // TODO: Can also had route info but don't know if there is room?
 

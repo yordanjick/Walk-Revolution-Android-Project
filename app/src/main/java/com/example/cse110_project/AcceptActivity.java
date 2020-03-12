@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.team.UserDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class AcceptActivity extends AppCompatActivity {
 
@@ -20,7 +23,8 @@ public class AcceptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accept);
         Intent intent=getIntent();
         final String emailAddress=intent.getStringExtra("email_address");
-        if(emailAddress!=null) {
+        final String senderName=intent.getStringExtra("sender_name");
+        if(senderName!=null) {
             TextView textView = findViewById(R.id.request_from);
             textView.setText(emailAddress);
 
@@ -45,12 +49,22 @@ public class AcceptActivity extends AppCompatActivity {
         else{
             TextView textView = findViewById(R.id.request_from);
             textView.setText("Proposed Routes");
+            final FirebaseFirestore database = FirebaseFirestore.getInstance();
+            final HashMap<String, String> data = new HashMap<>();
+
+            data.put("receiverName", "");
+            data.put("receiverEmail", emailAddress);
+            data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
+
+
 
             Button accept = findViewById(R.id.accept_button);
             accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    data.put(getString(R.string.message_type), "Accept Proposal");
+                    database.collection("messages")
+                            .add(data);
                     finish();
                 }
             });
@@ -59,6 +73,9 @@ public class AcceptActivity extends AppCompatActivity {
             decline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    data.put(getString(R.string.message_type), "Decline Proposal");
+                    database.collection("messages")
+                            .add(data);
                     finish();
                 }
             });
