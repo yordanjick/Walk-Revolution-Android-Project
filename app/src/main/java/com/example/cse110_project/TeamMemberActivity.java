@@ -27,14 +27,14 @@ public class TeamMemberActivity extends AppCompatActivity {
     private static final int MAX_NAME_LEN = 25, MAX_START_LEN = 10, TEXT_EMPTY = 3;
     private static final String ELLIPSE = "...";
     private static final int PADDING = 10, MARGIN = 20;
-    private static String userEmail=WWRApplication.getUserAccount().getEmail();
+    private static String userEmail;
     private static String teamId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_member);
-
+        userEmail=WWRApplication.getUserAccount().getEmail();
 
         final CollectionReference usersRef = FirestoreUtil.USERS_REF;
        // usersRef.document(email).collection(FirestoreUtil.ROUTES_KEY);
