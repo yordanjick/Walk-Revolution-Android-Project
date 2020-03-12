@@ -34,6 +34,8 @@ public class WWRApplication extends Application {
 
     public static boolean isLoggedIn() { return loggedIn; }
 
+    public static String getEmailKey() { return userAccount.getEmail().replace('.',','); }
+
     public static GoogleSignInAccount getUserAccount() { return userAccount; }
 
     public static void setUserAccount(GoogleSignInAccount account) {

@@ -27,14 +27,14 @@ public class TeamMemberActivity extends AppCompatActivity {
     private static final int MAX_NAME_LEN = 25, MAX_START_LEN = 10, TEXT_EMPTY = 3;
     private static final String ELLIPSE = "...";
     private static final int PADDING = 10, MARGIN = 20;
-    private static String userEmail;
+    private String userEmail;
     private static String teamId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_member);
-        userEmail=WWRApplication.getUserAccount().getEmail();
+        userEmail = WWRApplication.getUserAccount().getEmail();
 
         final CollectionReference usersRef = FirestoreUtil.USERS_REF;
        // usersRef.document(email).collection(FirestoreUtil.ROUTES_KEY);
@@ -50,6 +50,9 @@ public class TeamMemberActivity extends AppCompatActivity {
         data2.put("teamID", 1);
         usersRef.document("User2").set(data2);
         */
+        final LinearLayout teamMemberList = findViewById(R.id.team_member_list_layout);
+        final FloatingActionButton inviteButton = (FloatingActionButton) findViewById(R.id.invite_button);
+        final Button proposedRoutesButton = (Button) findViewById(R.id.proposed_routes_button);
         usersRef
                 .whereEqualTo("email", userEmail)
                 .get()
@@ -58,71 +61,70 @@ public class TeamMemberActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
                                 for(QueryDocumentSnapshot document : task.getResult()){
-                                    teamId=document.getString("team_id");
+                                    teamId = document.getString("team_id");
+
+                                    usersRef
+                                            .whereEqualTo("team_id", teamId)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            Log.d("docResults", document.getId() + " => " + document.getData());
+                                                            RelativeLayout relativeLayout = new RelativeLayout(TeamMemberActivity.this);
+                                                            final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                                                            // Initial text view
+                                                            TextView initialView = new TextView(TeamMemberActivity.this);
+
+                                                            String firstName = document.getString("first_name");
+                                                            String lastName = document.getString("last_name");
+                                                            StringBuilder sb = new StringBuilder();
+                                                            sb.append(firstName.charAt(0)).append(lastName.charAt(0));
+                                                            String initials = sb.toString();
+                                                            initials.toUpperCase();
+                                                            initialView.setText(initials);
+                                                            initialView.setBackgroundColor(Color.RED);
+                                                            initialView.setTextSize(20);
+                                                            initialView.setWidth(100);
+                                                            initialView.setHeight(89);
+                                                            //initialView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                                            initialView.setGravity(Gravity.CENTER);
+
+                                                            relativeLayout.addView(initialView);
+
+                                                            TextView teamMember = new TextView(TeamMemberActivity.this);
+                                                            teamMember.setBackgroundColor(Color.LTGRAY);
+                                                            teamMember.setAllCaps(false);
+
+                                                            String name = firstName + " " + lastName;
+                                                            if (name.length() > MAX_NAME_LEN)
+                                                                name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;
+                                                            teamMember.setText(String.format(name));
+                                                            teamMember.setTypeface(Typeface.MONOSPACE);
+                                                            teamMember.setLetterSpacing(0);
+                                                            teamMember.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
+
+                                                            relativeLayout.addView(teamMember);
+
+                                                            params.addRule(RelativeLayout.RIGHT_OF, initialView.getId());
+                                                            params.addRule(RelativeLayout.END_OF, initialView.getId());
+                                                            params.setMargins(100,0,0,0);
+                                                            teamMember.setLayoutParams(params);
+
+                                                            teamMemberList.addView(relativeLayout);
+                                                        }
+                                                    } else {
+                                                        Log.d("docError", "Error getting documents: ", task.getException());
+                                                    }
+                                                }
+                                            });
                                 }
                             }
-                                           }
-                                       });
-        final LinearLayout teamMemberList = findViewById(R.id.team_member_list_layout);
-        final FloatingActionButton inviteButton = (FloatingActionButton) findViewById(R.id.invite_button);
-        final Button proposedRoutesButton = (Button) findViewById(R.id.proposed_routes_button);
-        usersRef
-                .whereEqualTo("team_id", teamId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("docResults", document.getId() + " => " + document.getData());
-                                RelativeLayout relativeLayout = new RelativeLayout(TeamMemberActivity.this);
-                                final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-                                // Initial text view
-                                TextView initialView = new TextView(TeamMemberActivity.this);
-
-                                String firstName = document.getString("first_name");
-                                String lastName = document.getString("last_name");
-                                StringBuilder sb = new StringBuilder();
-                                sb.append(firstName.charAt(0)).append(lastName.charAt(0));
-                                String initials = sb.toString();
-                                initials.toUpperCase();
-                                initialView.setText(initials);
-                                initialView.setBackgroundColor(Color.RED);
-                                initialView.setTextSize(20);
-                                initialView.setWidth(100);
-                                initialView.setHeight(89);
-                                //initialView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                initialView.setGravity(Gravity.CENTER);
-
-                                relativeLayout.addView(initialView);
-
-                                TextView teamMember = new TextView(TeamMemberActivity.this);
-                                teamMember.setBackgroundColor(Color.LTGRAY);
-                                teamMember.setAllCaps(false);
-
-                                String name = firstName + " " + lastName;
-                                if (name.length() > MAX_NAME_LEN)
-                                    name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;
-                                teamMember.setText(String.format(name));
-                                teamMember.setTypeface(Typeface.MONOSPACE);
-                                teamMember.setLetterSpacing(0);
-                                teamMember.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
-
-                                relativeLayout.addView(teamMember);
-
-                                params.addRule(RelativeLayout.RIGHT_OF, initialView.getId());
-                                params.addRule(RelativeLayout.END_OF, initialView.getId());
-                                params.setMargins(100,0,0,0);
-                                teamMember.setLayoutParams(params);
-
-                                teamMemberList.addView(relativeLayout);
-                            }
-                        } else {
-                            Log.d("docError", "Error getting documents: ", task.getException());
-                        }
                     }
                 });
+
 
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override

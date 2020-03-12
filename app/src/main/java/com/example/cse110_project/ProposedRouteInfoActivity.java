@@ -25,9 +25,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class ProposedRouteInfoActivity extends AppCompatActivity {
-    private static String userEmail=WWRApplication.getUserAccount().getEmail();
+    private String userEmail = WWRApplication.getUserAccount().getEmail();
     private static String teamId;
     public static String accept_name;
     public static String decline_name;
@@ -52,9 +53,10 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         TextView proposedRouteTime = (TextView) findViewById(R.id.proposed_time);
         proposedRouteTime.setText(proposedTime);
 
+        Button walk = findViewById(R.id.walk_button);
+        walk.setVisibility(View.GONE);
 
-
-        updateAccDecName();
+        updateAccDecName(walk);
         final FirebaseFirestore firestore=FirebaseFirestore.getInstance();
 
 
@@ -67,11 +69,11 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         data.put("receiverEmail", emailAddress);
         data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
 
-       // String user_Email=WWRApplication.getUserAccount().getEmail();
-        Button walk=findViewById(R.id.walk_button);
-        walk.setVisibility(View.GONE);
-       /* if(host_email.equals(user_Email))
-            walk.setVisibility(View.VISIBLE);*/
+       String user_Email = WWRApplication.getUserAccount().getEmail();
+
+       Log.d("ProposedRouteInfo", "Accept name: " + accept_name);
+       Log.d("ProposedRouteInfo", "Host email: " + host_email);
+       Log.d("ProposedRouteInfo", "User email: " + user_Email);
 
 
         Button accept = findViewById(R.id.accept_button);
@@ -92,7 +94,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 firestore.collection("proposedRoutes").document(proposedRoute)
-                        .update("decline_name",decline_name+" "+WWRApplication.getUserAccount().getGivenName()+",");
+                        .update("decline_name",decline_name+" "+ WWRApplication.getUserAccount().getGivenName()+",");
                 data.put(getString(R.string.message_type), "Decline Proposal");
                 database.collection("messages")
                         .add(data);
@@ -105,7 +107,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
 
     }
 
-    public static void updateAccDecName(){
+    public void updateAccDecName(final View view){
         final CollectionReference usersRef = FirestoreUtil.USERS_REF;
         final CollectionReference proposedRouteRef = FirestoreUtil.PROPOSED_ROUTES_REF;
         usersRef
@@ -116,11 +118,13 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot document : task.getResult()){
-                                teamId=document.getString("team_id");
+                                teamId = document.getString("team_id");
                             }
                         }
                     }
                 });
+        Log.d("ProposedRouteInfo", "user email: " + userEmail);
+        Log.d("ProposedRouteInfo", "team id: " + teamId);
         proposedRouteRef
                 .whereEqualTo("team_id", teamId)
                 .get()
@@ -129,11 +133,14 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("ProposedRouteInfo", document.getData().toString());
                                 // final RouteEntry entry = document.toObject(RouteEntry.class);
 
                                 accept_name = document.getString("accept_name");
-                                decline_name=document.getString("decline_name");
-                                host_email=document.getString("userEmail");
+                                decline_name = document.getString("decline_name");
+                                host_email = document.getString("hostEmail");
+                                if(host_email.equals(userEmail))
+                                    view.setVisibility(View.VISIBLE);
                             }
                         }else{
                                 Log.d("docError", "Error getting documents: ", task.getException());
@@ -141,7 +148,6 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
 
                     }
                 });
-
-        }
+    }
 
 }
