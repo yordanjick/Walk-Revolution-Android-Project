@@ -31,6 +31,13 @@ exports.sendNotification = functions.firestore
         const messageType = document.messageType;
         console.log("messageType: ", messageType);
 
+        const routeName=document.routeName;
+
+        const month=document.month;
+
+        const day=document.day;
+
+        const hour=document.hour;
         // TODO check message type accordingly
 
         //query the users node and get the name of the user who sent the message
@@ -65,10 +72,14 @@ exports.sendNotification = functions.firestore
                     console.log("token: ", token);
 
                     // Build and send message
+                    let sentence="has sent you an invitation! Click to accept.";
+                    if(messageType==="Team Walk Invitation"){
+                    sentence=" proposed "+ routeName+" on "+month+" "+day+" at "+hour;
+                    }
                     const message = {
                         notification: {
                             title: "A friend has sent you an invitation!",
-                            body: "Your friend " + senderName + " has sent you an invitation! Click to accept."
+                            body: "Your friend " + senderName + sentence
                         },
                         data: {
                             messageType: messageType,

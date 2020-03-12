@@ -246,6 +246,10 @@ public class RouteInfoActivity extends AppCompatActivity {
                                         data.put("receiverName", firstName+" "+lastName);
                                         data.put("receiverEmail", email);
                                         data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
+                                        data.put("routeName",route.getRouteName());
+                                        data.put("month",((Integer)mMonth).toString());
+                                        data.put("day",((Integer)mDay).toString());
+                                        data.put("hour",((Integer)mHour).toString());
                                         database.collection("messages")
                                                 .add(data);
 
