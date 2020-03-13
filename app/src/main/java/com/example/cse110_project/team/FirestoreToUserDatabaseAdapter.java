@@ -2,6 +2,7 @@ package com.example.cse110_project.team;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_project.WWRApplication;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,6 +54,7 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
                         return;
                     } else {
                         Map<String, String> newUserData = newUser(account, token);
+                        WWRApplication.setUserData(newUserData);
                         users.document(account.getEmail().replace('.', ',')).set(newUserData);
                     }
                 }

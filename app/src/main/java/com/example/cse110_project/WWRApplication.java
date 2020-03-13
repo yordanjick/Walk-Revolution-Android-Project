@@ -7,9 +7,12 @@ import com.example.cse110_project.team.UserDatabase;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Map;
+
 public class WWRApplication extends Application {
     private static UserDatabase userDatabase;
     private static GoogleSignInAccount userAccount;
+    private static Map<String, String> userData;
     private static boolean loggedIn = false;
 
     static String COLLECTION_KEY = "users";
@@ -42,4 +45,10 @@ public class WWRApplication extends Application {
         loggedIn = true;
         userAccount = account;
     }
+
+    public static void setUserData(Map<String, String> newUserData) {
+        userData = newUserData;
+    }
+
+    public static Map<String, String> getUserData() { return userData; }
 }

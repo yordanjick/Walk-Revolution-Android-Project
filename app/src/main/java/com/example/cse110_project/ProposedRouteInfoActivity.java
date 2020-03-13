@@ -19,10 +19,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ProposedRouteInfoActivity extends AppCompatActivity {
     private String userEmail = WWRApplication.getUserAccount().getEmail();
     private static String teamId;
+    public static Map<String, Map<String, String>> acceptedUsers;
+    public static Map<String, Map<String, String>> declinedUsers;
     public static String accept_name;
     public static String decline_name;
     public static String host_email;
@@ -34,7 +37,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // final RouteEntry routeEntry = (RouteEntry) getIntent().getSerializableExtra(ProposedRouteActivity.ROUTE_EXTRA_NAME);
         final String proposedRoute = intent.getStringExtra("proposedRoute");
-        String proposedDate = intent.getStringExtra("proposedDate");
+        final String proposedDate = intent.getStringExtra("proposedDate");
         String proposedTime = intent.getStringExtra("proposedTime");
         String emailAddress=intent.getStringExtra("emailAddress");
         TextView routeTitle = (TextView) findViewById(R.id.proposed_route_name);
@@ -176,8 +179,23 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                acceptedUsers.put(WWRApplication.getEmailKey(), WWRApplication.getUserData());
+                if(declinedUsers.containsKey(WWRApplication.getEmailKey()))
+                    declinedUsers.remove(WWRApplication.getEmailKey());
+
                 firestore.collection("proposedRoutes").document(proposedRoute)
-                        .update("accept_name",accept_name+" "+WWRApplication.getUserAccount().getGivenName()+",");
+                        .update("acceptedUsers", acceptedUsers);
+                        
+                 */
+                if(!accept_name.contains(WWRApplication.getUserAccount().getGivenName())) {
+                    firestore.collection("proposedRoutes").document(proposedRoute)
+                            .update("accept_name",accept_name+" "+WWRApplication.getUserAccount().getGivenName()+",");
+                }
+                if(decline_name.contains(WWRApplication.getUserAccount().getGivenName())) {
+                    firestore.collection("proposedRoutes").document(proposedRoute)
+                            .update("decline_name", decline_name.replace(WWRApplication.getUserAccount().getGivenName(), ""));
+                }
                 data.put(getString(R.string.message_type), "Accept Proposal");
                 database.collection("messages")
                         .add(data);
@@ -189,8 +207,14 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firestore.collection("proposedRoutes").document(proposedRoute)
-                        .update("decline_name",decline_name+" "+ WWRApplication.getUserAccount().getGivenName()+",");
+                if(!decline_name.contains(WWRApplication.getUserAccount().getGivenName())) {
+                    firestore.collection("proposedRoutes").document(proposedRoute)
+                            .update("decline_name",decline_name + " " + WWRApplication.getUserAccount().getGivenName()+",");
+                }
+                if(accept_name.contains(WWRApplication.getUserAccount().getGivenName())) {
+                    firestore.collection("proposedRoutes").document(proposedRoute)
+                            .update("accept_name", accept_name.replace(WWRApplication.getUserAccount().getGivenName(), ""));
+                }
                 data.put(getString(R.string.message_type), "Decline Proposal");
                 database.collection("messages")
                         .add(data);
