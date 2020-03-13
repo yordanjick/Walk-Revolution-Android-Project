@@ -115,8 +115,9 @@ public class ProposedRouteActivity extends AppCompatActivity {
                                         accept.setText("No one accepted the proposed route");
                                     }
                                     TextView decline=findViewById(R.id.proposed_decline);
+
                                     if(declined_name != "") {
-                                        decline.setText(declined_name);
+                                        decline.setText(declined_name+" declined the proposed route");
                                     }
                                     String name = entry.getRouteName();
                                     String start = entry.getStartPoint();
