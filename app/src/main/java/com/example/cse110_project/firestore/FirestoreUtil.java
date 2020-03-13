@@ -77,6 +77,8 @@ public class FirestoreUtil {
                         proposedRoute.put("hostEmail", WWRApplication.getUserAccount().getEmail());
                         proposedRoute.put("accept_name", "");
                         proposedRoute.put("decline_name","");
+                        proposedRoute.put("status","");
+                        proposedRoute.put("route_name",route.getRouteName());
                         PROPOSED_ROUTES_REF.document(route.getRouteName()).set(proposedRoute);
                     }
                 });
