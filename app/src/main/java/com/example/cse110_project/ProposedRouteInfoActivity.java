@@ -18,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 public class ProposedRouteInfoActivity extends AppCompatActivity {
@@ -26,6 +28,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
     public static String accept_name;
     public static String decline_name;
     public static String host_email;
+    public static String status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +45,16 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
 
         TextView proposedRouteDate = (TextView) findViewById(R.id.proposed_date);
         proposedRouteDate.setText(proposedDate);
+        final FirebaseFirestore firestore=FirebaseFirestore.getInstance();
 
-        TextView schedulewith=findViewById(R.id.schwith_View);
         Button schedulebutton=findViewById(R.id.schedule_button);
         schedulebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                firestore.collection("proposedRoutes").document(proposedRoute)
+                        .update("status","scheduled");
+
+
                 final CollectionReference usersRef = FirestoreUtil.USERS_REF;
 
                 usersRef
@@ -100,6 +107,8 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                firestore.collection("proposedRoutes").document(proposedRoute)
+                        .update("status","withdrawn");
                 final CollectionReference usersRef = FirestoreUtil.USERS_REF;
 
                 usersRef
@@ -145,17 +154,18 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
             }
         });
         TextView proposedRouteTime = (TextView) findViewById(R.id.proposed_time);
-        proposedRouteTime.setText(proposedTime);
+
 
         Button walk = findViewById(R.id.schedule_button);
         walk.setVisibility(View.GONE);
         Button cancelwalk=findViewById(R.id.cancel_walk_button);
         cancelwalk.setVisibility(View.GONE);
 
-        updateAccDecName(walk,cancelwalk);
-        final FirebaseFirestore firestore=FirebaseFirestore.getInstance();
 
 
+
+        TextView schedulewith=findViewById(R.id.schwith_View);
+        //schedulewith.setText(status);
         // TODO: LIST OF TEAM MEMBERS WITH THEIR STATUS FOR PROPOSED WALK PUT NAME BACK
 
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -197,13 +207,13 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                 finish();
             }
         });
-        
+        updateAccDecName(walk,cancelwalk,schedulewith);
 
 
 
     }
 
-    public void updateAccDecName(final View view,final View view2){
+    public void updateAccDecName(final View view, final View view2, final TextView view3){
         final CollectionReference usersRef = FirestoreUtil.USERS_REF;
         final CollectionReference proposedRouteRef = FirestoreUtil.PROPOSED_ROUTES_REF;
         usersRef
@@ -231,6 +241,8 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                                                         accept_name = document.getString("accept_name");
                                                         decline_name = document.getString("decline_name");
                                                         host_email = document.getString("hostEmail");
+                                                        status=document.getString("status");
+                                                        view3.setText(status);
                                                         if(host_email.equals(userEmail)) {
                                                             view.setVisibility(View.VISIBLE);
                                                             view2.setVisibility(View.VISIBLE);
