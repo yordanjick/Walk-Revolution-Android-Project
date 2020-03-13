@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,8 +27,8 @@ import java.util.Map;
 public class ProposedRouteInfoActivity extends AppCompatActivity {
     private String userEmail = WWRApplication.getUserAccount().getEmail();
     private static String teamId;
-    public static Map<String, Map<String, String>> acceptedUsers;
-    public static Map<String, Map<String, String>> declinedUsers;
+    public static Map<String, Object> acceptedUsers;
+    public static Map<String, Object> declinedUsers;
     public static String accept_name;
     public static String decline_name;
     public static String host_email;
@@ -184,7 +185,6 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
 
        String user_Email = WWRApplication.getUserAccount().getEmail();
 
-       Log.d("ProposedRouteInfo", "Accept name: " + accept_name);
        Log.d("ProposedRouteInfo", "Host email: " + host_email);
        Log.d("ProposedRouteInfo", "User email: " + user_Email);
 
@@ -193,15 +193,20 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+                if(acceptedUsers == null) {
+                    acceptedUsers = new HashMap<>();
+                }
+
                 acceptedUsers.put(WWRApplication.getEmailKey(), WWRApplication.getUserData());
-                if(declinedUsers.containsKey(WWRApplication.getEmailKey()))
+
+                if(declinedUsers != null && declinedUsers.containsKey(WWRApplication.getEmailKey())) {
                     declinedUsers.remove(WWRApplication.getEmailKey());
+                }
 
                 firestore.collection("proposedRoutes").document(proposedRoute)
                         .update("acceptedUsers", acceptedUsers);
-                        
-                 */
+
+                /*
                 if(!accept_name.contains(WWRApplication.getUserAccount().getGivenName())) {
                     firestore.collection("proposedRoutes").document(proposedRoute)
                             .update("accept_name",accept_name+" "+WWRApplication.getUserAccount().getGivenName()+",");
@@ -210,6 +215,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                     firestore.collection("proposedRoutes").document(proposedRoute)
                             .update("decline_name", decline_name.replace(WWRApplication.getUserAccount().getGivenName(), ""));
                 }
+                 */
                 data.put(getString(R.string.message_type), "Accept Proposal");
                 database.collection("messages")
                         .add(data);
@@ -221,6 +227,20 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(declinedUsers == null) {
+                    declinedUsers = new HashMap<>();
+                }
+
+                declinedUsers.put(WWRApplication.getEmailKey(), WWRApplication.getUserData());
+
+                if(acceptedUsers != null && acceptedUsers.containsKey(WWRApplication.getEmailKey())) {
+                    acceptedUsers.remove(WWRApplication.getEmailKey());
+                }
+
+                /*
+                firestore.collection("proposedRoutes").document(proposedRoute)
+                        .update("declinedUsers", declinedUsers);
+
                 if(!decline_name.contains(WWRApplication.getUserAccount().getGivenName())) {
                     firestore.collection("proposedRoutes").document(proposedRoute)
                             .update("decline_name",decline_name + " " + WWRApplication.getUserAccount().getGivenName()+",");
@@ -229,6 +249,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                     firestore.collection("proposedRoutes").document(proposedRoute)
                             .update("accept_name", accept_name.replace(WWRApplication.getUserAccount().getGivenName(), ""));
                 }
+                 */
                 data.put(getString(R.string.message_type), "Decline Proposal");
                 database.collection("messages")
                         .add(data);
@@ -256,7 +277,6 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
 
                                 Log.d("ProposedRouteInfo", "user email: " + userEmail);
                                 Log.d("ProposedRouteInfo", "team id: " + teamId);
-<<<<<<< HEAD
                                 proposedRouteRef
                                         .whereEqualTo("team_id", teamId)
                                         .get()
@@ -280,8 +300,6 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                                                 }else{
                                                     Log.d("docError", "Error getting documents: ", task.getException());
                                                 }
-=======
->>>>>>> 5d25bf982b956ba6ca38e735eb7f0d2a208dc4d8
 
                             }
                         }
@@ -297,9 +315,9 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("ProposedRouteInfo", document.getData().toString());
                                 // final RouteEntry entry = document.toObject(RouteEntry.class);
+                                acceptedUsers = (Map<String, Object>) document.get("acceptedUsers");
+                                declinedUsers = (Map<String, Object>) document.get("declinedUsers");
 
-                                accept_name = document.getString("accept_name");
-                                decline_name = document.getString("decline_name");
                                 host_email = document.getString("hostEmail");
                                 status=document.getString("status");
                                 view3.setText(status);

@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -138,6 +140,8 @@ public class RouteInfoActivity extends AppCompatActivity {
 
         final TextView startText = findViewById(R.id.start_text);
         startText.setText(route.getStartPoint());
+        startText.setTextColor(Color.BLUE);
+        startText.setPaintFlags(startText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         startText.setOnClickListener(new View.OnClickListener() {
             @Override

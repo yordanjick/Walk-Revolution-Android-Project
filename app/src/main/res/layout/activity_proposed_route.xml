@@ -26,13 +26,13 @@
                 android:layout_marginTop="00dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="No one proposed a route" />
 
             <TextView
                 android:id="@+id/proposed_decline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="" />
         </LinearLayout>
     </ScrollView>
 

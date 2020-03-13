@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class ProposedRouteActivity extends AppCompatActivity {
     private static final int MAX_NAME_LEN = 15, MAX_START_LEN = 10, TEXT_EMPTY = 3;
@@ -89,13 +90,34 @@ public class ProposedRouteActivity extends AppCompatActivity {
 
                                     final String proposedDate = document.getString("routeDate");
                                     final String proposedTime = document.getString("routeTime");
-                                    final String acccept_name=document.getString("accept_name");
-                                    final String decline_name=document.getString("decline_name");
+                                    String accepted_name = "";
+                                    String declined_name = "";
+
+                                    Map<String, Map<String, Object>> acceptedUsers = (Map<String, Map<String, Object>>) document.get("acceptedUsers");
+                                    Map<String, Map<String, Object>> declinedUsers = (Map<String, Map<String, Object>>) document.get("declinedUsers");
+
+                                    if(acceptedUsers != null) {
+                                        for(String key : acceptedUsers.keySet()) {
+                                            accepted_name += ", " + acceptedUsers.get(key).get("first_name");
+                                        }
+                                    }
+
+                                    if(declinedUsers != null) {
+                                        for(String key : declinedUsers.keySet()) {
+                                            declined_name += ", " + declinedUsers.get(key).get("first_name");
+                                        }
+                                    }
 
                                     TextView accept=findViewById(R.id.proposed_accept);
-                                    accept.setText(acccept_name+ " accept the proposed walk");
+                                    if(accepted_name != "") {
+                                        accept.setText(accepted_name + " accepted the proposed route");
+                                    } else {
+                                        accept.setText("No one accepted the proposed route");
+                                    }
                                     TextView decline=findViewById(R.id.proposed_decline);
-                                    decline.setText(decline_name);
+                                    if(declined_name != "") {
+                                        decline.setText(declined_name);
+                                    }
                                     String name = entry.getRouteName();
                                     String start = entry.getStartPoint();
                                     if (name.length() > MAX_NAME_LEN)

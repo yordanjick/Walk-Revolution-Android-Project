@@ -50,11 +50,11 @@ public class FirestoreToUserDatabaseAdapter implements UserDatabase {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    Map<String, String> newUserData = newUser(account, token);
+                    WWRApplication.setUserData(newUserData);
                     if(document.exists()) {
                         return;
                     } else {
-                        Map<String, String> newUserData = newUser(account, token);
-                        WWRApplication.setUserData(newUserData);
                         users.document(account.getEmail().replace('.', ',')).set(newUserData);
                     }
                 }
