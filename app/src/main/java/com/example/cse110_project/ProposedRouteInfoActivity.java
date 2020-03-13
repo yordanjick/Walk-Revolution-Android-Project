@@ -119,35 +119,36 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot document : task.getResult()){
                                 teamId = document.getString("team_id");
+
+                                proposedRouteRef
+                                        .whereEqualTo("team_id", teamId)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Log.d("ProposedRouteInfo", document.getData().toString());
+                                                        // final RouteEntry entry = document.toObject(RouteEntry.class);
+
+                                                        accept_name = document.getString("accept_name");
+                                                        decline_name = document.getString("decline_name");
+                                                        host_email = document.getString("hostEmail");
+                                                        if(host_email.equals(userEmail))
+                                                            view.setVisibility(View.VISIBLE);
+                                                    }
+                                                }else{
+                                                    Log.d("docError", "Error getting documents: ", task.getException());
+                                                }
+
+                                            }
+                                        });
                             }
                         }
                     }
                 });
         Log.d("ProposedRouteInfo", "user email: " + userEmail);
         Log.d("ProposedRouteInfo", "team id: " + teamId);
-        proposedRouteRef
-                .whereEqualTo("team_id", teamId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("ProposedRouteInfo", document.getData().toString());
-                                // final RouteEntry entry = document.toObject(RouteEntry.class);
-
-                                accept_name = document.getString("accept_name");
-                                decline_name = document.getString("decline_name");
-                                host_email = document.getString("hostEmail");
-                                if(host_email.equals(userEmail))
-                                    view.setVisibility(View.VISIBLE);
-                            }
-                        }else{
-                                Log.d("docError", "Error getting documents: ", task.getException());
-                        }
-
-                    }
-                });
     }
 
 }
