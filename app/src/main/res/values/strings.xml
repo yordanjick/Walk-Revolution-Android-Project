@@ -29,6 +29,7 @@
     <string name="note_field">Note</string>
     <string name="save_button">Save Route</string>
     <string name="favorite_button">Favorite</string>
+    <string name="checkmark">\u2713</string>
 
     <string name="success_height_msg">Height Successfully Updated</string>
     <string name="error_height_msg">Please enter a valid Height</string>

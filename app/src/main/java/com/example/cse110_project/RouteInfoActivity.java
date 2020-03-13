@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -135,8 +136,21 @@ public class RouteInfoActivity extends AppCompatActivity {
         TextView nameText = findViewById(R.id.name_text);
         nameText.setText(route.getRouteName());
 
-        TextView startText = findViewById(R.id.start_text);
+        final TextView startText = findViewById(R.id.start_text);
         startText.setText(route.getStartPoint());
+
+        startText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String startPoint = route.getStartPoint();
+                Uri gmmIntentUri = Uri.parse("geo:32.8801,117.2340?q=" + startPoint);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
+            }
+        });
 
         TextView stepText = findViewById(R.id.step_text);
         if (route.getSteps() == -1) stepText.setText(UNRECORDED_DATA);
