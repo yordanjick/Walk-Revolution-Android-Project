@@ -56,7 +56,7 @@ public class FirestoreUtil {
         ROUTES_REF.document(route.getUserEmail()).collection(ROUTES_KEY).add(route);
     }
 
-    public static void addProposedRoute(RouteEntry route, String proposedDate, String proposedTime) {
+    public static void addProposedRoute(final RouteEntry route, final String proposedDate, final String proposedTime) {
         USERS_REF
                 .whereEqualTo("email", route.getUserEmail())
                 .get()
@@ -68,18 +68,18 @@ public class FirestoreUtil {
                                 teamId=document.getString("team_id");
                             }
                         }
+
+                        Map<String, Object> proposedRoute = new HashMap<>();
+                        proposedRoute.put("route", route);
+                        proposedRoute.put("team_id", teamId);
+                        proposedRoute.put("routeDate", proposedDate);
+                        proposedRoute.put("routeTime", proposedTime);
+                        proposedRoute.put("hostEmail", WWRApplication.getUserAccount().getEmail());
+                        proposedRoute.put("accept_name", "");
+                        proposedRoute.put("decline_name","");
+                        PROPOSED_ROUTES_REF.document(route.getRouteName()).set(proposedRoute);
                     }
                 });
-
-        Map<String, Object> proposedRoute = new HashMap<>();
-        proposedRoute.put("route", route);
-        proposedRoute.put("team_id", teamId);
-        proposedRoute.put("routeDate", proposedDate);
-        proposedRoute.put("routeTime", proposedTime);
-        proposedRoute.put("hostEmail", WWRApplication.getUserAccount().getEmail());
-        proposedRoute.put("accept_name", "");
-        proposedRoute.put("decline_name","");
-        PROPOSED_ROUTES_REF.document(route.getRouteName()).set(proposedRoute);
     }
 
 }
