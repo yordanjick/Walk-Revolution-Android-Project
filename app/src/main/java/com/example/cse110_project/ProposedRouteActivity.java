@@ -95,7 +95,7 @@ public class ProposedRouteActivity extends AppCompatActivity {
                                     TextView accept=findViewById(R.id.proposed_accept);
                                     accept.setText(acccept_name+ " accept the proposed walk");
                                     TextView decline=findViewById(R.id.proposed_decline);
-                                    decline.setText(decline_name);
+                                    decline.setText(decline_name+" decline the proposed walk");
                                     String name = entry.getRouteName();
                                     String start = entry.getStartPoint();
                                     if (name.length() > MAX_NAME_LEN)
