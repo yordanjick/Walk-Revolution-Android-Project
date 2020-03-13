@@ -29,6 +29,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
     public static String decline_name;
     public static String host_email;
     public static String status;
+    public static String routeName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // final RouteEntry routeEntry = (RouteEntry) getIntent().getSerializableExtra(ProposedRouteActivity.ROUTE_EXTRA_NAME);
         final String proposedRoute = intent.getStringExtra("proposedRoute");
+        routeName=proposedRoute;
         String proposedDate = intent.getStringExtra("proposedDate");
         String proposedTime = intent.getStringExtra("proposedTime");
         String emailAddress=intent.getStringExtra("emailAddress");
@@ -172,7 +174,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         final HashMap<String, String> data = new HashMap<>();
 
         data.put("receiverName", "");
-        data.put("receiverEmail", emailAddress);
+        data.put("receiverEmail", host_email);
         data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
 
        String user_Email = WWRApplication.getUserAccount().getEmail();
@@ -214,9 +216,9 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
     }
 
     public void updateAccDecName(final View view, final View view2, final TextView view3){
-        final CollectionReference usersRef = FirestoreUtil.USERS_REF;
+        //final CollectionReference usersRef = FirestoreUtil.USERS_REF;
         final CollectionReference proposedRouteRef = FirestoreUtil.PROPOSED_ROUTES_REF;
-        usersRef
+        /*usersRef
                 .whereEqualTo("email", userEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -227,35 +229,36 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                                 teamId = document.getString("team_id");
                                 Log.d("ProposedRouteInfo", "user email: " + userEmail);
                                 Log.d("ProposedRouteInfo", "team id: " + teamId);
-                                proposedRouteRef
-                                        .whereEqualTo("team_id", teamId)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        Log.d("ProposedRouteInfo", document.getData().toString());
-                                                        // final RouteEntry entry = document.toObject(RouteEntry.class);
 
-                                                        accept_name = document.getString("accept_name");
-                                                        decline_name = document.getString("decline_name");
-                                                        host_email = document.getString("hostEmail");
-                                                        status=document.getString("status");
-                                                        view3.setText(status);
-                                                        if(host_email.equals(userEmail)) {
-                                                            view.setVisibility(View.VISIBLE);
-                                                            view2.setVisibility(View.VISIBLE);
-                                                        }
-                                                    }
-                                                }else{
-                                                    Log.d("docError", "Error getting documents: ", task.getException());
-                                                }
-
-                                            }
-                                        });
                             }
                         }
+                    }
+                });*/
+        proposedRouteRef
+                .whereEqualTo("route_name", routeName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("ProposedRouteInfo", document.getData().toString());
+                                // final RouteEntry entry = document.toObject(RouteEntry.class);
+
+                                accept_name = document.getString("accept_name");
+                                decline_name = document.getString("decline_name");
+                                host_email = document.getString("hostEmail");
+                                status=document.getString("status");
+                                view3.setText(status);
+                                if(host_email.equals(userEmail)) {
+                                    view.setVisibility(View.VISIBLE);
+                                    view2.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }else{
+                            Log.d("docError", "Error getting documents: ", task.getException());
+                        }
+
                     }
                 });
 
