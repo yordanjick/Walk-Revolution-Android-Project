@@ -226,41 +226,42 @@ public class RouteInfoActivity extends AppCompatActivity {
                                                                 if(task.isSuccessful()){
                                                                     for(QueryDocumentSnapshot document : task.getResult()){
                                                                         teamId=document.getString("team_id");
+                                                                        usersRef
+                                                                                .whereEqualTo("team_id", teamId)
+                                                                                .get()
+                                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                        if (task.isSuccessful()) {
+                                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                                Log.d("docResultsforPropose", document.getId() + " => " + document.getData());
+
+
+                                                                                                String firstName = document.getString("first_name");
+                                                                                                String lastName = document.getString("last_name");
+                                                                                                String email = document.getString("email");
+                                                                                                FirebaseFirestore database = FirebaseFirestore.getInstance();
+                                                                                                HashMap<String, String> data = new HashMap<>();
+                                                                                                data.put(getString(R.string.message_type), getString(R.string.team_walk_invitation));
+                                                                                                data.put("receiverName", firstName+" "+lastName);
+                                                                                                data.put("receiverEmail", email);
+                                                                                                data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
+                                                                                                data.put("routeName",route.getRouteName());
+                                                                                                data.put("month", "0");
+                                                                                                data.put("day",proposedDate);
+                                                                                                data.put("hour",proposedTime);
+                                                                                                database.collection("messages")
+                                                                                                        .add(data);
+
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                });
                                                                     }
                                                                 }
                                                             }
                                                         });
-                                                usersRef
-                                                        .whereEqualTo("team_id", teamId)
-                                                        .get()
-                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                if (task.isSuccessful()) {
-                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                        Log.d("docResultsforPropose", document.getId() + " => " + document.getData());
 
-
-                                                                        String firstName = document.getString("first_name");
-                                                                        String lastName = document.getString("last_name");
-                                                                        String email = document.getString("email");
-                                                                        FirebaseFirestore database = FirebaseFirestore.getInstance();
-                                                                        HashMap<String, String> data = new HashMap<>();
-                                                                        data.put(getString(R.string.message_type), getString(R.string.team_walk_invitation));
-                                                                        data.put("receiverName", firstName+" "+lastName);
-                                                                        data.put("receiverEmail", email);
-                                                                        data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
-                                                                        data.put("routeName",route.getRouteName());
-                                                                        data.put("month", "0");
-                                                                        data.put("day",proposedDate);
-                                                                        data.put("hour",proposedTime);
-                                                                        database.collection("messages")
-                                                                                .add(data);
-
-                                                                    }
-                                                                }
-                                                            }
-                                                        });
 
                                                 Intent intent = new Intent(RouteInfoActivity.this, ProposedRouteActivity.class);
                                                 startActivityForResult(intent, INTENT_ID);
