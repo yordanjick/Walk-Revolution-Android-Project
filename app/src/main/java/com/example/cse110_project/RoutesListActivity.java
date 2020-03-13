@@ -27,7 +27,7 @@ import java.util.Locale;
 public class RoutesListActivity extends AppCompatActivity {
     private static final int MAX_NAME_LEN = 15, MAX_START_LEN = 10, TEXT_EMPTY = 3;
     private static final String UNRECORDED_DATA = "--", ELLIPSE = "...";
-    private static final String ROUTE_FORMAT = "%-" + MAX_NAME_LEN + "s %-"
+    private static final String ROUTE_FORMAT = "%-1s %-" + MAX_NAME_LEN + "s %-"
                                                 + MAX_START_LEN + "s %5s %5s";
     private static final int PADDING = 10, MARGIN = 20;
     public static final String ROUTE_ID = "routeId";
@@ -69,14 +69,17 @@ public class RoutesListActivity extends AppCompatActivity {
                     start = start.substring(0, MAX_START_LEN - TEXT_EMPTY) + ELLIPSE;
                 String steps = UNRECORDED_DATA;
                 String distance = UNRECORDED_DATA;
+                boolean walked = false;
                 if (entry.getSteps() >= 0) {
                     steps = NumberFormatter.formatStep(entry.getSteps());
+                    walked = true;
                 }
                 if (entry.getDistance() >= 0) {
                     distance = NumberFormatter.formatDistance(entry.getDistance());
+                    walked = true;
                 }
 
-                text = String.format(Locale.US, ROUTE_FORMAT, name, start, steps, distance);
+                text = String.format(Locale.US, ROUTE_FORMAT, (walked? getString(R.string.checkmark): " "), name, start, steps, distance);
                 routeButton.setText(text);
                 routeButton.setTypeface(Typeface.MONOSPACE);
                 routeButton.setLetterSpacing(0);

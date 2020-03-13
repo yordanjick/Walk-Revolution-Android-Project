@@ -46,109 +46,107 @@ public class ProposedRouteActivity extends AppCompatActivity {
         final CollectionReference proposedRouteRef = FirestoreUtil.PROPOSED_ROUTES_REF;
         Intent intent=getIntent();
         final String emailAddress=intent.getStringExtra("email_address");
-        usersRef
-                .whereEqualTo("email", userEmail)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document : task.getResult()){
-                                teamId=document.getString("team_id");
-                            }
-                        }
-                    }
-                });
-
         final LinearLayout proposedRouteList = findViewById(R.id.proposed_route_list_layout);
-        proposedRouteRef
-                .whereEqualTo("team_id", teamId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // final RouteEntry entry = document.toObject(RouteEntry.class);
-                                final RouteEntry entry = document.get("route", RouteEntry.class);
-                                RelativeLayout relativeLayout = new RelativeLayout(ProposedRouteActivity.this);
-                                final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-                                // Initial text view
-                                TextView initialView = new TextView(ProposedRouteActivity.this);
-                                initialView.setText(""+Character.toUpperCase(entry.getUserEmail().charAt(0)));
-                                initialView.setBackgroundColor(Color.RED);
-                                initialView.setTextSize(20);
-                                initialView.setWidth(100);
-                                initialView.setHeight(126);
-                                //initialView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                initialView.setGravity(Gravity.CENTER);
-
-                                relativeLayout.addView(initialView);
-
-                                Button proposedRouteButton = new Button(ProposedRouteActivity.this);
-                                proposedRouteButton.setBackgroundColor(Color.LTGRAY);
-                                proposedRouteButton.setAllCaps(false);
-
-                                final String proposedDate = document.getString("routeDate");
-                                final String proposedTime = document.getString("routeTime");
-                                final String acccept_name=document.getString("accept_name");
-                                final String decline_name=document.getString("decline_name");
-
-                                TextView accept=findViewById(R.id.proposed_accept);
-                                accept.setText(acccept_name+ " accept the proposed walk");
-                                TextView decline=findViewById(R.id.proposed_decline);
-                                decline.setText(decline_name);
-                                String name = entry.getRouteName();
-                                String start = entry.getStartPoint();
-                                if (name.length() > MAX_NAME_LEN)
-                                    name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;
-                                if (start.length() > MAX_START_LEN)
-                                    start = start.substring(0, MAX_START_LEN - TEXT_EMPTY) + ELLIPSE;
-                                String steps = UNRECORDED_DATA;
-                                String distance = UNRECORDED_DATA;
-                                if (entry.getSteps() >= 0) {
-                                    steps = NumberFormatter.formatStep(entry.getSteps());
-                                }
-                                if (entry.getDistance() >= 0) {
-                                    distance = NumberFormatter.formatDistance(entry.getDistance());
-                                }
-
-                                proposedRouteButton.setText(String.format(Locale.US, ROUTE_FORMAT, name, start, steps, distance));
-                                proposedRouteButton.setTypeface(Typeface.MONOSPACE);
-                                proposedRouteButton.setLetterSpacing(0);
-                                proposedRouteButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
-
-                                proposedRouteButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                       // TODO: Intent to accept/decline? With team status
-
-                                        Intent nintent = new Intent(ProposedRouteActivity.this
-                                                , ProposedRouteInfoActivity.class);
-                                        nintent.putExtra("proposedRoute", entry.getRouteName());
-                                        nintent.putExtra("proposedDate", proposedDate);
-                                        nintent.putExtra("proposedTime", proposedTime);
-                                        nintent.putExtra("emailAddress",emailAddress);
-                                        startActivity(nintent);
-                                    }
-                                });
-                                relativeLayout.addView(proposedRouteButton);
-
-                                params.addRule(RelativeLayout.RIGHT_OF, initialView.getId());
-                                params.addRule(RelativeLayout.END_OF, initialView.getId());
-                                params.setMargins(100,0,0,0);
-                                proposedRouteButton.setLayoutParams(params);
-
-                                proposedRouteList.addView(relativeLayout);
-                            }
-                        } else {
-                            Log.d("docError", "Error getting documents: ", task.getException());
-                        }
+        usersRef
+            .whereEqualTo("email", userEmail)
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        teamId=document.getString("team_id");
                     }
-                });
 
+                    proposedRouteRef
+                        .whereEqualTo("team_id", teamId)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    // final RouteEntry entry = document.toObject(RouteEntry.class);
+                                    final RouteEntry entry = document.get("route", RouteEntry.class);
+                                    RelativeLayout relativeLayout = new RelativeLayout(ProposedRouteActivity.this);
+                                    final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
+                                    // Initial text view
+                                    TextView initialView = new TextView(ProposedRouteActivity.this);
+                                    initialView.setText(""+Character.toUpperCase(entry.getUserEmail().charAt(0)));
+                                    initialView.setBackgroundColor(Color.RED);
+                                    initialView.setTextSize(20);
+                                    initialView.setWidth(100);
+                                    initialView.setHeight(126);
+                                    //initialView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    initialView.setGravity(Gravity.CENTER);
+
+                                    relativeLayout.addView(initialView);
+
+                                    Button proposedRouteButton = new Button(ProposedRouteActivity.this);
+                                    proposedRouteButton.setBackgroundColor(Color.LTGRAY);
+                                    proposedRouteButton.setAllCaps(false);
+
+                                    final String proposedDate = document.getString("routeDate");
+                                    final String proposedTime = document.getString("routeTime");
+                                    final String acccept_name=document.getString("accept_name");
+                                    final String decline_name=document.getString("decline_name");
+
+                                    TextView accept=findViewById(R.id.proposed_accept);
+                                    accept.setText(acccept_name+ " accept the proposed walk");
+                                    TextView decline=findViewById(R.id.proposed_decline);
+                                    decline.setText(decline_name);
+                                    String name = entry.getRouteName();
+                                    String start = entry.getStartPoint();
+                                    if (name.length() > MAX_NAME_LEN)
+                                        name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;
+                                    if (start.length() > MAX_START_LEN)
+                                        start = start.substring(0, MAX_START_LEN - TEXT_EMPTY) + ELLIPSE;
+                                    String steps = UNRECORDED_DATA;
+                                    String distance = UNRECORDED_DATA;
+                                    if (entry.getSteps() >= 0) {
+                                        steps = NumberFormatter.formatStep(entry.getSteps());
+                                    }
+                                    if (entry.getDistance() >= 0) {
+                                        distance = NumberFormatter.formatDistance(entry.getDistance());
+                                    }
+
+                                    proposedRouteButton.setText(String.format(Locale.US, ROUTE_FORMAT, name, start, steps, distance));
+                                    proposedRouteButton.setTypeface(Typeface.MONOSPACE);
+                                    proposedRouteButton.setLetterSpacing(0);
+                                    proposedRouteButton.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
+
+                                    proposedRouteButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // TODO: Intent to accept/decline? With team status
+
+                                            Intent nintent = new Intent(ProposedRouteActivity.this
+                                                    , ProposedRouteInfoActivity.class);
+                                            nintent.putExtra("proposedRoute", entry.getRouteName());
+                                            nintent.putExtra("proposedDate", proposedDate);
+                                            nintent.putExtra("proposedTime", proposedTime);
+                                            nintent.putExtra("emailAddress",emailAddress);
+                                            startActivity(nintent);
+                                        }
+                                    });
+                                    relativeLayout.addView(proposedRouteButton);
+
+                                    params.addRule(RelativeLayout.RIGHT_OF, initialView.getId());
+                                    params.addRule(RelativeLayout.END_OF, initialView.getId());
+                                    params.setMargins(100,0,0,0);
+                                    proposedRouteButton.setLayoutParams(params);
+
+                                    proposedRouteList.addView(relativeLayout);
+                                }
+                            } else {
+                                Log.d("docError", "Error getting documents: ", task.getException());
+                            }
+                            }
+                        });
+                }
+                }
+            });
     }
 
 

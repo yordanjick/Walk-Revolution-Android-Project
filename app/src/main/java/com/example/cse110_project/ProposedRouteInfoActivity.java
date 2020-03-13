@@ -4,17 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.cse110_project.database.RouteEntry;
 import com.example.cse110_project.firestore.FirestoreUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,8 +19,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 public class ProposedRouteInfoActivity extends AppCompatActivity {
     private String userEmail = WWRApplication.getUserAccount().getEmail();
@@ -50,13 +43,116 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         TextView proposedRouteDate = (TextView) findViewById(R.id.proposed_date);
         proposedRouteDate.setText(proposedDate);
 
+        TextView schedulewith=findViewById(R.id.schwith_View);
+        Button schedulebutton=findViewById(R.id.schedule_button);
+        schedulebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CollectionReference usersRef = FirestoreUtil.USERS_REF;
+
+                usersRef
+                        .whereEqualTo("email", WWRApplication.getUserAccount().getEmail())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    for(QueryDocumentSnapshot document : task.getResult()){
+                                        teamId=document.getString("team_id");
+                                        usersRef
+                                                .whereEqualTo("team_id", teamId)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                Log.d("docResultsforPropose", document.getId() + " => " + document.getData());
+
+
+                                                                String firstName = document.getString("first_name");
+                                                                String lastName = document.getString("last_name");
+                                                                String email = document.getString("email");
+                                                                FirebaseFirestore database = FirebaseFirestore.getInstance();
+                                                                HashMap<String, String> data = new HashMap<>();
+                                                                data.put(getString(R.string.message_type), "schedule walk");
+                                                                data.put("receiverName", firstName+" "+lastName);
+                                                                data.put("receiverEmail", email);
+                                                                data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
+                                                                database.collection("messages")
+                                                                        .add(data);
+
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }
+                            }
+                        });
+
+
+
+            }
+        });
+
+        Button cancelButton=findViewById(R.id.cancel_walk_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CollectionReference usersRef = FirestoreUtil.USERS_REF;
+
+                usersRef
+                        .whereEqualTo("email", WWRApplication.getUserAccount().getEmail())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    for(QueryDocumentSnapshot document : task.getResult()){
+                                        teamId=document.getString("team_id");
+                                        usersRef
+                                                .whereEqualTo("team_id", teamId)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                Log.d("docResultsforPropose", document.getId() + " => " + document.getData());
+
+
+                                                                String firstName = document.getString("first_name");
+                                                                String lastName = document.getString("last_name");
+                                                                String email = document.getString("email");
+                                                                FirebaseFirestore database = FirebaseFirestore.getInstance();
+                                                                HashMap<String, String> data = new HashMap<>();
+                                                                data.put(getString(R.string.message_type), "cancel walk");
+                                                                data.put("receiverName", firstName+" "+lastName);
+                                                                data.put("receiverEmail", email);
+                                                                data.put("senderEmail", WWRApplication.getUserAccount().getEmail());
+                                                                database.collection("messages")
+                                                                        .add(data);
+
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }
+                            }
+                        });
+            }
+        });
         TextView proposedRouteTime = (TextView) findViewById(R.id.proposed_time);
         proposedRouteTime.setText(proposedTime);
 
-        Button walk = findViewById(R.id.walk_button);
+        Button walk = findViewById(R.id.schedule_button);
         walk.setVisibility(View.GONE);
+        Button cancelwalk=findViewById(R.id.cancel_walk_button);
+        cancelwalk.setVisibility(View.GONE);
 
-        updateAccDecName(walk);
+        updateAccDecName(walk,cancelwalk);
         final FirebaseFirestore firestore=FirebaseFirestore.getInstance();
 
 
@@ -107,7 +203,7 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
 
     }
 
-    public void updateAccDecName(final View view){
+    public void updateAccDecName(final View view,final View view2){
         final CollectionReference usersRef = FirestoreUtil.USERS_REF;
         final CollectionReference proposedRouteRef = FirestoreUtil.PROPOSED_ROUTES_REF;
         usersRef
@@ -120,6 +216,8 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                             for(QueryDocumentSnapshot document : task.getResult()){
                                 teamId = document.getString("team_id");
 
+                                Log.d("ProposedRouteInfo", "user email: " + userEmail);
+                                Log.d("ProposedRouteInfo", "team id: " + teamId);
                                 proposedRouteRef
                                         .whereEqualTo("team_id", teamId)
                                         .get()
@@ -134,8 +232,11 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                                                         accept_name = document.getString("accept_name");
                                                         decline_name = document.getString("decline_name");
                                                         host_email = document.getString("hostEmail");
-                                                        if(host_email.equals(userEmail))
+
+                                                        if(host_email.equals(userEmail)) {
                                                             view.setVisibility(View.VISIBLE);
+                                                            view2.setVisibility(View.VISIBLE);
+                                                        }
                                                     }
                                                 }else{
                                                     Log.d("docError", "Error getting documents: ", task.getException());

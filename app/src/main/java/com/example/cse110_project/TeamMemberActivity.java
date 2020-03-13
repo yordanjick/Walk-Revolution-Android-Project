@@ -54,76 +54,76 @@ public class TeamMemberActivity extends AppCompatActivity {
         final FloatingActionButton inviteButton = (FloatingActionButton) findViewById(R.id.invite_button);
         final Button proposedRoutesButton = (Button) findViewById(R.id.proposed_routes_button);
         usersRef
-                .whereEqualTo("email", userEmail)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if(task.isSuccessful()){
-                                for(QueryDocumentSnapshot document : task.getResult()){
-                                    teamId = document.getString("team_id");
+            .whereEqualTo("email", userEmail)
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        teamId = document.getString("team_id");
 
-                                    usersRef
-                                            .whereEqualTo("team_id", teamId)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            Log.d("docResults", document.getId() + " => " + document.getData());
-                                                            RelativeLayout relativeLayout = new RelativeLayout(TeamMemberActivity.this);
-                                                            final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        usersRef
+                            .whereEqualTo("team_id", teamId)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d("docResults", document.getId() + " => " + document.getData());
+                                        RelativeLayout relativeLayout = new RelativeLayout(TeamMemberActivity.this);
+                                        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                                                            // Initial text view
-                                                            TextView initialView = new TextView(TeamMemberActivity.this);
+                                        // Initial text view
+                                        TextView initialView = new TextView(TeamMemberActivity.this);
 
-                                                            String firstName = document.getString("first_name");
-                                                            String lastName = document.getString("last_name");
-                                                            StringBuilder sb = new StringBuilder();
-                                                            sb.append(firstName.charAt(0)).append(lastName.charAt(0));
-                                                            String initials = sb.toString();
-                                                            initials.toUpperCase();
-                                                            initialView.setText(initials);
-                                                            initialView.setBackgroundColor(Color.RED);
-                                                            initialView.setTextSize(20);
-                                                            initialView.setWidth(100);
-                                                            initialView.setHeight(89);
-                                                            //initialView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                                            initialView.setGravity(Gravity.CENTER);
+                                        String firstName = document.getString("first_name");
+                                        String lastName = document.getString("last_name");
+                                        StringBuilder sb = new StringBuilder();
+                                        sb.append(firstName.charAt(0)).append(lastName.charAt(0));
+                                        String initials = sb.toString();
+                                        initials.toUpperCase();
+                                        initialView.setText(initials);
+                                        initialView.setBackgroundColor(Color.RED);
+                                        initialView.setTextSize(20);
+                                        initialView.setWidth(100);
+                                        initialView.setHeight(89);
+                                        //initialView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                        initialView.setGravity(Gravity.CENTER);
 
-                                                            relativeLayout.addView(initialView);
+                                        relativeLayout.addView(initialView);
 
-                                                            TextView teamMember = new TextView(TeamMemberActivity.this);
-                                                            teamMember.setBackgroundColor(Color.LTGRAY);
-                                                            teamMember.setAllCaps(false);
+                                        TextView teamMember = new TextView(TeamMemberActivity.this);
+                                        teamMember.setBackgroundColor(Color.LTGRAY);
+                                        teamMember.setAllCaps(false);
 
-                                                            String name = firstName + " " + lastName;
-                                                            if (name.length() > MAX_NAME_LEN)
-                                                                name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;
-                                                            teamMember.setText(String.format(name));
-                                                            teamMember.setTypeface(Typeface.MONOSPACE);
-                                                            teamMember.setLetterSpacing(0);
-                                                            teamMember.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
+                                        String name = firstName + " " + lastName;
+                                        if (name.length() > MAX_NAME_LEN)
+                                            name = name.substring(0, MAX_NAME_LEN - TEXT_EMPTY) + ELLIPSE;
+                                        teamMember.setText(String.format(name));
+                                        teamMember.setTypeface(Typeface.MONOSPACE);
+                                        teamMember.setLetterSpacing(0);
+                                        teamMember.setPadding(MARGIN, MARGIN, MARGIN, MARGIN);
 
-                                                            relativeLayout.addView(teamMember);
+                                        relativeLayout.addView(teamMember);
 
-                                                            params.addRule(RelativeLayout.RIGHT_OF, initialView.getId());
-                                                            params.addRule(RelativeLayout.END_OF, initialView.getId());
-                                                            params.setMargins(100,0,0,0);
-                                                            teamMember.setLayoutParams(params);
+                                        params.addRule(RelativeLayout.RIGHT_OF, initialView.getId());
+                                        params.addRule(RelativeLayout.END_OF, initialView.getId());
+                                        params.setMargins(100,0,0,0);
+                                        teamMember.setLayoutParams(params);
 
-                                                            teamMemberList.addView(relativeLayout);
-                                                        }
-                                                    } else {
-                                                        Log.d("docError", "Error getting documents: ", task.getException());
-                                                    }
-                                                }
-                                            });
+                                        teamMemberList.addView(relativeLayout);
+                                    }
+                                } else {
+                                    Log.d("docError", "Error getting documents: ", task.getException());
                                 }
-                            }
+                                }
+                            });
                     }
-                });
+                }
+                }
+            });
 
 
         inviteButton.setOnClickListener(new View.OnClickListener() {

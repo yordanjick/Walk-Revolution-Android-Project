@@ -77,10 +77,16 @@ exports.sendNotification = functions.firestore
                     sentence=" proposed "+ routeName+" on "+month+" "+day+" at "+hour;
                     }
                     else if(messageType==="Accept Proposal"){
-                    sentence=" accepts the proposal"
+                    sentence=" accepts the proposal";
                     }
                     else if(messageType==="Decline Proposal"){
-                    sentence=" declines the proposal"
+                    sentence=" declines the proposal";
+                    }
+                    else if(messageType==="schedule walk"){
+                    sentence=" schedule the walk";
+                    }
+                    else if(messageType==="cancel walk"){
+                    sentence=" cancel the walk";
                     }
                     const message = {
                         notification: {
