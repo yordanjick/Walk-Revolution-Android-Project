@@ -35,6 +35,10 @@ public class WWRApplication extends Application {
         return userDatabase = new FirestoreToUserDatabaseAdapter(FirebaseFirestore.getInstance(), COLLECTION_KEY, EMAIL_KEY, FIRST_NAME_KEY, LAST_NAME_KEY, TEAM_ID_KEY, TOKEN_KEY);
     }
 
+    public static UserDatabase setUserDatabase(UserDatabase newUserDatabase) {
+        return userDatabase = newUserDatabase;
+    }
+
     public static boolean isLoggedIn() { return loggedIn; }
 
     public static String getEmailKey() { return userAccount.getEmail().replace('.',','); }
