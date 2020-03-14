@@ -115,8 +115,6 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firestore.collection("proposedRoutes").document(proposedRoute)
-                        .update("status","withdrawn");
                 final CollectionReference usersRef = FirestoreUtil.USERS_REF;
 
                 usersRef
@@ -159,6 +157,9 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                                 }
                             }
                         });
+                firestore.collection("proposedRoutes").document(proposedRoute)
+                        .delete();
+                finish();
             }
         });
         TextView proposedRouteTime = (TextView) findViewById(R.id.proposed_time);
