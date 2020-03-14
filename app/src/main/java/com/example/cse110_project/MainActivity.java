@@ -113,8 +113,10 @@ public class MainActivity extends AppCompatActivity {
 
         this.calendar = Calendar.getInstance();
 
-        WWRApplication.setUserDatabase();
-        signIn();
+        if(!WWRApplication.isLoggedIn()) {
+            WWRApplication.setUserDatabase();
+            signIn();
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
