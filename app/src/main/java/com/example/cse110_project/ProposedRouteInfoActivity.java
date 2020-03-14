@@ -206,6 +206,8 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
 
                 firestore.collection("proposedRoutes").document(proposedRoute)
                         .update("acceptedUsers", acceptedUsers);
+                firestore.collection("proposedRoutes").document(proposedRoute)
+                        .update("declinedUsers", declinedUsers);
 
                 /*
                 if(!accept_name.contains(WWRApplication.getUserAccount().getGivenName())) {
@@ -238,10 +240,12 @@ public class ProposedRouteInfoActivity extends AppCompatActivity {
                     acceptedUsers.remove(WWRApplication.getEmailKey());
                 }
 
-                /*
+                firestore.collection("proposedRoutes").document(proposedRoute)
+                        .update("acceptedUsers", acceptedUsers);
                 firestore.collection("proposedRoutes").document(proposedRoute)
                         .update("declinedUsers", declinedUsers);
 
+                /*
                 if(!decline_name.contains(WWRApplication.getUserAccount().getGivenName())) {
                     firestore.collection("proposedRoutes").document(proposedRoute)
                             .update("decline_name",decline_name + " " + WWRApplication.getUserAccount().getGivenName()+",");

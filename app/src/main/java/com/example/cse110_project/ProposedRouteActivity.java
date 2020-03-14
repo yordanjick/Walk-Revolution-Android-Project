@@ -110,13 +110,19 @@ public class ProposedRouteActivity extends AppCompatActivity {
 
                                                     if(acceptedUsers != null) {
                                                         for(String key : acceptedUsers.keySet()) {
-                                                            accepted_name += ", " + acceptedUsers.get(key).get("first_name");
+                                                            if(accepted_name != "") {
+                                                                accepted_name += ", ";
+                                                            }
+                                                            accepted_name += acceptedUsers.get(key).get("first_name");
                                                         }
                                                     }
 
                                                     if(declinedUsers != null) {
                                                         for(String key : declinedUsers.keySet()) {
-                                                            declined_name += ", " + declinedUsers.get(key).get("first_name");
+                                                            if(declined_name != "") {
+                                                                declined_name += ", ";
+                                                            }
+                                                            declined_name += declinedUsers.get(key).get("first_name");
                                                         }
                                                     }
 
